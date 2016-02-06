@@ -1,0 +1,10 @@
+{
+  "apps": [
+    {
+      "name": "sound-portal",
+      "script": "index.js",
+      "watch": [ "server" ],
+      "ignore_watch" : [ "app", "node_modules" ]
+    }
+  ]
+}
