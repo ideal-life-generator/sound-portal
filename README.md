@@ -7,7 +7,7 @@
 * [ws](https://www.npmjs.com/package/ws) - socket plugin;
 * [react](https://facebook.github.io/react/) and [redux](https://facebook.github.io/react/) - client side platform;
 * [samsarajs](https://www.npmjs.com/package/samsarajs) - html structure and animations;
-* [webpack](http://webpack.github.io/docs/what-is-webpack.html) - best package manager!;
+* [webpack](http://webpack.github.io/docs/what-is-webpack.html) - best package manager;
 * [babel](https://babeljs.io/)([es2015](https://www.npmjs.com/package/babel-preset-es2015), [stage-2](https://www.npmjs.com/package/babel-preset-stage-2)) - es6, es7 new feature;
 * [airbnb](https://github.com/airbnb/javascript) - JavaScript structure;
 * [karma](https://www.npmjs.com/package/karma) - client side tests mamager;
