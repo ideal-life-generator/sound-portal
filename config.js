@@ -1,7 +1,10 @@
-const HTTP_SERVER_PATH = "127.0.0.1"
+const HTTP_SERVER_PATH = "localhost"
 const HTTP_SERVER_PORT = 5000
 
-const SOCKET_SERVER_PORT = 3000
+const SOCKET_SERVER_PATH = "localhost"
+const SOCKET_SERVER_PORT = 5001
+
+const DB_SERVER_PATH = "postgres://postgres:postgres@localhost:5432/soundPortal"
 
 const APP_DIRECTORY = "app"
 
@@ -43,4 +46,29 @@ const SUPPORTED_FILE_TYPES = [
   }
 ]
 
-export { HTTP_SERVER_PATH, HTTP_SERVER_PORT, SOCKET_SERVER_PORT, APP_DIRECTORY, SUPPORTED_TEMPLATES, SUPPORTED_FILE_TYPES }
+const DRIVE_ACCESSING_PATH = `
+  https://accounts.google.com/o/oauth2/auth?
+    access_type=offline&
+    scope=https://www.googleapis.com/auth/drive.metadata.readonly&
+    response_type=code&
+    client_id=205946784859-n4ckbriqes7j9etrh7dvm9608qr958qs.apps.googleusercontent.com&
+    redirect_uri=http://localhost:5000/drive-credentials
+`
+
+const EMAIL_VALIDATOR = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+const PASSWORD_VALIDATOR = /^.*(?=.{8,32})(?=.*[a-zA-Z]).*$/
+
+export {
+  HTTP_SERVER_PATH,
+  HTTP_SERVER_PORT,
+  SOCKET_SERVER_PATH,
+  SOCKET_SERVER_PORT,
+  DB_SERVER_PATH,
+  APP_DIRECTORY,
+  SUPPORTED_TEMPLATES,
+  SUPPORTED_FILE_TYPES,
+  DRIVE_ACCESSING_PATH,
+  EMAIL_VALIDATOR,
+  PASSWORD_VALIDATOR
+}

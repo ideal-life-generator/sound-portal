@@ -1,14 +1,14 @@
-import React, { Component } from "react"
+import React from "react"
 import { connect } from "react-redux"
 
-class Main extends Component {
-  render () {
-    return (
-      <div>Hi</div>
-    );
-  }
+import Signin from "components/Signin.jsx"
+
+function Main ({ connection }) {
+  return (
+    <div>
+      <Signin connection={connection} />
+    </div>
+  )
 }
 
-export default connect((state) => {
-  return state
-})(Main)
+export default Main

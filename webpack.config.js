@@ -4,7 +4,7 @@ var path = require("path");
 module.exports = [
   {
     context: path.join(__dirname, "app"),
-    entry: "./app.jsx",
+    entry: "./index.jsx",
     output: {
       path: path.join(__dirname, "app/build"),
       publicPath: "build/",

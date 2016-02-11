@@ -3,8 +3,8 @@
     {
       "name": "sound-portal",
       "script": "index.js",
-      "watch": [ "server" ],
-      "ignore_watch" : [ "app", "node_modules" ]
+      "watch": [ "server.js", "server" ],
+      "ignore_watch": [ "node_modules", "app" ]
     }
   ]
 }

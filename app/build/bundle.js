@@ -54,11 +54,17 @@
 
 	var _reactRedux = __webpack_require__(159);
 
-	var _store = __webpack_require__(180);
+	var _wsSession = __webpack_require__(183);
+
+	var _wsSession2 = _interopRequireDefault(_wsSession);
+
+	var _config = __webpack_require__(194);
+
+	var _store = __webpack_require__(177);
 
 	var _store2 = _interopRequireDefault(_store);
 
-	var _Main = __webpack_require__(182);
+	var _Main = __webpack_require__(180);
 
 	var _Main2 = _interopRequireDefault(_Main);
 
@@ -67,7 +73,7 @@
 	(0, _reactDom.render)(_react2.default.createElement(
 	  _reactRedux.Provider,
 	  { store: _store2.default },
-	  _react2.default.createElement(_Main2.default, null)
+	  _react2.default.createElement(_Main2.default, { connection: (0, _wsSession2.default)("ws://" + _config.SOCKET_SERVER_PATH + ":" + _config.SOCKET_SERVER_PORT) })
 	), document.getElementById("app"));
 
 /***/ },
@@ -19818,15 +19824,15 @@
 
 	var _wrapActionCreators2 = _interopRequireDefault(_wrapActionCreators);
 
-	var _isPlainObject = __webpack_require__(175);
+	var _isPlainObject = __webpack_require__(167);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _hoistNonReactStatics = __webpack_require__(178);
+	var _hoistNonReactStatics = __webpack_require__(175);
 
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 
-	var _invariant = __webpack_require__(179);
+	var _invariant = __webpack_require__(176);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -20892,140 +20898,6 @@
 
 /***/ },
 /* 175 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var isHostObject = __webpack_require__(176),
-	    isObjectLike = __webpack_require__(177);
-
-	/** `Object#toString` result references. */
-	var objectTag = '[object Object]';
-
-	/** Used for built-in method references. */
-	var objectProto = Object.prototype;
-
-	/** Used to resolve the decompiled source of functions. */
-	var funcToString = Function.prototype.toString;
-
-	/** Used to infer the `Object` constructor. */
-	var objectCtorString = funcToString.call(Object);
-
-	/**
-	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
-	 * of values.
-	 */
-	var objectToString = objectProto.toString;
-
-	/** Built-in value references. */
-	var getPrototypeOf = Object.getPrototypeOf;
-
-	/**
-	 * Checks if `value` is a plain object, that is, an object created by the
-	 * `Object` constructor or one with a `[[Prototype]]` of `null`.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
-	 * @example
-	 *
-	 * function Foo() {
-	 *   this.a = 1;
-	 * }
-	 *
-	 * _.isPlainObject(new Foo);
-	 * // => false
-	 *
-	 * _.isPlainObject([1, 2, 3]);
-	 * // => false
-	 *
-	 * _.isPlainObject({ 'x': 0, 'y': 0 });
-	 * // => true
-	 *
-	 * _.isPlainObject(Object.create(null));
-	 * // => true
-	 */
-	function isPlainObject(value) {
-	  if (!isObjectLike(value) || objectToString.call(value) != objectTag || isHostObject(value)) {
-	    return false;
-	  }
-	  var proto = objectProto;
-	  if (typeof value.constructor == 'function') {
-	    proto = getPrototypeOf(value);
-	  }
-	  if (proto === null) {
-	    return true;
-	  }
-	  var Ctor = proto.constructor;
-	  return (typeof Ctor == 'function' &&
-	    Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString);
-	}
-
-	module.exports = isPlainObject;
-
-
-/***/ },
-/* 176 */
-/***/ function(module, exports) {
-
-	/**
-	 * Checks if `value` is a host object in IE < 9.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
-	 */
-	function isHostObject(value) {
-	  // Many host objects are `Object` objects that can coerce to strings
-	  // despite having improperly defined `toString` methods.
-	  var result = false;
-	  if (value != null && typeof value.toString != 'function') {
-	    try {
-	      result = !!(value + '');
-	    } catch (e) {}
-	  }
-	  return result;
-	}
-
-	module.exports = isHostObject;
-
-
-/***/ },
-/* 177 */
-/***/ function(module, exports) {
-
-	/**
-	 * Checks if `value` is object-like. A value is object-like if it's not `null`
-	 * and has a `typeof` result of "object".
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-	 * @example
-	 *
-	 * _.isObjectLike({});
-	 * // => true
-	 *
-	 * _.isObjectLike([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObjectLike(_.noop);
-	 * // => false
-	 *
-	 * _.isObjectLike(null);
-	 * // => false
-	 */
-	function isObjectLike(value) {
-	  return !!value && typeof value == 'object';
-	}
-
-	module.exports = isObjectLike;
-
-
-/***/ },
-/* 178 */
 /***/ function(module, exports) {
 
 	/**
@@ -21071,7 +20943,7 @@
 
 
 /***/ },
-/* 179 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -21129,7 +21001,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 180 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21140,18 +21012,57 @@
 
 	var _redux = __webpack_require__(165);
 
-	var _rootReducer = __webpack_require__(181);
+	var _signin = __webpack_require__(178);
 
-	var _rootReducer2 = _interopRequireDefault(_rootReducer);
+	var _signin2 = _interopRequireDefault(_signin);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var initialState = {};
+	var reducers = (0, _redux.combineReducers)({
+	  signin: _signin2.default
+	});
 
-	exports.default = (0, _redux.createStore)(_rootReducer2.default, initialState);
+	exports.default = (0, _redux.createStore)(reducers);
 
 /***/ },
-/* 181 */
+/* 178 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = signin;
+
+	var _signin = __webpack_require__(179);
+
+	function signin() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case _signin.SIGNIN_USERNAME_INPUT:
+	      return _extends({}, state, {
+	        username: action.username
+	      });
+	    case _signin.SIGNIN_EMAIL_INPUT:
+	      return _extends({}, state, {
+	        email: action.email
+	      });
+	    case _signin.SIGNIN_PASSWORD_INPUT:
+	      return _extends({}, state, {
+	        password: action.password
+	      });
+	    default:
+	      return state;
+	  }
+	}
+
+/***/ },
+/* 179 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -21159,20 +21070,50 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	function rootReducer() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	  var action = arguments[1];
+	var SIGNIN_USERNAME_INPUT = "SIGNIN_USERNAME_INPUT";
+	var SIGNIN_EMAIL_INPUT = "SIGNIN_EMAIL_INPUT";
+	var SIGNIN_PASSWORD_INPUT = "SIGNIN_PASSWORD_INPUT";
 
-	  switch (action.type) {
-	    default:
-	      return state;
-	  }
-	}
-
-	exports.default = rootReducer;
+	exports.SIGNIN_USERNAME_INPUT = SIGNIN_USERNAME_INPUT;
+	exports.SIGNIN_EMAIL_INPUT = SIGNIN_EMAIL_INPUT;
+	exports.SIGNIN_PASSWORD_INPUT = SIGNIN_PASSWORD_INPUT;
 
 /***/ },
-/* 182 */
+/* 180 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(159);
+
+	var _Signin = __webpack_require__(181);
+
+	var _Signin2 = _interopRequireDefault(_Signin);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function Main(_ref) {
+	  var connection = _ref.connection;
+
+	  return _react2.default.createElement(
+	    "div",
+	    null,
+	    _react2.default.createElement(_Signin2.default, { connection: connection })
+	  );
+	}
+
+	exports.default = Main;
+
+/***/ },
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21189,6 +21130,8 @@
 
 	var _reactRedux = __webpack_require__(159);
 
+	var _signin = __webpack_require__(195);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21197,32 +21140,825 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Main = function (_Component) {
-	  _inherits(Main, _Component);
+	var Signin = function (_Component) {
+	  _inherits(Signin, _Component);
 
-	  function Main() {
-	    _classCallCheck(this, Main);
+	  function Signin() {
+	    _classCallCheck(this, Signin);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Main).apply(this, arguments));
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Signin).apply(this, arguments));
 	  }
 
-	  _createClass(Main, [{
+	  _createClass(Signin, [{
+	    key: "componentDidMount",
+	    value: function componentDidMount() {
+	      var subscribe = this.props.connection.subscribe;
+
+	      subscribe("signin.response", function (err, user) {
+	        console.log(err, user);
+	      });
+	      subscribe("signin.response.exists", function (err, exist) {
+	        console.log(err, exist);
+	      });
+	    }
+	  }, {
 	    key: "render",
 	    value: function render() {
+	      var _props = this.props;
+	      var send = _props.connection.send;
+	      var onEmailChange = _props.onEmailChange;
+	      var onPasswordChange = _props.onPasswordChange;
+	      var email = _props.email;
+	      var password = _props.password;
+
 	      return _react2.default.createElement(
-	        "div",
+	        "aside",
 	        null,
-	        "Hi"
+	        _react2.default.createElement(
+	          "form",
+	          {
+	            onSubmit: function onSubmit(event) {
+	              event.preventDefault();
+	            },
+	            autoComplete: "off",
+	            noValidate: true },
+	          _react2.default.createElement(
+	            "div",
+	            null,
+	            _react2.default.createElement("input", {
+	              type: "email",
+	              placeholder: "Email",
+	              onChange: onEmailChange,
+	              defaultValue: email }),
+	            email
+	          ),
+	          _react2.default.createElement(
+	            "div",
+	            null,
+	            _react2.default.createElement("input", {
+	              type: "password",
+	              placeholder: "Password",
+	              onChange: onPasswordChange,
+	              defaultValue: password }),
+	            password
+	          ),
+	          _react2.default.createElement(
+	            "div",
+	            null,
+	            _react2.default.createElement(
+	              "button",
+	              null,
+	              "Login"
+	            ),
+	            _react2.default.createElement(
+	              "button",
+	              {
+	                onClick: function onClick() {
+	                  send("signin", { email: email, password: password });
+	                } },
+	              "Signin"
+	            )
+	          )
+	        )
 	      );
 	    }
 	  }]);
 
-	  return Main;
+	  return Signin;
 	}(_react.Component);
 
-	exports.default = (0, _reactRedux.connect)(function (state) {
-	  return state;
-	})(Main);
+	function mapStateToProps(_ref) {
+	  var signin = _ref.signin;
+
+	  return signin;
+	}
+
+	function mapDispatchToProps(dispatch) {
+	  return {
+	    onEmailChange: function onEmailChange(_ref2) {
+	      var value = _ref2.target.value;
+
+	      dispatch((0, _signin.signinEmail)(value));
+	    },
+	    onPasswordChange: function onPasswordChange(_ref3) {
+	      var value = _ref3.target.value;
+
+	      dispatch((0, _signin.signinPassword)(value));
+	    }
+	  };
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Signin);
+
+/***/ },
+/* 182 */,
+/* 183 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _cookie = __webpack_require__(184);
+
+	var _shortid = __webpack_require__(185);
+
+	function session(url) {
+	  var connects = new Set();
+	  var subscribes = new Map();
+
+	  var cookieObj = (0, _cookie.parse)(document.cookie);
+	  var socketSessionId = cookieObj.socketSessionId;
+
+	  if (Boolean(socketSessionId) === false) {
+	    socketSessionId = (0, _shortid.generate)();
+	    document.cookie = "socketSessionId=" + socketSessionId + ";";
+	  }
+
+	  var socketInstance = new WebSocket(url);
+
+	  socketInstance.addEventListener("open", function () {
+	    connects.forEach(function (callback) {
+	      callback();
+	    });
+	  });
+
+	  socketInstance.addEventListener("message", function (event) {
+	    var messageJSON = event.data;
+
+	    var _JSON$parse = JSON.parse(messageJSON);
+
+	    var identifier = _JSON$parse.identifier;
+	    var data = _JSON$parse.data;
+
+	    var callback = subscribes.get(identifier);
+	    if (Boolean(callback)) {
+	      callback.apply(null, data);
+	    }
+	  });
+
+	  function connected(callback) {
+	    connects.add(callback);
+	    return function unsubscribe() {
+	      connects.delete(callback);
+	    };
+	  }
+
+	  function send(identifier) {
+	    for (var _len = arguments.length, data = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	      data[_key - 1] = arguments[_key];
+	    }
+
+	    socketInstance.send(JSON.stringify({ identifier: identifier, data: data }));
+	  }
+
+	  function subscribe(identifier, callback) {
+	    subscribes.set(identifier, callback);
+	    return function unsubscribe() {
+	      subscribes.delete(identifier);
+	    };
+	  }
+
+	  function subscribeOnce(identifier, callback) {
+	    function handler() {
+	      callback.apply(null, arguments);
+	      unsubscribe();
+	    }
+	    var unsubscribe = subscribe(identifier, handler);
+	    return unsubscribe;
+	  }
+
+	  return {
+	    connected: connected,
+	    send: send,
+	    subscribe: subscribe,
+	    subscribeOnce: subscribeOnce,
+	    socketSessionId: socketSessionId,
+	    socketInstance: socketInstance
+	  };
+	}
+
+	exports.default = session;
+
+/***/ },
+/* 184 */
+/***/ function(module, exports) {
+
+	/*!
+	 * cookie
+	 * Copyright(c) 2012-2014 Roman Shtylman
+	 * Copyright(c) 2015 Douglas Christopher Wilson
+	 * MIT Licensed
+	 */
+
+	/**
+	 * Module exports.
+	 * @public
+	 */
+
+	exports.parse = parse;
+	exports.serialize = serialize;
+
+	/**
+	 * Module variables.
+	 * @private
+	 */
+
+	var decode = decodeURIComponent;
+	var encode = encodeURIComponent;
+	var pairSplitRegExp = /; */;
+
+	/**
+	 * RegExp to match field-content in RFC 7230 sec 3.2
+	 *
+	 * field-content = field-vchar [ 1*( SP / HTAB ) field-vchar ]
+	 * field-vchar   = VCHAR / obs-text
+	 * obs-text      = %x80-FF
+	 */
+
+	var fieldContentRegExp = /^[\u0009\u0020-\u007e\u0080-\u00ff]+$/;
+
+	/**
+	 * Parse a cookie header.
+	 *
+	 * Parse the given cookie header string into an object
+	 * The object has the various cookies as keys(names) => values
+	 *
+	 * @param {string} str
+	 * @param {object} [options]
+	 * @return {object}
+	 * @public
+	 */
+
+	function parse(str, options) {
+	  if (typeof str !== 'string') {
+	    throw new TypeError('argument str must be a string');
+	  }
+
+	  var obj = {}
+	  var opt = options || {};
+	  var pairs = str.split(pairSplitRegExp);
+	  var dec = opt.decode || decode;
+
+	  pairs.forEach(function(pair) {
+	    var eq_idx = pair.indexOf('=')
+
+	    // skip things that don't look like key=value
+	    if (eq_idx < 0) {
+	      return;
+	    }
+
+	    var key = pair.substr(0, eq_idx).trim()
+	    var val = pair.substr(++eq_idx, pair.length).trim();
+
+	    // quoted values
+	    if ('"' == val[0]) {
+	      val = val.slice(1, -1);
+	    }
+
+	    // only assign once
+	    if (undefined == obj[key]) {
+	      obj[key] = tryDecode(val, dec);
+	    }
+	  });
+
+	  return obj;
+	}
+
+	/**
+	 * Serialize data into a cookie header.
+	 *
+	 * Serialize the a name value pair into a cookie string suitable for
+	 * http headers. An optional options object specified cookie parameters.
+	 *
+	 * serialize('foo', 'bar', { httpOnly: true })
+	 *   => "foo=bar; httpOnly"
+	 *
+	 * @param {string} name
+	 * @param {string} val
+	 * @param {object} [options]
+	 * @return {string}
+	 * @public
+	 */
+
+	function serialize(name, val, options) {
+	  var opt = options || {};
+	  var enc = opt.encode || encode;
+
+	  if (!fieldContentRegExp.test(name)) {
+	    throw new TypeError('argument name is invalid');
+	  }
+
+	  var value = enc(val);
+
+	  if (value && !fieldContentRegExp.test(value)) {
+	    throw new TypeError('argument val is invalid');
+	  }
+
+	  var pairs = [name + '=' + value];
+
+	  if (null != opt.maxAge) {
+	    var maxAge = opt.maxAge - 0;
+	    if (isNaN(maxAge)) throw new Error('maxAge should be a Number');
+	    pairs.push('Max-Age=' + Math.floor(maxAge));
+	  }
+
+	  if (opt.domain) {
+	    if (!fieldContentRegExp.test(opt.domain)) {
+	      throw new TypeError('option domain is invalid');
+	    }
+
+	    pairs.push('Domain=' + opt.domain);
+	  }
+
+	  if (opt.path) {
+	    if (!fieldContentRegExp.test(opt.path)) {
+	      throw new TypeError('option path is invalid');
+	    }
+
+	    pairs.push('Path=' + opt.path);
+	  }
+
+	  if (opt.expires) pairs.push('Expires=' + opt.expires.toUTCString());
+	  if (opt.httpOnly) pairs.push('HttpOnly');
+	  if (opt.secure) pairs.push('Secure');
+	  if (opt.firstPartyOnly) pairs.push('First-Party-Only');
+
+	  return pairs.join('; ');
+	}
+
+	/**
+	 * Try decoding a string using a decoding function.
+	 *
+	 * @param {string} str
+	 * @param {function} decode
+	 * @private
+	 */
+
+	function tryDecode(str, decode) {
+	  try {
+	    return decode(str);
+	  } catch (e) {
+	    return str;
+	  }
+	}
+
+
+/***/ },
+/* 185 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	module.exports = __webpack_require__(186);
+
+
+/***/ },
+/* 186 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var alphabet = __webpack_require__(187);
+	var encode = __webpack_require__(189);
+	var decode = __webpack_require__(191);
+	var isValid = __webpack_require__(192);
+
+	// Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
+	// This number should be updated every year or so to keep the generated id short.
+	// To regenerate `new Date() - 0` and bump the version. Always bump the version!
+	var REDUCE_TIME = 1426452414093;
+
+	// don't change unless we change the algos or REDUCE_TIME
+	// must be an integer and less than 16
+	var version = 5;
+
+	// if you are using cluster or multiple servers use this to make each instance
+	// has a unique value for worker
+	// Note: I don't know if this is automatically set when using third
+	// party cluster solutions such as pm2.
+	var clusterWorkerId = __webpack_require__(193) || 0;
+
+	// Counter is used when shortid is called multiple times in one second.
+	var counter;
+
+	// Remember the last time shortid was called in case counter is needed.
+	var previousSeconds;
+
+	/**
+	 * Generate unique id
+	 * Returns string id
+	 */
+	function generate() {
+
+	    var str = '';
+
+	    var seconds = Math.floor((Date.now() - REDUCE_TIME) * 0.001);
+
+	    if (seconds === previousSeconds) {
+	        counter++;
+	    } else {
+	        counter = 0;
+	        previousSeconds = seconds;
+	    }
+
+	    str = str + encode(alphabet.lookup, version);
+	    str = str + encode(alphabet.lookup, clusterWorkerId);
+	    if (counter > 0) {
+	        str = str + encode(alphabet.lookup, counter);
+	    }
+	    str = str + encode(alphabet.lookup, seconds);
+
+	    return str;
+	}
+
+
+	/**
+	 * Set the seed.
+	 * Highly recommended if you don't want people to try to figure out your id schema.
+	 * exposed as shortid.seed(int)
+	 * @param seed Integer value to seed the random alphabet.  ALWAYS USE THE SAME SEED or you might get overlaps.
+	 */
+	function seed(seedValue) {
+	    alphabet.seed(seedValue);
+	    return module.exports;
+	}
+
+	/**
+	 * Set the cluster worker or machine id
+	 * exposed as shortid.worker(int)
+	 * @param workerId worker must be positive integer.  Number less than 16 is recommended.
+	 * returns shortid module so it can be chained.
+	 */
+	function worker(workerId) {
+	    clusterWorkerId = workerId;
+	    return module.exports;
+	}
+
+	/**
+	 *
+	 * sets new characters to use in the alphabet
+	 * returns the shuffled alphabet
+	 */
+	function characters(newCharacters) {
+	    if (newCharacters !== undefined) {
+	        alphabet.characters(newCharacters);
+	    }
+
+	    return alphabet.shuffled();
+	}
+
+
+	// Export all other functions as properties of the generate function
+	module.exports = generate;
+	module.exports.generate = generate;
+	module.exports.seed = seed;
+	module.exports.worker = worker;
+	module.exports.characters = characters;
+	module.exports.decode = decode;
+	module.exports.isValid = isValid;
+
+
+/***/ },
+/* 187 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var randomFromSeed = __webpack_require__(188);
+
+	var ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
+	var alphabet;
+	var previousSeed;
+
+	var shuffled;
+
+	function reset() {
+	    shuffled = false;
+	}
+
+	function setCharacters(_alphabet_) {
+	    if (!_alphabet_) {
+	        if (alphabet !== ORIGINAL) {
+	            alphabet = ORIGINAL;
+	            reset();
+	        }
+	        return;
+	    }
+
+	    if (_alphabet_ === alphabet) {
+	        return;
+	    }
+
+	    if (_alphabet_.length !== ORIGINAL.length) {
+	        throw new Error('Custom alphabet for shortid must be ' + ORIGINAL.length + ' unique characters. You submitted ' + _alphabet_.length + ' characters: ' + _alphabet_);
+	    }
+
+	    var unique = _alphabet_.split('').filter(function(item, ind, arr){
+	       return ind !== arr.lastIndexOf(item);
+	    });
+
+	    if (unique.length) {
+	        throw new Error('Custom alphabet for shortid must be ' + ORIGINAL.length + ' unique characters. These characters were not unique: ' + unique.join(', '));
+	    }
+
+	    alphabet = _alphabet_;
+	    reset();
+	}
+
+	function characters(_alphabet_) {
+	    setCharacters(_alphabet_);
+	    return alphabet;
+	}
+
+	function setSeed(seed) {
+	    randomFromSeed.seed(seed);
+	    if (previousSeed !== seed) {
+	        reset();
+	        previousSeed = seed;
+	    }
+	}
+
+	function shuffle() {
+	    if (!alphabet) {
+	        setCharacters(ORIGINAL);
+	    }
+
+	    var sourceArray = alphabet.split('');
+	    var targetArray = [];
+	    var r = randomFromSeed.nextValue();
+	    var characterIndex;
+
+	    while (sourceArray.length > 0) {
+	        r = randomFromSeed.nextValue();
+	        characterIndex = Math.floor(r * sourceArray.length);
+	        targetArray.push(sourceArray.splice(characterIndex, 1)[0]);
+	    }
+	    return targetArray.join('');
+	}
+
+	function getShuffled() {
+	    if (shuffled) {
+	        return shuffled;
+	    }
+	    shuffled = shuffle();
+	    return shuffled;
+	}
+
+	/**
+	 * lookup shuffled letter
+	 * @param index
+	 * @returns {string}
+	 */
+	function lookup(index) {
+	    var alphabetShuffled = getShuffled();
+	    return alphabetShuffled[index];
+	}
+
+	module.exports = {
+	    characters: characters,
+	    seed: setSeed,
+	    lookup: lookup,
+	    shuffled: getShuffled
+	};
+
+
+/***/ },
+/* 188 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	// Found this seed-based random generator somewhere
+	// Based on The Central Randomizer 1.3 (C) 1997 by Paul Houle (houle@msc.cornell.edu)
+
+	var seed = 1;
+
+	/**
+	 * return a random number based on a seed
+	 * @param seed
+	 * @returns {number}
+	 */
+	function getNextValue() {
+	    seed = (seed * 9301 + 49297) % 233280;
+	    return seed/(233280.0);
+	}
+
+	function setSeed(_seed_) {
+	    seed = _seed_;
+	}
+
+	module.exports = {
+	    nextValue: getNextValue,
+	    seed: setSeed
+	};
+
+
+/***/ },
+/* 189 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var randomByte = __webpack_require__(190);
+
+	function encode(lookup, number) {
+	    var loopCounter = 0;
+	    var done;
+
+	    var str = '';
+
+	    while (!done) {
+	        str = str + lookup( ( (number >> (4 * loopCounter)) & 0x0f ) | randomByte() );
+	        done = number < (Math.pow(16, loopCounter + 1 ) );
+	        loopCounter++;
+	    }
+	    return str;
+	}
+
+	module.exports = encode;
+
+
+/***/ },
+/* 190 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var crypto = window.crypto || window.msCrypto; // IE 11 uses window.msCrypto
+
+	function randomByte() {
+	    if (!crypto || !crypto.getRandomValues) {
+	        return Math.floor(Math.random() * 256) & 0x30;
+	    }
+	    var dest = new Uint8Array(1);
+	    crypto.getRandomValues(dest);
+	    return dest[0] & 0x30;
+	}
+
+	module.exports = randomByte;
+
+
+/***/ },
+/* 191 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var alphabet = __webpack_require__(187);
+
+	/**
+	 * Decode the id to get the version and worker
+	 * Mainly for debugging and testing.
+	 * @param id - the shortid-generated id.
+	 */
+	function decode(id) {
+	    var characters = alphabet.shuffled();
+	    return {
+	        version: characters.indexOf(id.substr(0, 1)) & 0x0f,
+	        worker: characters.indexOf(id.substr(1, 1)) & 0x0f
+	    };
+	}
+
+	module.exports = decode;
+
+
+/***/ },
+/* 192 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var alphabet = __webpack_require__(187);
+
+	function isShortId(id) {
+	    if (!id || typeof id !== 'string' || id.length < 6 ) {
+	        return false;
+	    }
+
+	    var characters = alphabet.characters();
+	    var invalidCharacters = id.split('').map(function(char){
+	        if (characters.indexOf(char) === -1) {
+	            return char;
+	        }
+	    }).join('').split('').join('');
+
+	    return invalidCharacters.length === 0;
+	}
+
+	module.exports = isShortId;
+
+
+/***/ },
+/* 193 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = 0;
+
+
+/***/ },
+/* 194 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var HTTP_SERVER_PATH = "localhost";
+	var HTTP_SERVER_PORT = 5000;
+
+	var SOCKET_SERVER_PATH = "localhost";
+	var SOCKET_SERVER_PORT = 5001;
+
+	var DB_SERVER_PATH = "postgres://postgres:postgres@localhost:5432/soundPortal";
+
+	var APP_DIRECTORY = "app";
+
+	var SUPPORTED_TEMPLATES = [{
+	  test: /^\/$/,
+	  path: "index.html"
+	}, {
+	  test: /^\/signin$/,
+	  path: "additionals/signin.html"
+	}];
+
+	var SUPPORTED_FILE_TYPES = [{
+	  test: /.ico$/,
+	  contentType: "image/x-icon"
+	}, {
+	  test: /.html$/,
+	  contentType: "text/html"
+	}, {
+	  test: /.css$/,
+	  contentType: "text/css"
+	}, {
+	  test: /.js$/,
+	  contentType: "application/javascript"
+	}, {
+	  test: /.png$/,
+	  contentType: "image/png"
+	}, {
+	  test: /.ttf$/,
+	  contentType: "application/octet-stream"
+	}];
+
+	var DRIVE_ACCESSING_PATH = "\n  https://accounts.google.com/o/oauth2/auth?\n    access_type=offline&\n    scope=https://www.googleapis.com/auth/drive.metadata.readonly&\n    response_type=code&\n    client_id=205946784859-n4ckbriqes7j9etrh7dvm9608qr958qs.apps.googleusercontent.com&\n    redirect_uri=http://localhost:5000/drive-credentials\n";
+
+	var EMAIL_VALIDATOR = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+	var PASSWORD_VALIDATOR = /^.*(?=.{8,32})(?=.*[a-zA-Z]).*$/;
+
+	exports.HTTP_SERVER_PATH = HTTP_SERVER_PATH;
+	exports.HTTP_SERVER_PORT = HTTP_SERVER_PORT;
+	exports.SOCKET_SERVER_PATH = SOCKET_SERVER_PATH;
+	exports.SOCKET_SERVER_PORT = SOCKET_SERVER_PORT;
+	exports.DB_SERVER_PATH = DB_SERVER_PATH;
+	exports.APP_DIRECTORY = APP_DIRECTORY;
+	exports.SUPPORTED_TEMPLATES = SUPPORTED_TEMPLATES;
+	exports.SUPPORTED_FILE_TYPES = SUPPORTED_FILE_TYPES;
+	exports.DRIVE_ACCESSING_PATH = DRIVE_ACCESSING_PATH;
+	exports.EMAIL_VALIDATOR = EMAIL_VALIDATOR;
+	exports.PASSWORD_VALIDATOR = PASSWORD_VALIDATOR;
+
+/***/ },
+/* 195 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.signinPassword = exports.signinEmail = exports.signinUsername = undefined;
+
+	var _signin = __webpack_require__(179);
+
+	function signinUsername(username) {
+	  return {
+	    type: _signin.SIGNIN_USERNAME_INPUT,
+	    username: username
+	  };
+	}
+
+	function signinEmail(email) {
+	  return {
+	    type: _signin.SIGNIN_EMAIL_INPUT,
+	    email: email
+	  };
+	}
+
+	function signinPassword(password) {
+	  return {
+	    type: _signin.SIGNIN_PASSWORD_INPUT,
+	    password: password
+	  };
+	}
+
+	exports.signinUsername = signinUsername;
+	exports.signinEmail = signinEmail;
+	exports.signinPassword = signinPassword;
 
 /***/ }
 /******/ ]);

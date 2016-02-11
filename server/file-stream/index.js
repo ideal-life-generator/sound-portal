@@ -13,7 +13,6 @@ function filesStreamConfig ({ directory, supportedTemplates, supportedFiles }) {
   }
 
   function checkFileType (filePath) {
-    console.log(filePath)
     return supportedFiles.find((fileType) => {
       return fileType.test.test(filePath)
     })

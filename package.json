@@ -2,24 +2,29 @@
   "name": "sound-portal",
   "version": "0.0.0",
   "scripts": {
-    "webpack": "webpack --watch --detail"
+    "nodemon": "nodemon server --watch server.js --watch server --exec babel-node --presets es2015,stage-2",
+    "webpack": "webpack --watch --progress"
   },
   "devDependencies": {
     "babel-core": "^6.4.5",
     "babel-loader": "^6.2.2",
     "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
     "babel-preset-stage-2": "^6.3.13",
     "babel-register": "^6.4.3",
+    "nodemon": "^1.8.1",
     "webpack": "^1.12.13"
   },
   "dependencies": {
+    "google-auth-library": "^0.9.7",
+    "googleapis": "^2.1.7",
+    "pg": "^4.4.4",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-redux": "^4.4.0",
     "redux": "^3.3.0",
     "redux-logger": "^2.5.0",
     "redux-thunk": "^1.0.3",
-    "samsarajs": "^0.2.0",
     "ws": "^1.0.1"
   }
 }
