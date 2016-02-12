@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "mime-db": "^1.21.0"
+  },
+  "name": "file-stream",
+  "version": "0.0.1"
+}
