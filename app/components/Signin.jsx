@@ -6,7 +6,7 @@ import {
   signinPassword
 } from "actions/signin"
 
-const errors = [
+const errorDescriptions = [
   "unknown",
   "email is empty",
   "email is invalid",
@@ -18,16 +18,10 @@ const errors = [
 class Signin extends Component {
   componentDidMount () {
     const { connection: { subscribe } } = this.props
-    subscribe("signin.response", (err, user) => {
-      if (err) { console.log(errors[err]) }
+    subscribe("signin.response", (errors, user) => {
+      if (errors) { errors.forEach(error => console.log(errorDescriptions[error])) }
       else {
         console.log(user)
-      }
-    })
-    subscribe("signin.response.exists", (err, exist) => {
-      if (err) { console.log(errors[err]) }
-      else {
-        console.log(exist)
       }
     })
   }

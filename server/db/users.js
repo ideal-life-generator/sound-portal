@@ -13,6 +13,8 @@
 
 */
 
+import { randomBytes } from "crypto"
+
 import validation from "./../validation"
 import passwordValidator from "./../validators/password"
 import emailValidator from "./../validators/email"
@@ -27,13 +29,13 @@ function exists (db, email, callback) {
         if (err) {
           switch (err.code) {
             default:
-              callback(0)
+              callback([ 0 ])
           }
         }
         else {
           const { rows: [ { exists } ] } = result
           if (exists) {
-            callback(5)
+            callback([ 5 ])
           }
           else {
             callback(null, exists)
@@ -48,6 +50,7 @@ function insert (db, { email, password, token }, callback) {
   validation(emailValidator(email), passwordValidator(password), (err) => {
     if (err) { callback(err) }
     else {
+      const token = randomBytes(16, "base64").toString("base64")
       db.query(`
         INSERT INTO users (
           "email",
@@ -63,10 +66,10 @@ function insert (db, { email, password, token }, callback) {
         if (err) {
           switch (err.code) {
             case "23505":
-              callback(5)
+              callback([ 5 ])
               break;
             default:
-              callback(0)
+              callback([ 0 ])
           }
         }
         else {

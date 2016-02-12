@@ -1,4 +1,10 @@
 export default function validation (...results) {
   const callback = results.pop()
-  callback(results.find(result => result))
+  const returns = results.filter(result => result)
+  if (returns.length) {
+    callback(returns)
+  }
+  else {
+    callback(null)
+  }
 }

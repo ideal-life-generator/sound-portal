@@ -30,7 +30,7 @@ const httpServer = createServer(({ url }, res) => {
 })
 
 httpServer.listen(HTTP_SERVER_PORT, HTTP_SERVER_PATH, () => {
-  console.info(`HTTP server is listening on ${HTTP_SERVER_PATH}:${HTTP_SERVER_PORT}.`)
+  console.info(`http server is listening on ${HTTP_SERVER_PATH}:${HTTP_SERVER_PORT}.`)
 })
 
 

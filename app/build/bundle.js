@@ -21775,7 +21775,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var errors = ["unknown", "email is empty", "email is invalid", "password is empty", "password is invalid", "email is not available"];
+	var errorDescriptions = ["unknown", "email is empty", "email is invalid", "password is empty", "password is invalid", "email is not available"];
 
 	var Signin = function (_Component) {
 	  _inherits(Signin, _Component);
@@ -21791,18 +21791,13 @@
 	    value: function componentDidMount() {
 	      var subscribe = this.props.connection.subscribe;
 
-	      subscribe("signin.response", function (err, user) {
-	        if (err) {
-	          console.log(errors[err]);
+	      subscribe("signin.response", function (errors, user) {
+	        if (errors) {
+	          errors.forEach(function (error) {
+	            return console.log(errorDescriptions[error]);
+	          });
 	        } else {
 	          console.log(user);
-	        }
-	      });
-	      subscribe("signin.response.exists", function (err, exist) {
-	        if (err) {
-	          console.log(errors[err]);
-	        } else {
-	          console.log(exist);
 	        }
 	      });
 	    }
