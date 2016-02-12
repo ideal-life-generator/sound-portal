@@ -9,25 +9,23 @@ import {
   SOCKET_SERVER_PATH,
   SOCKET_SERVER_PORT,
   DB_SERVER_PATH,
-  APP_DIRECTORY,
-  SUPPORTED_TEMPLATES,
-  SUPPORTED_FILE_TYPES,
+  APP_FOLDER,
   DRIVE_ACCESSING_PATH
 } from "./config"
 
+import filesStreamInit from "./server/file-stream"
 
-import filesStreamConfig from "./server/file-stream"
+const filesStream = filesStreamInit(APP_FOLDER)
 
-const filesStream = filesStreamConfig({
-  directory: APP_DIRECTORY,
-  supportedTemplates: SUPPORTED_TEMPLATES,
-  supportedFiles: SUPPORTED_FILE_TYPES
-})
-
-const httpServer = createServer((req, res) => {
-  filesStream(req, res)
-  if (req.url.includes("/drive-credentials")) {
-    res.end(req.url)
+const httpServer = createServer(({ url }, res) => {
+  switch (url) {
+    case "/":
+      url = "index.html"
+    default:
+      filesStream(url, res)
+  }
+  if (url.includes("/drive-credentials")) {
+    res.end(url)
   }
 })
 
@@ -37,9 +35,6 @@ httpServer.listen(HTTP_SERVER_PORT, HTTP_SERVER_PATH, () => {
 
 
 import signin from "./server/api/signin"
-
-// const api = new Set()
-// api.add(signin)
 
 pg.connect(DB_SERVER_PATH, (error, db, done) => {
   if (error) { throw error }

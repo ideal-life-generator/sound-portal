@@ -54,17 +54,17 @@
 
 	var _reactRedux = __webpack_require__(159);
 
-	var _wsSession = __webpack_require__(183);
+	var _wsSession = __webpack_require__(177);
 
 	var _wsSession2 = _interopRequireDefault(_wsSession);
 
-	var _config = __webpack_require__(194);
+	var _config = __webpack_require__(188);
 
-	var _store = __webpack_require__(177);
+	var _store = __webpack_require__(189);
 
 	var _store2 = _interopRequireDefault(_store);
 
-	var _Main = __webpack_require__(180);
+	var _Main = __webpack_require__(192);
 
 	var _Main2 = _interopRequireDefault(_Main);
 
@@ -21010,260 +21010,9 @@
 	  value: true
 	});
 
-	var _redux = __webpack_require__(165);
+	var _cookie = __webpack_require__(178);
 
-	var _signin = __webpack_require__(178);
-
-	var _signin2 = _interopRequireDefault(_signin);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var reducers = (0, _redux.combineReducers)({
-	  signin: _signin2.default
-	});
-
-	exports.default = (0, _redux.createStore)(reducers);
-
-/***/ },
-/* 178 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = signin;
-
-	var _signin = __webpack_require__(179);
-
-	function signin() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	  var action = arguments[1];
-
-	  switch (action.type) {
-	    case _signin.SIGNIN_USERNAME_INPUT:
-	      return _extends({}, state, {
-	        username: action.username
-	      });
-	    case _signin.SIGNIN_EMAIL_INPUT:
-	      return _extends({}, state, {
-	        email: action.email
-	      });
-	    case _signin.SIGNIN_PASSWORD_INPUT:
-	      return _extends({}, state, {
-	        password: action.password
-	      });
-	    default:
-	      return state;
-	  }
-	}
-
-/***/ },
-/* 179 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var SIGNIN_USERNAME_INPUT = "SIGNIN_USERNAME_INPUT";
-	var SIGNIN_EMAIL_INPUT = "SIGNIN_EMAIL_INPUT";
-	var SIGNIN_PASSWORD_INPUT = "SIGNIN_PASSWORD_INPUT";
-
-	exports.SIGNIN_USERNAME_INPUT = SIGNIN_USERNAME_INPUT;
-	exports.SIGNIN_EMAIL_INPUT = SIGNIN_EMAIL_INPUT;
-	exports.SIGNIN_PASSWORD_INPUT = SIGNIN_PASSWORD_INPUT;
-
-/***/ },
-/* 180 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRedux = __webpack_require__(159);
-
-	var _Signin = __webpack_require__(181);
-
-	var _Signin2 = _interopRequireDefault(_Signin);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function Main(_ref) {
-	  var connection = _ref.connection;
-
-	  return _react2.default.createElement(
-	    "div",
-	    null,
-	    _react2.default.createElement(_Signin2.default, { connection: connection })
-	  );
-	}
-
-	exports.default = Main;
-
-/***/ },
-/* 181 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRedux = __webpack_require__(159);
-
-	var _signin = __webpack_require__(195);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Signin = function (_Component) {
-	  _inherits(Signin, _Component);
-
-	  function Signin() {
-	    _classCallCheck(this, Signin);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Signin).apply(this, arguments));
-	  }
-
-	  _createClass(Signin, [{
-	    key: "componentDidMount",
-	    value: function componentDidMount() {
-	      var subscribe = this.props.connection.subscribe;
-
-	      subscribe("signin.response", function (err, user) {
-	        console.log(err, user);
-	      });
-	      subscribe("signin.response.exists", function (err, exist) {
-	        console.log(err, exist);
-	      });
-	    }
-	  }, {
-	    key: "render",
-	    value: function render() {
-	      var _props = this.props;
-	      var send = _props.connection.send;
-	      var onEmailChange = _props.onEmailChange;
-	      var onPasswordChange = _props.onPasswordChange;
-	      var email = _props.email;
-	      var password = _props.password;
-
-	      return _react2.default.createElement(
-	        "aside",
-	        null,
-	        _react2.default.createElement(
-	          "form",
-	          {
-	            onSubmit: function onSubmit(event) {
-	              event.preventDefault();
-	            },
-	            autoComplete: "off",
-	            noValidate: true },
-	          _react2.default.createElement(
-	            "div",
-	            null,
-	            _react2.default.createElement("input", {
-	              type: "email",
-	              placeholder: "Email",
-	              onChange: onEmailChange,
-	              defaultValue: email }),
-	            email
-	          ),
-	          _react2.default.createElement(
-	            "div",
-	            null,
-	            _react2.default.createElement("input", {
-	              type: "password",
-	              placeholder: "Password",
-	              onChange: onPasswordChange,
-	              defaultValue: password }),
-	            password
-	          ),
-	          _react2.default.createElement(
-	            "div",
-	            null,
-	            _react2.default.createElement(
-	              "button",
-	              null,
-	              "Login"
-	            ),
-	            _react2.default.createElement(
-	              "button",
-	              {
-	                onClick: function onClick() {
-	                  send("signin", { email: email, password: password });
-	                } },
-	              "Signin"
-	            )
-	          )
-	        )
-	      );
-	    }
-	  }]);
-
-	  return Signin;
-	}(_react.Component);
-
-	function mapStateToProps(_ref) {
-	  var signin = _ref.signin;
-
-	  return signin;
-	}
-
-	function mapDispatchToProps(dispatch) {
-	  return {
-	    onEmailChange: function onEmailChange(_ref2) {
-	      var value = _ref2.target.value;
-
-	      dispatch((0, _signin.signinEmail)(value));
-	    },
-	    onPasswordChange: function onPasswordChange(_ref3) {
-	      var value = _ref3.target.value;
-
-	      dispatch((0, _signin.signinPassword)(value));
-	    }
-	  };
-	}
-
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Signin);
-
-/***/ },
-/* 182 */,
-/* 183 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _cookie = __webpack_require__(184);
-
-	var _shortid = __webpack_require__(185);
+	var _shortid = __webpack_require__(179);
 
 	function session(url) {
 	  var connects = new Set();
@@ -21343,7 +21092,7 @@
 	exports.default = session;
 
 /***/ },
-/* 184 */
+/* 178 */
 /***/ function(module, exports) {
 
 	/*!
@@ -21507,23 +21256,23 @@
 
 
 /***/ },
-/* 185 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	module.exports = __webpack_require__(186);
+	module.exports = __webpack_require__(180);
 
 
 /***/ },
-/* 186 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var alphabet = __webpack_require__(187);
-	var encode = __webpack_require__(189);
-	var decode = __webpack_require__(191);
-	var isValid = __webpack_require__(192);
+	var alphabet = __webpack_require__(181);
+	var encode = __webpack_require__(183);
+	var decode = __webpack_require__(185);
+	var isValid = __webpack_require__(186);
 
 	// Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
 	// This number should be updated every year or so to keep the generated id short.
@@ -21538,7 +21287,7 @@
 	// has a unique value for worker
 	// Note: I don't know if this is automatically set when using third
 	// party cluster solutions such as pm2.
-	var clusterWorkerId = __webpack_require__(193) || 0;
+	var clusterWorkerId = __webpack_require__(187) || 0;
 
 	// Counter is used when shortid is called multiple times in one second.
 	var counter;
@@ -21621,12 +21370,12 @@
 
 
 /***/ },
-/* 187 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomFromSeed = __webpack_require__(188);
+	var randomFromSeed = __webpack_require__(182);
 
 	var ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
 	var alphabet;
@@ -21725,7 +21474,7 @@
 
 
 /***/ },
-/* 188 */
+/* 182 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21756,12 +21505,12 @@
 
 
 /***/ },
-/* 189 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomByte = __webpack_require__(190);
+	var randomByte = __webpack_require__(184);
 
 	function encode(lookup, number) {
 	    var loopCounter = 0;
@@ -21781,7 +21530,7 @@
 
 
 /***/ },
-/* 190 */
+/* 184 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21801,11 +21550,11 @@
 
 
 /***/ },
-/* 191 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var alphabet = __webpack_require__(187);
+	var alphabet = __webpack_require__(181);
 
 	/**
 	 * Decode the id to get the version and worker
@@ -21824,11 +21573,11 @@
 
 
 /***/ },
-/* 192 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var alphabet = __webpack_require__(187);
+	var alphabet = __webpack_require__(181);
 
 	function isShortId(id) {
 	    if (!id || typeof id !== 'string' || id.length < 6 ) {
@@ -21849,7 +21598,7 @@
 
 
 /***/ },
-/* 193 */
+/* 187 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21858,7 +21607,7 @@
 
 
 /***/ },
-/* 194 */
+/* 188 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -21874,56 +21623,280 @@
 
 	var DB_SERVER_PATH = "postgres://postgres:postgres@localhost:5432/soundPortal";
 
-	var APP_DIRECTORY = "app";
-
-	var SUPPORTED_TEMPLATES = [{
-	  test: /^\/$/,
-	  path: "index.html"
-	}, {
-	  test: /^\/signin$/,
-	  path: "additionals/signin.html"
-	}];
-
-	var SUPPORTED_FILE_TYPES = [{
-	  test: /.ico$/,
-	  contentType: "image/x-icon"
-	}, {
-	  test: /.html$/,
-	  contentType: "text/html"
-	}, {
-	  test: /.css$/,
-	  contentType: "text/css"
-	}, {
-	  test: /.js$/,
-	  contentType: "application/javascript"
-	}, {
-	  test: /.png$/,
-	  contentType: "image/png"
-	}, {
-	  test: /.ttf$/,
-	  contentType: "application/octet-stream"
-	}];
+	var APP_FOLDER = "app";
 
 	var DRIVE_ACCESSING_PATH = "\n  https://accounts.google.com/o/oauth2/auth?\n    access_type=offline&\n    scope=https://www.googleapis.com/auth/drive.metadata.readonly&\n    response_type=code&\n    client_id=205946784859-n4ckbriqes7j9etrh7dvm9608qr958qs.apps.googleusercontent.com&\n    redirect_uri=http://localhost:5000/drive-credentials\n";
-
-	var EMAIL_VALIDATOR = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-	var PASSWORD_VALIDATOR = /^.*(?=.{8,32})(?=.*[a-zA-Z]).*$/;
 
 	exports.HTTP_SERVER_PATH = HTTP_SERVER_PATH;
 	exports.HTTP_SERVER_PORT = HTTP_SERVER_PORT;
 	exports.SOCKET_SERVER_PATH = SOCKET_SERVER_PATH;
 	exports.SOCKET_SERVER_PORT = SOCKET_SERVER_PORT;
 	exports.DB_SERVER_PATH = DB_SERVER_PATH;
-	exports.APP_DIRECTORY = APP_DIRECTORY;
-	exports.SUPPORTED_TEMPLATES = SUPPORTED_TEMPLATES;
-	exports.SUPPORTED_FILE_TYPES = SUPPORTED_FILE_TYPES;
+	exports.APP_FOLDER = APP_FOLDER;
 	exports.DRIVE_ACCESSING_PATH = DRIVE_ACCESSING_PATH;
-	exports.EMAIL_VALIDATOR = EMAIL_VALIDATOR;
-	exports.PASSWORD_VALIDATOR = PASSWORD_VALIDATOR;
 
 /***/ },
-/* 195 */
+/* 189 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _redux = __webpack_require__(165);
+
+	var _signin = __webpack_require__(190);
+
+	var _signin2 = _interopRequireDefault(_signin);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var reducers = (0, _redux.combineReducers)({
+	  signin: _signin2.default
+	});
+
+	exports.default = (0, _redux.createStore)(reducers);
+
+/***/ },
+/* 190 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = signin;
+
+	var _signin = __webpack_require__(191);
+
+	function signin() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case _signin.SIGNIN_USERNAME_INPUT:
+	      return _extends({}, state, {
+	        username: action.username
+	      });
+	    case _signin.SIGNIN_EMAIL_INPUT:
+	      return _extends({}, state, {
+	        email: action.email
+	      });
+	    case _signin.SIGNIN_PASSWORD_INPUT:
+	      return _extends({}, state, {
+	        password: action.password
+	      });
+	    default:
+	      return state;
+	  }
+	}
+
+/***/ },
+/* 191 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var SIGNIN_USERNAME_INPUT = "SIGNIN_USERNAME_INPUT";
+	var SIGNIN_EMAIL_INPUT = "SIGNIN_EMAIL_INPUT";
+	var SIGNIN_PASSWORD_INPUT = "SIGNIN_PASSWORD_INPUT";
+
+	exports.SIGNIN_USERNAME_INPUT = SIGNIN_USERNAME_INPUT;
+	exports.SIGNIN_EMAIL_INPUT = SIGNIN_EMAIL_INPUT;
+	exports.SIGNIN_PASSWORD_INPUT = SIGNIN_PASSWORD_INPUT;
+
+/***/ },
+/* 192 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(159);
+
+	var _Signin = __webpack_require__(193);
+
+	var _Signin2 = _interopRequireDefault(_Signin);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function Main(_ref) {
+	  var connection = _ref.connection;
+
+	  return _react2.default.createElement(
+	    "div",
+	    null,
+	    _react2.default.createElement(_Signin2.default, { connection: connection })
+	  );
+	}
+
+	exports.default = Main;
+
+/***/ },
+/* 193 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(159);
+
+	var _signin = __webpack_require__(194);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var errors = ["unknown", "email is empty", "email is invalid", "password is empty", "password is invalid", "email is not available"];
+
+	var Signin = function (_Component) {
+	  _inherits(Signin, _Component);
+
+	  function Signin() {
+	    _classCallCheck(this, Signin);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Signin).apply(this, arguments));
+	  }
+
+	  _createClass(Signin, [{
+	    key: "componentDidMount",
+	    value: function componentDidMount() {
+	      var subscribe = this.props.connection.subscribe;
+
+	      subscribe("signin.response", function (err, user) {
+	        if (err) {
+	          console.log(errors[err]);
+	        } else {
+	          console.log(user);
+	        }
+	      });
+	      subscribe("signin.response.exists", function (err, exist) {
+	        if (err) {
+	          console.log(errors[err]);
+	        } else {
+	          console.log(exist);
+	        }
+	      });
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      var _props = this.props;
+	      var send = _props.connection.send;
+	      var onEmailChange = _props.onEmailChange;
+	      var onPasswordChange = _props.onPasswordChange;
+	      var email = _props.email;
+	      var password = _props.password;
+
+	      return _react2.default.createElement(
+	        "aside",
+	        null,
+	        _react2.default.createElement(
+	          "form",
+	          {
+	            onSubmit: function onSubmit(event) {
+	              event.preventDefault();
+	            },
+	            autoComplete: "off",
+	            noValidate: true },
+	          _react2.default.createElement(
+	            "div",
+	            null,
+	            _react2.default.createElement("input", {
+	              type: "email",
+	              placeholder: "Email",
+	              onChange: onEmailChange,
+	              defaultValue: email }),
+	            email
+	          ),
+	          _react2.default.createElement(
+	            "div",
+	            null,
+	            _react2.default.createElement("input", {
+	              type: "password",
+	              placeholder: "Password",
+	              onChange: onPasswordChange,
+	              defaultValue: password }),
+	            password
+	          ),
+	          _react2.default.createElement(
+	            "div",
+	            null,
+	            _react2.default.createElement(
+	              "button",
+	              null,
+	              "Login"
+	            ),
+	            _react2.default.createElement(
+	              "button",
+	              {
+	                onClick: function onClick() {
+	                  send("signin", { email: email, password: password });
+	                } },
+	              "Signin"
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Signin;
+	}(_react.Component);
+
+	function mapStateToProps(_ref) {
+	  var signin = _ref.signin;
+
+	  return signin;
+	}
+
+	function mapDispatchToProps(dispatch) {
+	  return {
+	    onEmailChange: function onEmailChange(_ref2) {
+	      var value = _ref2.target.value;
+
+	      dispatch((0, _signin.signinEmail)(value));
+	    },
+	    onPasswordChange: function onPasswordChange(_ref3) {
+	      var value = _ref3.target.value;
+
+	      dispatch((0, _signin.signinPassword)(value));
+	    }
+	  };
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Signin);
+
+/***/ },
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21933,7 +21906,7 @@
 	});
 	exports.signinPassword = exports.signinEmail = exports.signinUsername = undefined;
 
-	var _signin = __webpack_require__(179);
+	var _signin = __webpack_require__(191);
 
 	function signinUsername(username) {
 	  return {
