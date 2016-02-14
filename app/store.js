@@ -1,8 +1,8 @@
 import { createStore, combineReducers } from "redux"
-import signin from "reducers/signin"
+import join from "reducers/join"
 
 const reducers = combineReducers({
-  signin
+  join
 })
 
 export default createStore(reducers)

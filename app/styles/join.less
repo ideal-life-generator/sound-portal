@@ -1,0 +1,14 @@
+.join {
+  input[type="email"],
+  input[type="password"] {
+    border-size: 1px;
+    border-style: solid;
+    border-color: lightgray;
+    &.empty {
+      border-color: #ffa500;
+    }
+    &.invalid {
+      border-color: #ff4c4c;
+    }
+  }
+}

@@ -1,12 +1,12 @@
 import React from "react"
 import { connect } from "react-redux"
 
-import Signin from "components/Signin.jsx"
+import Join from "components/Join.jsx"
 
 function Main ({ connection }) {
   return (
     <div>
-      <Signin connection={connection} />
+      <Join connection={connection} />
     </div>
   )
 }

@@ -21647,14 +21647,14 @@
 
 	var _redux = __webpack_require__(165);
 
-	var _signin = __webpack_require__(190);
+	var _join = __webpack_require__(190);
 
-	var _signin2 = _interopRequireDefault(_signin);
+	var _join2 = _interopRequireDefault(_join);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var reducers = (0, _redux.combineReducers)({
-	  signin: _signin2.default
+	  join: _join2.default
 	});
 
 	exports.default = (0, _redux.createStore)(reducers);
@@ -21672,24 +21672,64 @@
 	});
 	exports.default = signin;
 
-	var _signin = __webpack_require__(191);
+	var _join = __webpack_require__(191);
 
 	function signin() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? {
+	    email: {
+	      emailIsEmpty: false,
+	      emailIsInvalid: false,
+	      emailIsUsed: false,
+	      email: ""
+	    },
+	    password: {
+	      passwordIsEmpty: false,
+	      passwordIsIvalid: false,
+	      password: ""
+	    }
+	  } : arguments[0];
 	  var action = arguments[1];
 
 	  switch (action.type) {
-	    case _signin.SIGNIN_USERNAME_INPUT:
+	    case _join.JOIN_EMAIL_CHANGE:
 	      return _extends({}, state, {
-	        username: action.username
+	        email: _extends({}, state.email, {
+	          emailIsEmpty: false,
+	          emailIsInvalid: false,
+	          email: action.email
+	        })
 	      });
-	    case _signin.SIGNIN_EMAIL_INPUT:
+	    case _join.JOIN_PASSWORD_CHANGE:
 	      return _extends({}, state, {
-	        email: action.email
+	        password: _extends({}, state.password, {
+	          passwordIsEmpty: false,
+	          passwordIsInvalid: false,
+	          password: action.password
+	        })
 	      });
-	    case _signin.SIGNIN_PASSWORD_INPUT:
+	    case _join.JOIN_EMPTY_EMAIL:
 	      return _extends({}, state, {
-	        password: action.password
+	        email: _extends({}, state.email, {
+	          emailIsEmpty: true
+	        })
+	      });
+	    case _join.JOIN_EMPTY_PASSWORD:
+	      return _extends({}, state, {
+	        password: _extends({}, state.password, {
+	          passwordIsEmpty: true
+	        })
+	      });
+	    case _join.JOIN_INVALID_EMAIL:
+	      return _extends({}, state, {
+	        email: _extends({}, state.email, {
+	          emailIsInvalid: true
+	        })
+	      });
+	    case _join.JOIN_INVALID_PASSWORD:
+	      return _extends({}, state, {
+	        password: _extends({}, state.password, {
+	          passwordIsInvalid: true
+	        })
 	      });
 	    default:
 	      return state;
@@ -21705,13 +21745,19 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var SIGNIN_USERNAME_INPUT = "SIGNIN_USERNAME_INPUT";
-	var SIGNIN_EMAIL_INPUT = "SIGNIN_EMAIL_INPUT";
-	var SIGNIN_PASSWORD_INPUT = "SIGNIN_PASSWORD_INPUT";
+	var JOIN_EMAIL_CHANGE = "JOIN_EMAIL_CHANGE";
+	var JOIN_PASSWORD_CHANGE = "JOIN_PASSWORD_CHANGE";
+	var JOIN_EMPTY_EMAIL = "JOIN_EMPTY_EMAIL";
+	var JOIN_EMPTY_PASSWORD = "JOIN_EMPTY_PASSWORD";
+	var JOIN_INVALID_EMAIL = "JOIN_INVALID_EMAIL";
+	var JOIN_INVALID_PASSWORD = "JOIN_INVALID_PASSWORD";
 
-	exports.SIGNIN_USERNAME_INPUT = SIGNIN_USERNAME_INPUT;
-	exports.SIGNIN_EMAIL_INPUT = SIGNIN_EMAIL_INPUT;
-	exports.SIGNIN_PASSWORD_INPUT = SIGNIN_PASSWORD_INPUT;
+	exports.JOIN_EMAIL_CHANGE = JOIN_EMAIL_CHANGE;
+	exports.JOIN_PASSWORD_CHANGE = JOIN_PASSWORD_CHANGE;
+	exports.JOIN_EMPTY_EMAIL = JOIN_EMPTY_EMAIL;
+	exports.JOIN_EMPTY_PASSWORD = JOIN_EMPTY_PASSWORD;
+	exports.JOIN_INVALID_EMAIL = JOIN_INVALID_EMAIL;
+	exports.JOIN_INVALID_PASSWORD = JOIN_INVALID_PASSWORD;
 
 /***/ },
 /* 192 */
@@ -21729,9 +21775,9 @@
 
 	var _reactRedux = __webpack_require__(159);
 
-	var _Signin = __webpack_require__(193);
+	var _Join = __webpack_require__(193);
 
-	var _Signin2 = _interopRequireDefault(_Signin);
+	var _Join2 = _interopRequireDefault(_Join);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21741,7 +21787,7 @@
 	  return _react2.default.createElement(
 	    "div",
 	    null,
-	    _react2.default.createElement(_Signin2.default, { connection: connection })
+	    _react2.default.createElement(_Join2.default, { connection: connection })
 	  );
 	}
 
@@ -21765,7 +21811,15 @@
 
 	var _reactRedux = __webpack_require__(159);
 
-	var _signin = __webpack_require__(194);
+	var _classnames = __webpack_require__(194);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _join = __webpack_require__(195);
+
+	var _join2 = _interopRequireDefault(_join);
+
+	var _join3 = __webpack_require__(199);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21777,48 +21831,59 @@
 
 	var errorDescriptions = ["unknown", "email is empty", "email is invalid", "password is empty", "password is invalid", "email is not available"];
 
-	var Signin = function (_Component) {
-	  _inherits(Signin, _Component);
+	var Join = function (_Component) {
+	  _inherits(Join, _Component);
 
-	  function Signin() {
-	    _classCallCheck(this, Signin);
+	  function Join() {
+	    _classCallCheck(this, Join);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Signin).apply(this, arguments));
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Join).apply(this, arguments));
 	  }
 
-	  _createClass(Signin, [{
+	  _createClass(Join, [{
 	    key: "componentDidMount",
 	    value: function componentDidMount() {
-	      var subscribe = this.props.connection.subscribe;
+	      var _props = this.props;
+	      var subscribe = _props.connection.subscribe;
+	      var onJoinResponse = _props.onJoinResponse;
 
-	      subscribe("signin.response", function (errors, user) {
-	        if (errors) {
-	          errors.forEach(function (error) {
-	            return console.log(errorDescriptions[error]);
-	          });
-	        } else {
-	          console.log(user);
-	        }
-	      });
+	      onJoinResponse(subscribe);
 	    }
 	  }, {
 	    key: "render",
 	    value: function render() {
-	      var _props = this.props;
-	      var send = _props.connection.send;
-	      var onEmailChange = _props.onEmailChange;
-	      var onPasswordChange = _props.onPasswordChange;
-	      var email = _props.email;
-	      var password = _props.password;
+	      var _props2 = this.props;
+	      var send = _props2.connection.send;
+	      var onEmailChange = _props2.onEmailChange;
+	      var onPasswordChange = _props2.onPasswordChange;
+	      var onJoin = _props2.onJoin;
+	      var _props2$email = _props2.email;
+	      var email = _props2$email.email;
+	      var emailIsEmpty = _props2$email.emailIsEmpty;
+	      var emailIsInvalid = _props2$email.emailIsInvalid;
+	      var _props2$password = _props2.password;
+	      var password = _props2$password.password;
+	      var passwordIsEmpty = _props2$password.passwordIsEmpty;
+	      var passwordIsInvalid = _props2$password.passwordIsInvalid;
 
+	      var emailClasses = (0, _classnames2.default)("email", {
+	        empty: emailIsEmpty,
+	        invalid: emailIsInvalid
+	      });
+	      var passwordClasses = (0, _classnames2.default)("password", {
+	        empty: passwordIsEmpty,
+	        invalid: passwordIsInvalid
+	      });
+	      var joinButtonDisable = !email || !password || emailIsEmpty || emailIsInvalid || passwordIsEmpty || passwordIsInvalid;
 	      return _react2.default.createElement(
 	        "aside",
 	        null,
 	        _react2.default.createElement(
 	          "form",
 	          {
+	            className: "join",
 	            onSubmit: function onSubmit(event) {
-	              event.preventDefault();
+	              return event.preventDefault();
 	            },
 	            autoComplete: "off",
 	            noValidate: true },
@@ -21826,6 +21891,7 @@
 	            "div",
 	            null,
 	            _react2.default.createElement("input", {
+	              className: emailClasses,
 	              type: "email",
 	              placeholder: "Email",
 	              onChange: onEmailChange,
@@ -21836,6 +21902,7 @@
 	            "div",
 	            null,
 	            _react2.default.createElement("input", {
+	              className: passwordClasses,
 	              type: "password",
 	              placeholder: "Password",
 	              onChange: onPasswordChange,
@@ -21847,16 +21914,10 @@
 	            null,
 	            _react2.default.createElement(
 	              "button",
-	              null,
-	              "Login"
-	            ),
-	            _react2.default.createElement(
-	              "button",
 	              {
-	                onClick: function onClick() {
-	                  send("signin", { email: email, password: password });
-	                } },
-	              "Signin"
+	                onClick: onJoin.bind(null, { join: send.bind(null, "join"), email: email, password: password }),
+	                disabled: joinButtonDisable },
+	              "Join"
 	            )
 	          )
 	        )
@@ -21864,34 +21925,508 @@
 	    }
 	  }]);
 
-	  return Signin;
+	  return Join;
 	}(_react.Component);
 
 	function mapStateToProps(_ref) {
-	  var signin = _ref.signin;
-
-	  return signin;
+	  var join = _ref.join;
+	  return join;
 	}
 
-	function mapDispatchToProps(dispatch) {
+	var EMAIL_VALIDATOR = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	var PASSWORD_VALIDATOR = /^.*(?=.{8,32})(?=.*[a-zA-Z]).*$/;
+
+	function validation() {
+	  for (var _len = arguments.length, results = Array(_len), _key = 0; _key < _len; _key++) {
+	    results[_key] = arguments[_key];
+	  }
+
+	  var callback = results.pop();
+	  var returns = results.filter(function (result) {
+	    return result;
+	  });
+	  if (returns.length) {
+	    callback(returns);
+	  } else {
+	    callback(null);
+	  }
+	}
+
+	function emailValidator(email) {
+	  if (email) {
+	    if (EMAIL_VALIDATOR.test(email)) {
+	      return;
+	    } else {
+	      return 2;
+	    }
+	  } else {
+	    return 1;
+	  }
+	}
+
+	function passwordValidator(password) {
+	  if (password) {
+	    if (PASSWORD_VALIDATOR.test(password)) {
+	      return;
+	    } else {
+	      return 4;
+	    }
+	  } else {
+	    return 3;
+	  }
+	}
+
+	function mapDispatchToProps(dispatch, state) {
 	  return {
 	    onEmailChange: function onEmailChange(_ref2) {
 	      var value = _ref2.target.value;
 
-	      dispatch((0, _signin.signinEmail)(value));
+	      dispatch((0, _join3.joinEmailChange)(value));
 	    },
 	    onPasswordChange: function onPasswordChange(_ref3) {
 	      var value = _ref3.target.value;
 
-	      dispatch((0, _signin.signinPassword)(value));
+	      dispatch((0, _join3.joinPasswordChange)(value));
+	    },
+	    onJoin: function onJoin(_ref4) {
+	      var join = _ref4.join;
+	      var email = _ref4.email;
+	      var password = _ref4.password;
+
+	      validation(emailValidator(email), passwordValidator(password), function (errors) {
+	        if (errors) {
+	          if (errors.includes(1)) dispatch((0, _join3.joinEmptyEmail)());
+	          if (errors.includes(2)) dispatch((0, _join3.joinInvalidEmail)());
+	          if (errors.includes(3)) dispatch((0, _join3.joinEmptyPassword)());
+	          if (errors.includes(4)) dispatch((0, _join3.joinInvalidPassword)());
+	        } else {
+	          join({ email: email, password: password });
+	        }
+	      });
+	    },
+	    onJoinResponse: function onJoinResponse(subscribe) {
+	      subscribe("join", function (errors, user) {
+	        if (errors) {
+	          if (errors.includes(1)) dispatch((0, _join3.joinEmptyEmail)());
+	          if (errors.includes(2)) dispatch((0, _join3.joinInvalidEmail)());
+	          if (errors.includes(3)) dispatch((0, _join3.joinEmptyPassword)());
+	          if (errors.includes(4)) dispatch((0, _join3.joinInvalidPassword)());
+	        } else {
+	          console.log(user);
+	        }
+	      });
 	    }
 	  };
 	}
 
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Signin);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Join);
 
 /***/ },
 /* 194 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	  Copyright (c) 2016 Jed Watson.
+	  Licensed under the MIT License (MIT), see
+	  http://jedwatson.github.io/classnames
+	*/
+	/* global define */
+
+	(function () {
+		'use strict';
+
+		var hasOwn = {}.hasOwnProperty;
+
+		function classNames () {
+			var classes = [];
+
+			for (var i = 0; i < arguments.length; i++) {
+				var arg = arguments[i];
+				if (!arg) continue;
+
+				var argType = typeof arg;
+
+				if (argType === 'string' || argType === 'number') {
+					classes.push(arg);
+				} else if (Array.isArray(arg)) {
+					classes.push(classNames.apply(null, arg));
+				} else if (argType === 'object') {
+					for (var key in arg) {
+						if (hasOwn.call(arg, key) && arg[key]) {
+							classes.push(key);
+						}
+					}
+				}
+			}
+
+			return classes.join(' ');
+		}
+
+		if (typeof module !== 'undefined' && module.exports) {
+			module.exports = classNames;
+		} else if (true) {
+			// register as 'classnames', consistent with npm package name
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+				return classNames;
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		} else {
+			window.classNames = classNames;
+		}
+	}());
+
+
+/***/ },
+/* 195 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(196);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(198)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./join.less", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./join.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 196 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(197)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".join input[type=\"email\"],\n.join input[type=\"password\"] {\n  border-size: 1px;\n  border-style: solid;\n  border-color: lightgray;\n}\n.join input[type=\"email\"].empty,\n.join input[type=\"password\"].empty {\n  border-color: #ffa500;\n}\n.join input[type=\"email\"].invalid,\n.join input[type=\"password\"].invalid {\n  border-color: #ff4c4c;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 197 */
+/***/ function(module, exports) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	// css base code, injected by the css-loader
+	module.exports = function() {
+		var list = [];
+
+		// return the list of modules as css string
+		list.toString = function toString() {
+			var result = [];
+			for(var i = 0; i < this.length; i++) {
+				var item = this[i];
+				if(item[2]) {
+					result.push("@media " + item[2] + "{" + item[1] + "}");
+				} else {
+					result.push(item[1]);
+				}
+			}
+			return result.join("");
+		};
+
+		// import a list of modules into the list
+		list.i = function(modules, mediaQuery) {
+			if(typeof modules === "string")
+				modules = [[null, modules, ""]];
+			var alreadyImportedModules = {};
+			for(var i = 0; i < this.length; i++) {
+				var id = this[i][0];
+				if(typeof id === "number")
+					alreadyImportedModules[id] = true;
+			}
+			for(i = 0; i < modules.length; i++) {
+				var item = modules[i];
+				// skip already imported module
+				// this implementation is not 100% perfect for weird media query combinations
+				//  when a module is imported multiple times with different media queries.
+				//  I hope this will never occur (Hey this way we have smaller bundles)
+				if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+					if(mediaQuery && !item[2]) {
+						item[2] = mediaQuery;
+					} else if(mediaQuery) {
+						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+					}
+					list.push(item);
+				}
+			}
+		};
+		return list;
+	};
+
+
+/***/ },
+/* 198 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	var stylesInDom = {},
+		memoize = function(fn) {
+			var memo;
+			return function () {
+				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+				return memo;
+			};
+		},
+		isOldIE = memoize(function() {
+			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+		}),
+		getHeadElement = memoize(function () {
+			return document.head || document.getElementsByTagName("head")[0];
+		}),
+		singletonElement = null,
+		singletonCounter = 0,
+		styleElementsInsertedAtTop = [];
+
+	module.exports = function(list, options) {
+		if(false) {
+			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+		}
+
+		options = options || {};
+		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+		// tags it will allow on a page
+		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
+
+		// By default, add <style> tags to the bottom of <head>.
+		if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
+
+		var styles = listToStyles(list);
+		addStylesToDom(styles, options);
+
+		return function update(newList) {
+			var mayRemove = [];
+			for(var i = 0; i < styles.length; i++) {
+				var item = styles[i];
+				var domStyle = stylesInDom[item.id];
+				domStyle.refs--;
+				mayRemove.push(domStyle);
+			}
+			if(newList) {
+				var newStyles = listToStyles(newList);
+				addStylesToDom(newStyles, options);
+			}
+			for(var i = 0; i < mayRemove.length; i++) {
+				var domStyle = mayRemove[i];
+				if(domStyle.refs === 0) {
+					for(var j = 0; j < domStyle.parts.length; j++)
+						domStyle.parts[j]();
+					delete stylesInDom[domStyle.id];
+				}
+			}
+		};
+	}
+
+	function addStylesToDom(styles, options) {
+		for(var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+			if(domStyle) {
+				domStyle.refs++;
+				for(var j = 0; j < domStyle.parts.length; j++) {
+					domStyle.parts[j](item.parts[j]);
+				}
+				for(; j < item.parts.length; j++) {
+					domStyle.parts.push(addStyle(item.parts[j], options));
+				}
+			} else {
+				var parts = [];
+				for(var j = 0; j < item.parts.length; j++) {
+					parts.push(addStyle(item.parts[j], options));
+				}
+				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+			}
+		}
+	}
+
+	function listToStyles(list) {
+		var styles = [];
+		var newStyles = {};
+		for(var i = 0; i < list.length; i++) {
+			var item = list[i];
+			var id = item[0];
+			var css = item[1];
+			var media = item[2];
+			var sourceMap = item[3];
+			var part = {css: css, media: media, sourceMap: sourceMap};
+			if(!newStyles[id])
+				styles.push(newStyles[id] = {id: id, parts: [part]});
+			else
+				newStyles[id].parts.push(part);
+		}
+		return styles;
+	}
+
+	function insertStyleElement(options, styleElement) {
+		var head = getHeadElement();
+		var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
+		if (options.insertAt === "top") {
+			if(!lastStyleElementInsertedAtTop) {
+				head.insertBefore(styleElement, head.firstChild);
+			} else if(lastStyleElementInsertedAtTop.nextSibling) {
+				head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
+			} else {
+				head.appendChild(styleElement);
+			}
+			styleElementsInsertedAtTop.push(styleElement);
+		} else if (options.insertAt === "bottom") {
+			head.appendChild(styleElement);
+		} else {
+			throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+		}
+	}
+
+	function removeStyleElement(styleElement) {
+		styleElement.parentNode.removeChild(styleElement);
+		var idx = styleElementsInsertedAtTop.indexOf(styleElement);
+		if(idx >= 0) {
+			styleElementsInsertedAtTop.splice(idx, 1);
+		}
+	}
+
+	function createStyleElement(options) {
+		var styleElement = document.createElement("style");
+		styleElement.type = "text/css";
+		insertStyleElement(options, styleElement);
+		return styleElement;
+	}
+
+	function createLinkElement(options) {
+		var linkElement = document.createElement("link");
+		linkElement.rel = "stylesheet";
+		insertStyleElement(options, linkElement);
+		return linkElement;
+	}
+
+	function addStyle(obj, options) {
+		var styleElement, update, remove;
+
+		if (options.singleton) {
+			var styleIndex = singletonCounter++;
+			styleElement = singletonElement || (singletonElement = createStyleElement(options));
+			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
+			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
+		} else if(obj.sourceMap &&
+			typeof URL === "function" &&
+			typeof URL.createObjectURL === "function" &&
+			typeof URL.revokeObjectURL === "function" &&
+			typeof Blob === "function" &&
+			typeof btoa === "function") {
+			styleElement = createLinkElement(options);
+			update = updateLink.bind(null, styleElement);
+			remove = function() {
+				removeStyleElement(styleElement);
+				if(styleElement.href)
+					URL.revokeObjectURL(styleElement.href);
+			};
+		} else {
+			styleElement = createStyleElement(options);
+			update = applyToTag.bind(null, styleElement);
+			remove = function() {
+				removeStyleElement(styleElement);
+			};
+		}
+
+		update(obj);
+
+		return function updateStyle(newObj) {
+			if(newObj) {
+				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
+					return;
+				update(obj = newObj);
+			} else {
+				remove();
+			}
+		};
+	}
+
+	var replaceText = (function () {
+		var textStore = [];
+
+		return function (index, replacement) {
+			textStore[index] = replacement;
+			return textStore.filter(Boolean).join('\n');
+		};
+	})();
+
+	function applyToSingletonTag(styleElement, index, remove, obj) {
+		var css = remove ? "" : obj.css;
+
+		if (styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = replaceText(index, css);
+		} else {
+			var cssNode = document.createTextNode(css);
+			var childNodes = styleElement.childNodes;
+			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
+			if (childNodes.length) {
+				styleElement.insertBefore(cssNode, childNodes[index]);
+			} else {
+				styleElement.appendChild(cssNode);
+			}
+		}
+	}
+
+	function applyToTag(styleElement, obj) {
+		var css = obj.css;
+		var media = obj.media;
+		var sourceMap = obj.sourceMap;
+
+		if(media) {
+			styleElement.setAttribute("media", media)
+		}
+
+		if(styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = css;
+		} else {
+			while(styleElement.firstChild) {
+				styleElement.removeChild(styleElement.firstChild);
+			}
+			styleElement.appendChild(document.createTextNode(css));
+		}
+	}
+
+	function updateLink(linkElement, obj) {
+		var css = obj.css;
+		var media = obj.media;
+		var sourceMap = obj.sourceMap;
+
+		if(sourceMap) {
+			// http://stackoverflow.com/a/26603875
+			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+		}
+
+		var blob = new Blob([css], { type: "text/css" });
+
+		var oldSrc = linkElement.href;
+
+		linkElement.href = URL.createObjectURL(blob);
+
+		if(oldSrc)
+			URL.revokeObjectURL(oldSrc);
+	}
+
+
+/***/ },
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21899,34 +22434,54 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.signinPassword = exports.signinEmail = exports.signinUsername = undefined;
+	exports.joinInvalidPassword = exports.joinInvalidEmail = exports.joinEmptyPassword = exports.joinEmptyEmail = exports.joinPasswordChange = exports.joinEmailChange = undefined;
 
-	var _signin = __webpack_require__(191);
+	var _join = __webpack_require__(191);
 
-	function signinUsername(username) {
+	function joinEmailChange(email) {
 	  return {
-	    type: _signin.SIGNIN_USERNAME_INPUT,
-	    username: username
-	  };
-	}
-
-	function signinEmail(email) {
-	  return {
-	    type: _signin.SIGNIN_EMAIL_INPUT,
+	    type: _join.JOIN_EMAIL_CHANGE,
 	    email: email
 	  };
 	}
 
-	function signinPassword(password) {
+	function joinPasswordChange(password) {
 	  return {
-	    type: _signin.SIGNIN_PASSWORD_INPUT,
+	    type: _join.JOIN_PASSWORD_CHANGE,
 	    password: password
 	  };
 	}
 
-	exports.signinUsername = signinUsername;
-	exports.signinEmail = signinEmail;
-	exports.signinPassword = signinPassword;
+	function joinEmptyEmail() {
+	  return {
+	    type: _join.JOIN_EMPTY_EMAIL
+	  };
+	}
+
+	function joinEmptyPassword() {
+	  return {
+	    type: _join.JOIN_EMPTY_PASSWORD
+	  };
+	}
+
+	function joinInvalidEmail() {
+	  return {
+	    type: _join.JOIN_INVALID_EMAIL
+	  };
+	}
+
+	function joinInvalidPassword() {
+	  return {
+	    type: _join.JOIN_INVALID_PASSWORD
+	  };
+	}
+
+	exports.joinEmailChange = joinEmailChange;
+	exports.joinPasswordChange = joinPasswordChange;
+	exports.joinEmptyEmail = joinEmptyEmail;
+	exports.joinEmptyPassword = joinEmptyPassword;
+	exports.joinInvalidEmail = joinInvalidEmail;
+	exports.joinInvalidPassword = joinInvalidPassword;
 
 /***/ }
 /******/ ]);

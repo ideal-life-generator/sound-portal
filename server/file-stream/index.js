@@ -4,6 +4,8 @@ import { join } from "path"
 import { parse as parseUrl } from "url"
 import { parse as parseQuery } from "querystring"
 
+import { totalmem, freemem } from "os"
+
 function mime (path) {
   const type = path.slice(path.lastIndexOf(".")+1)
   for (const mime in mimedb) {

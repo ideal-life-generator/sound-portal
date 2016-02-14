@@ -1,14 +1,12 @@
-# sound-portal
-
-## Technologies stack:
-
-* [pm2](https://www.npmjs.com/package/pm2) - main server process platform;
-* [node.js](https://nodejs.org/en/) - server platform;
-* [ws](https://www.npmjs.com/package/ws) - socket plugin;
-* [react](https://facebook.github.io/react/) and [redux](https://facebook.github.io/react/) - client side platform;
-* [samsarajs](https://www.npmjs.com/package/samsarajs) - html structure and animations;
-* [webpack](http://webpack.github.io/docs/what-is-webpack.html) - best package manager;
-* [babel](https://babeljs.io/)([react](https://www.npmjs.com/package/babel-preset-react), [es2015](https://www.npmjs.com/package/babel-preset-es2015), [stage-2](https://www.npmjs.com/package/babel-preset-stage-2)) - es6, es7 new feature;
-* [airbnb](https://github.com/airbnb/javascript) - JavaScript structure;
-* [karma](https://www.npmjs.com/package/karma) - client side tests mamager;
-* [mocha](http://mochajs.org/) - server side test platform;
+* [node.js](https://nodejs.org)
+* [airbnb](https://github.com/airbnb)
+* [ws](https://www.npmjs.com/package/ws)
+* [react](https://www.npmjs.com/package/react)
+* [redux](https://www.npmjs.com/package/redux)
+* [webpack](https://www.npmjs.com/package/webpack)
+* [babel](https://www.npmjs.com/package/babel)
+* [babel-preset-react](https://www.npmjs.com/package/babel-preset-react)
+* [babel-preset-es2015](https://www.npmjs.com/package/babel-preset-es2015)
+* [babel-preset-stage-2](https://www.npmjs.com/package/babel-preset-stage-2)
+* [mocha](https://www.npmjs.com/package/mocha)
+* [pm2](https://www.npmjs.com/package/pm2)

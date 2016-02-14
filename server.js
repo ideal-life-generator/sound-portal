@@ -30,11 +30,11 @@ const httpServer = createServer(({ url }, res) => {
 })
 
 httpServer.listen(HTTP_SERVER_PORT, HTTP_SERVER_PATH, () => {
-  console.info(`http server is listening on ${HTTP_SERVER_PATH}:${HTTP_SERVER_PORT}.`)
+  console.info(`http server is listen on ${HTTP_SERVER_PATH}:${HTTP_SERVER_PORT}.`)
 })
 
 
-import signin from "./server/api/signin"
+import join from "./server/api/join"
 
 pg.connect(DB_SERVER_PATH, (error, db, done) => {
   if (error) { throw error }
@@ -46,10 +46,14 @@ pg.connect(DB_SERVER_PATH, (error, db, done) => {
     })
     const { connections, single, session, exceptSingle, exceptSession, all, subscribe } = sessions(wsServer)
     connections(({ current, currentSession, exceptCurrent, exceptCurrentSession, socketId, socketSessionId, socket }) => {
-      signin(db, subscribe, current)
+      join(db, subscribe, current)
     })
   }
 })
+
+process.on("uncaughtException", function(error) {
+  console.log(error)
+});
 
 
 
