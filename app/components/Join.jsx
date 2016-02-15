@@ -1,17 +1,25 @@
 import React, { Component, PropTypes } from "react"
 import { connect } from "react-redux"
 import classNames from "classnames"
-
-import join from "styles/join.less"
-
 import {
   joinEmailChange,
   joinPasswordChange,
   joinEmptyEmail,
   joinEmptyPassword,
   joinInvalidEmail,
-  joinInvalidPassword
+  joinInvalidPassword,
+  joinNotAvailableEmail
 } from "actions/join"
+import {
+  send,
+  subscribe
+} from "connection"
+import {
+  validation,
+  emailValidator,
+  passwordValidator
+} from "utils/validators"
+import join from "styles/join.less"
 
 const errorDescriptions = [
   "unknown",
@@ -24,21 +32,21 @@ const errorDescriptions = [
 
 class Join extends Component {
   componentDidMount () {
-    const { connection: { subscribe }, onJoinResponse } = this.props
-    onJoinResponse(subscribe)
+    const { onMount } = this.props
+    onMount()
   }
   render () {
     const {
-      connection: { send },
       onEmailChange,
       onPasswordChange,
       onJoin,
-      email: {  email, emailIsEmpty, emailIsInvalid },
+      email: {  email, emailIsEmpty, emailIsInvalid, emailIsNotAvailable },
       password: { password, passwordIsEmpty, passwordIsInvalid },
     } = this.props
     const emailClasses = classNames("email", {
       empty: emailIsEmpty,
-      invalid: emailIsInvalid
+      invalid: emailIsInvalid,
+      "not-available": emailIsNotAvailable
     })
     const passwordClasses = classNames("password", {
       empty: passwordIsEmpty,
@@ -57,7 +65,9 @@ class Join extends Component {
               className={emailClasses}
               type="email"
               placeholder="Email"
-              onChange={onEmailChange}
+              onChange={({ target: { value: email } }) => {
+                onEmailChange(email)
+              }}
               defaultValue={email} />
             {email}
           </div>
@@ -66,13 +76,17 @@ class Join extends Component {
               className={passwordClasses}
               type="password"
               placeholder="Password"
-              onChange={onPasswordChange}
+              onChange={({ target: { value: password } }) => {
+                onPasswordChange(password)
+              }}
               defaultValue={password} />
             {password}
           </div>
           <div>
             <button
-              onClick={onJoin.bind(null, { join: send.bind(null, "join"), email, password })}
+              onClick={() => {
+                onJoin({ email, password })
+              }}
               disabled={joinButtonDisable}>
               Join
             </button>
@@ -83,47 +97,41 @@ class Join extends Component {
   }
 }
 
-function mapStateToProps ({ join }) { return join }
-
-const EMAIL_VALIDATOR = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-const PASSWORD_VALIDATOR = /^.*(?=.{8,32})(?=.*[a-zA-Z]).*$/
-
-function validation (...results) {
-  const callback = results.pop()
-  const returns = results.filter(result => result)
-  if (returns.length) {
-    callback(returns)
-  }
-  else {
-    callback(null)
-  }
+function mapStateToProps ({ join }, ownProps) {
+  console.log(ownProps)
+  return join
 }
 
-function emailValidator (email) {
-  if (email) {
-    if (EMAIL_VALIDATOR.test(email)) { return }
-    else { return 2 }
-  }
-  else { return 1 }
-}
-
-function passwordValidator (password) {
-  if (password) {
-    if (PASSWORD_VALIDATOR.test(password)) { return }
-    else { return 4 }
-  }
-  else { return 3 }
-}
-
-function mapDispatchToProps (dispatch, state) {
+function mapDispatchToProps (dispatch) {
   return {
-    onEmailChange ({ target: { value } }) {
-      dispatch(joinEmailChange(value))
+    onMount () {
+      subscribe("join.check-email", (errors) => {
+        if (errors && errors.includes(5)) dispatch(joinNotAvailableEmail())
+      })
+      subscribe("join", (errors, user) => {
+        if (errors) {
+          if (errors.includes(1)) dispatch(joinEmptyEmail())
+          if (errors.includes(2)) dispatch(joinInvalidEmail())
+          if (errors.includes(3)) dispatch(joinEmptyPassword())
+          if (errors.includes(4)) dispatch(joinInvalidPassword())
+          if (errors.includes(5)) dispatch(joinNotAvailableEmail())
+        }
+        else {
+          console.log(user)
+        }
+      })
     },
-    onPasswordChange ({ target: { value } }) {
-      dispatch(joinPasswordChange(value))
+    onEmailChange (email, ownProps) {
+      console.log(ownProps)
+      validation(emailValidator(email), (errors) => {
+        if (!errors) send("join.check-email", { email })
+      })
+      dispatch(joinEmailChange(email))
     },
-    onJoin ({ join, email, password }) {
+    onPasswordChange (password) {
+      dispatch(joinPasswordChange(password))
+    },
+    onJoin ({ email, password }) {
       validation(emailValidator(email), passwordValidator(password), (errors) => {
         if (errors) {
           if (errors.includes(1)) dispatch(joinEmptyEmail())
@@ -132,20 +140,7 @@ function mapDispatchToProps (dispatch, state) {
           if (errors.includes(4)) dispatch(joinInvalidPassword())
         }
         else {
-          join({ email, password })
-        }
-      })
-    },
-    onJoinResponse (subscribe) {
-      subscribe("join", (errors, user) => {
-        if (errors) {
-          if (errors.includes(1)) dispatch(joinEmptyEmail())
-          if (errors.includes(2)) dispatch(joinInvalidEmail())
-          if (errors.includes(3)) dispatch(joinEmptyPassword())
-          if (errors.includes(4)) dispatch(joinInvalidPassword())
-        }
-        else {
-          console.log(user)
+          send("join", { email, password })
         }
       })
     }

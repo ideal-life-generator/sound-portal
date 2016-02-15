@@ -4,7 +4,8 @@ import {
   JOIN_EMPTY_EMAIL,
   JOIN_EMPTY_PASSWORD,
   JOIN_INVALID_EMAIL,
-  JOIN_INVALID_PASSWORD
+  JOIN_INVALID_PASSWORD,
+  JOIN_NOT_AVAILABLE_EMAIL
 } from "constants/join"
 
 function joinEmailChange (email) {
@@ -45,11 +46,18 @@ function joinInvalidPassword () {
   }
 }
 
+function joinNotAvailableEmail () {
+  return {
+    type: JOIN_NOT_AVAILABLE_EMAIL
+  }
+}
+
 export {
-  joinEmailChange,
+  joinEmailChange,    
   joinPasswordChange,
   joinEmptyEmail,
   joinEmptyPassword,
   joinInvalidEmail,
-  joinInvalidPassword
+  joinInvalidPassword,
+  joinNotAvailableEmail
 }

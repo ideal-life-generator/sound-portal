@@ -1,14 +1,10 @@
 import React from "react"
-import { connect } from "react-redux"
-
 import Join from "components/Join.jsx"
 
-function Main ({ connection }) {
+export default function Main () {
   return (
     <div>
-      <Join connection={connection} />
+      <Join someProp={"hi"} />
     </div>
   )
 }
-
-export default Main

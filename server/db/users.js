@@ -19,9 +19,9 @@ import validation from "./../validation"
 import passwordValidator from "./../validators/password"
 import emailValidator from "./../validators/email"
 
-function exists (db, email, callback) {
-  validation(emailValidator(email), (err) => {
-    if (err) { callback(err) }
+function exists (db, { email }, callback) {
+  validation(emailValidator(email), (errors) => {
+    if (errors) { callback(errors) }
     else {
       db.query(`
         SELECT EXISTS(SELECT 1 FROM users WHERE email=$1);
@@ -47,8 +47,8 @@ function exists (db, email, callback) {
 }
 
 function insert (db, { email, password, token }, callback) {
-  validation(emailValidator(email), passwordValidator(password), (err) => {
-    if (err) { callback(err) }
+  validation(emailValidator(email), passwordValidator(password), (errors) => {
+    if (errors) { callback(errors) }
     else {
       const token = randomBytes(16, "base64").toString("base64")
       db.query(`

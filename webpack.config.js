@@ -3,11 +3,11 @@ var path = require("path");
 
 module.exports = [
   {
+    target: "web",
     context: path.join(__dirname, "app"),
     entry: "./index.jsx",
     output: {
       path: path.join(__dirname, "app/build"),
-      publicPath: "build/",
       filename: "bundle.js"
     },
     module: {
@@ -44,7 +44,7 @@ module.exports = [
     },
     resolve: {
       root: path.resolve("./app"),
-      extensions: [ "", ".js", ".less" ]
+      extensions: [ "", ".js", ".jsx", ".less" ]
     }
   }
 ];

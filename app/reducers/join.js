@@ -4,14 +4,15 @@ import {
   JOIN_EMPTY_EMAIL,
   JOIN_EMPTY_PASSWORD,
   JOIN_INVALID_EMAIL,
-  JOIN_INVALID_PASSWORD
+  JOIN_INVALID_PASSWORD,
+  JOIN_NOT_AVAILABLE_EMAIL
 } from "constants/join"
 
 export default function signin (state = {
   email: {
     emailIsEmpty: false,
     emailIsInvalid: false,
-    emailIsUsed: false,
+    emailIsNotAvailable: false,
     email: ""
   },
   password: {
@@ -28,6 +29,7 @@ export default function signin (state = {
           ...state.email,
           emailIsEmpty: false,
           emailIsInvalid: false,
+          emailIsNotAvailable: false,
           email: action.email
         }
       }
@@ -71,6 +73,14 @@ export default function signin (state = {
         password: {
           ...state.password,
           passwordIsInvalid: true
+        }
+      }
+    case JOIN_NOT_AVAILABLE_EMAIL:
+      return {
+        ...state,
+        email: {
+          ...state.email,
+          emailIsNotAvailable: true
         }
       }
     default:
