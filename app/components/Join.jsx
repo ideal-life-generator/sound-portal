@@ -8,7 +8,9 @@ import {
   joinEmptyPassword,
   joinInvalidEmail,
   joinInvalidPassword,
-  joinNotAvailableEmail
+  joinNotAvailableEmail,
+  joinShow,
+  joinHide
 } from "actions/join"
 import {
   send,
@@ -37,12 +39,42 @@ class Join extends Component {
   }
   render () {
     const {
+      onShow,
+      onHide,
       onEmailChange,
       onPasswordChange,
       onJoin,
+      isShowed,
       email: {  email, emailIsEmpty, emailIsInvalid, emailIsNotAvailable },
       password: { password, passwordIsEmpty, passwordIsInvalid },
     } = this.props
+    let form
+    let close
+    if (isShowed) {
+      close = 
+        <button onClick={() => {
+          onHide()
+        }}>
+          Close
+        </button>
+      form = 
+        <form
+          onSubmit={event => event.preventDefault()}
+          autoComplete="off"
+          noValidate>
+          <div>
+            <input
+              className={emailClasses}
+              type="text"
+              placeholder="Username"
+              onChange={({ target: { value: username } }) => {
+                onEmailChange(username)
+              }}
+              defaultValue={email} />
+            {email}
+          </div>
+        </form>
+    }
     const emailClasses = classNames("email", {
       empty: emailIsEmpty,
       invalid: emailIsInvalid,
@@ -54,53 +86,20 @@ class Join extends Component {
     })
     const joinButtonDisable = !email || !password || emailIsEmpty || emailIsInvalid || passwordIsEmpty || passwordIsInvalid
     return (
-      <aside>
-        <form
-          className="join"
-          onSubmit={event => event.preventDefault()}
-          autoComplete="off"
-          noValidate>
-          <div>
-            <input
-              className={emailClasses}
-              type="email"
-              placeholder="Email"
-              onChange={({ target: { value: email } }) => {
-                onEmailChange(email)
-              }}
-              defaultValue={email} />
-            {email}
-          </div>
-          <div>
-            <input
-              className={passwordClasses}
-              type="password"
-              placeholder="Password"
-              onChange={({ target: { value: password } }) => {
-                onPasswordChange(password)
-              }}
-              defaultValue={password} />
-            {password}
-          </div>
-          <div>
-            <button
-              onClick={() => {
-                onJoin({ email, password })
-              }}
-              disabled={joinButtonDisable}>
-              Join
-            </button>
-          </div>
-        </form>
+      <aside className="join">
+        {close}
+        <button className="join-button" onClick={() => {
+          onShow()
+        }}>
+          Join
+        </button>
+        {form}
       </aside>
     )
   }
 }
 
-function mapStateToProps ({ join }, ownProps) {
-  console.log(ownProps)
-  return join
-}
+function mapStateToProps ({ join }) { return join }
 
 function mapDispatchToProps (dispatch) {
   return {
@@ -120,6 +119,12 @@ function mapDispatchToProps (dispatch) {
           console.log(user)
         }
       })
+    },
+    onShow () {
+      dispatch(joinShow())
+    },
+    onHide () {
+      dispatch(joinHide())
     },
     onEmailChange (email, ownProps) {
       console.log(ownProps)

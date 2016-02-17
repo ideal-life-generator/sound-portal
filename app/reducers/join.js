@@ -5,10 +5,13 @@ import {
   JOIN_EMPTY_PASSWORD,
   JOIN_INVALID_EMAIL,
   JOIN_INVALID_PASSWORD,
-  JOIN_NOT_AVAILABLE_EMAIL
+  JOIN_NOT_AVAILABLE_EMAIL,
+  JOIN_SHOW,
+  JOIN_HIDE
 } from "constants/join"
 
 export default function signin (state = {
+  isShowed: false,
   email: {
     emailIsEmpty: false,
     emailIsInvalid: false,
@@ -22,6 +25,16 @@ export default function signin (state = {
   }
 }, action) {
   switch (action.type) {
+    case JOIN_SHOW:
+      return {
+        ...state,
+        isShowed: true
+      }
+    case JOIN_HIDE:
+      return {
+        ...state,
+        isShowed: false
+      }
     case JOIN_EMAIL_CHANGE:
       return {
         ...state,

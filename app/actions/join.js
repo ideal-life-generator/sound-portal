@@ -5,7 +5,9 @@ import {
   JOIN_EMPTY_PASSWORD,
   JOIN_INVALID_EMAIL,
   JOIN_INVALID_PASSWORD,
-  JOIN_NOT_AVAILABLE_EMAIL
+  JOIN_NOT_AVAILABLE_EMAIL,
+  JOIN_SHOW,
+  JOIN_HIDE
 } from "constants/join"
 
 function joinEmailChange (email) {
@@ -52,6 +54,18 @@ function joinNotAvailableEmail () {
   }
 }
 
+function joinShow () {
+  return {
+    type: JOIN_SHOW
+  }
+}
+
+function joinHide () {
+  return {
+    type: JOIN_HIDE
+  }
+}
+
 export {
   joinEmailChange,    
   joinPasswordChange,
@@ -59,5 +73,7 @@ export {
   joinEmptyPassword,
   joinInvalidEmail,
   joinInvalidPassword,
-  joinNotAvailableEmail
+  joinNotAvailableEmail,
+  joinShow,
+  joinHide
 }

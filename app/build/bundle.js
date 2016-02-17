@@ -21058,6 +21058,7 @@
 
 	function signin() {
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? {
+	    isShowed: false,
 	    email: {
 	      emailIsEmpty: false,
 	      emailIsInvalid: false,
@@ -21073,6 +21074,14 @@
 	  var action = arguments[1];
 
 	  switch (action.type) {
+	    case _join.JOIN_SHOW:
+	      return _extends({}, state, {
+	        isShowed: true
+	      });
+	    case _join.JOIN_HIDE:
+	      return _extends({}, state, {
+	        isShowed: false
+	      });
 	    case _join.JOIN_EMAIL_CHANGE:
 	      return _extends({}, state, {
 	        email: _extends({}, state.email, {
@@ -21141,6 +21150,8 @@
 	var JOIN_INVALID_EMAIL = "JOIN_INVALID_EMAIL";
 	var JOIN_INVALID_PASSWORD = "JOIN_INVALID_PASSWORD";
 	var JOIN_NOT_AVAILABLE_EMAIL = "JOIN_NOT_AVAILABLE_EMAIL";
+	var JOIN_SHOW = "JOIN_SHOW";
+	var JOIN_HIDE = "JOIN_HIDE";
 
 	exports.JOIN_EMAIL_CHANGE = JOIN_EMAIL_CHANGE;
 	exports.JOIN_PASSWORD_CHANGE = JOIN_PASSWORD_CHANGE;
@@ -21149,6 +21160,8 @@
 	exports.JOIN_INVALID_EMAIL = JOIN_INVALID_EMAIL;
 	exports.JOIN_INVALID_PASSWORD = JOIN_INVALID_PASSWORD;
 	exports.JOIN_NOT_AVAILABLE_EMAIL = JOIN_NOT_AVAILABLE_EMAIL;
+	exports.JOIN_SHOW = JOIN_SHOW;
+	exports.JOIN_HIDE = JOIN_HIDE;
 
 /***/ },
 /* 181 */
@@ -21241,9 +21254,12 @@
 	    key: "render",
 	    value: function render() {
 	      var _props = this.props;
+	      var onShow = _props.onShow;
+	      var onHide = _props.onHide;
 	      var onEmailChange = _props.onEmailChange;
 	      var onPasswordChange = _props.onPasswordChange;
 	      var onJoin = _props.onJoin;
+	      var isShowed = _props.isShowed;
 	      var _props$email = _props.email;
 	      var email = _props$email.email;
 	      var emailIsEmpty = _props$email.emailIsEmpty;
@@ -21254,6 +21270,41 @@
 	      var passwordIsEmpty = _props$password.passwordIsEmpty;
 	      var passwordIsInvalid = _props$password.passwordIsInvalid;
 
+	      var form = undefined;
+	      var close = undefined;
+	      if (isShowed) {
+	        close = _react2.default.createElement(
+	          "button",
+	          { onClick: function onClick() {
+	              onHide();
+	            } },
+	          "Close"
+	        );
+	        form = _react2.default.createElement(
+	          "form",
+	          {
+	            onSubmit: function onSubmit(event) {
+	              return event.preventDefault();
+	            },
+	            autoComplete: "off",
+	            noValidate: true },
+	          _react2.default.createElement(
+	            "div",
+	            null,
+	            _react2.default.createElement("input", {
+	              className: emailClasses,
+	              type: "text",
+	              placeholder: "Username",
+	              onChange: function onChange(_ref) {
+	                var username = _ref.target.value;
+
+	                onEmailChange(username);
+	              },
+	              defaultValue: email }),
+	            email
+	          )
+	        );
+	      }
 	      var emailClasses = (0, _classnames2.default)("email", {
 	        empty: emailIsEmpty,
 	        invalid: emailIsInvalid,
@@ -21266,60 +21317,16 @@
 	      var joinButtonDisable = !email || !password || emailIsEmpty || emailIsInvalid || passwordIsEmpty || passwordIsInvalid;
 	      return _react2.default.createElement(
 	        "aside",
-	        null,
+	        { className: "join" },
+	        close,
 	        _react2.default.createElement(
-	          "form",
-	          {
-	            className: "join",
-	            onSubmit: function onSubmit(event) {
-	              return event.preventDefault();
-	            },
-	            autoComplete: "off",
-	            noValidate: true },
-	          _react2.default.createElement(
-	            "div",
-	            null,
-	            _react2.default.createElement("input", {
-	              className: emailClasses,
-	              type: "email",
-	              placeholder: "Email",
-	              onChange: function onChange(_ref) {
-	                var email = _ref.target.value;
-
-	                onEmailChange(email);
-	              },
-	              defaultValue: email }),
-	            email
-	          ),
-	          _react2.default.createElement(
-	            "div",
-	            null,
-	            _react2.default.createElement("input", {
-	              className: passwordClasses,
-	              type: "password",
-	              placeholder: "Password",
-	              onChange: function onChange(_ref2) {
-	                var password = _ref2.target.value;
-
-	                onPasswordChange(password);
-	              },
-	              defaultValue: password }),
-	            password
-	          ),
-	          _react2.default.createElement(
-	            "div",
-	            null,
-	            _react2.default.createElement(
-	              "button",
-	              {
-	                onClick: function onClick() {
-	                  onJoin({ email: email, password: password });
-	                },
-	                disabled: joinButtonDisable },
-	              "Join"
-	            )
-	          )
-	        )
+	          "button",
+	          { className: "join-button", onClick: function onClick() {
+	              onShow();
+	            } },
+	          "Join"
+	        ),
+	        form
 	      );
 	    }
 	  }]);
@@ -21327,10 +21334,8 @@
 	  return Join;
 	}(_react.Component);
 
-	function mapStateToProps(_ref3, ownProps) {
-	  var join = _ref3.join;
-
-	  console.log(ownProps);
+	function mapStateToProps(_ref2) {
+	  var join = _ref2.join;
 	  return join;
 	}
 
@@ -21352,6 +21357,12 @@
 	        }
 	      });
 	    },
+	    onShow: function onShow() {
+	      dispatch((0, _join.joinShow)());
+	    },
+	    onHide: function onHide() {
+	      dispatch((0, _join.joinHide)());
+	    },
 	    onEmailChange: function onEmailChange(email, ownProps) {
 	      console.log(ownProps);
 	      (0, _validators.validation)((0, _validators.emailValidator)(email), function (errors) {
@@ -21362,9 +21373,9 @@
 	    onPasswordChange: function onPasswordChange(password) {
 	      dispatch((0, _join.joinPasswordChange)(password));
 	    },
-	    onJoin: function onJoin(_ref4) {
-	      var email = _ref4.email;
-	      var password = _ref4.password;
+	    onJoin: function onJoin(_ref3) {
+	      var email = _ref3.email;
+	      var password = _ref3.password;
 
 	      (0, _validators.validation)((0, _validators.emailValidator)(email), (0, _validators.passwordValidator)(password), function (errors) {
 	        if (errors) {
@@ -21445,7 +21456,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.joinNotAvailableEmail = exports.joinInvalidPassword = exports.joinInvalidEmail = exports.joinEmptyPassword = exports.joinEmptyEmail = exports.joinPasswordChange = exports.joinEmailChange = undefined;
+	exports.joinHide = exports.joinShow = exports.joinNotAvailableEmail = exports.joinInvalidPassword = exports.joinInvalidEmail = exports.joinEmptyPassword = exports.joinEmptyEmail = exports.joinPasswordChange = exports.joinEmailChange = undefined;
 
 	var _join = __webpack_require__(180);
 
@@ -21493,6 +21504,18 @@
 	  };
 	}
 
+	function joinShow() {
+	  return {
+	    type: _join.JOIN_SHOW
+	  };
+	}
+
+	function joinHide() {
+	  return {
+	    type: _join.JOIN_HIDE
+	  };
+	}
+
 	exports.joinEmailChange = joinEmailChange;
 	exports.joinPasswordChange = joinPasswordChange;
 	exports.joinEmptyEmail = joinEmptyEmail;
@@ -21500,6 +21523,8 @@
 	exports.joinInvalidEmail = joinInvalidEmail;
 	exports.joinInvalidPassword = joinInvalidPassword;
 	exports.joinNotAvailableEmail = joinNotAvailableEmail;
+	exports.joinShow = joinShow;
+	exports.joinHide = joinHide;
 
 /***/ },
 /* 185 */
@@ -22230,7 +22255,7 @@
 
 
 	// module
-	exports.push([module.id, ".join input[type=\"email\"],\n.join input[type=\"password\"] {\n  border-size: 1px;\n  border-style: solid;\n  border-color: lightgray;\n}\n.join input[type=\"email\"].empty,\n.join input[type=\"password\"].empty {\n  border-color: #ffa500;\n}\n.join input[type=\"email\"].invalid,\n.join input[type=\"password\"].invalid {\n  border-color: #ff4c4c;\n}\n.join input[type=\"email\"].not-available,\n.join input[type=\"password\"].not-available {\n  border-color: #ffa500;\n}\n", ""]);
+	exports.push([module.id, ".join {\n  position: absolute;\n  right: 15px;\n  top: 15px;\n}\n.join .join-button {\n  float: right;\n}\n.join input[type=\"email\"],\n.join input[type=\"password\"] {\n  border-size: 1px;\n  border-style: solid;\n  border-color: lightgray;\n}\n.join input[type=\"email\"].empty,\n.join input[type=\"password\"].empty {\n  border-color: #ffa500;\n}\n.join input[type=\"email\"].invalid,\n.join input[type=\"password\"].invalid {\n  border-color: #ff4c4c;\n}\n.join input[type=\"email\"].not-available,\n.join input[type=\"password\"].not-available {\n  border-color: #ffa500;\n}\n", ""]);
 
 	// exports
 
