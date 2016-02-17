@@ -22,15 +22,18 @@
   },
   "dependencies": {
     "classnames": "^2.2.3",
+    "cookie": "^0.2.3",
     "google-auth-library": "^0.9.7",
     "googleapis": "^2.1.7",
     "pg": "^4.4.4",
+    "qs": "^6.1.0",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-redux": "^4.4.0",
     "redux": "^3.3.0",
     "redux-logger": "^2.5.0",
     "redux-thunk": "^1.0.3",
+    "shortid": "^2.2.4",
     "ws": "^1.0.1"
   }
 }
