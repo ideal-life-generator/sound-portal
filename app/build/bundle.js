@@ -54,11 +54,11 @@
 
 	var _reactRedux = __webpack_require__(159);
 
-	var _store = __webpack_require__(177);
+	var _store = __webpack_require__(180);
 
 	var _store2 = _interopRequireDefault(_store);
 
-	var _Main = __webpack_require__(181);
+	var _Main = __webpack_require__(184);
 
 	var _Main2 = _interopRequireDefault(_Main);
 
@@ -19818,15 +19818,15 @@
 
 	var _wrapActionCreators2 = _interopRequireDefault(_wrapActionCreators);
 
-	var _isPlainObject = __webpack_require__(167);
+	var _isPlainObject = __webpack_require__(175);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _hoistNonReactStatics = __webpack_require__(175);
+	var _hoistNonReactStatics = __webpack_require__(178);
 
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 
-	var _invariant = __webpack_require__(176);
+	var _invariant = __webpack_require__(179);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -20892,6 +20892,140 @@
 
 /***/ },
 /* 175 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isHostObject = __webpack_require__(176),
+	    isObjectLike = __webpack_require__(177);
+
+	/** `Object#toString` result references. */
+	var objectTag = '[object Object]';
+
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to resolve the decompiled source of functions. */
+	var funcToString = Function.prototype.toString;
+
+	/** Used to infer the `Object` constructor. */
+	var objectCtorString = funcToString.call(Object);
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+
+	/** Built-in value references. */
+	var getPrototypeOf = Object.getPrototypeOf;
+
+	/**
+	 * Checks if `value` is a plain object, that is, an object created by the
+	 * `Object` constructor or one with a `[[Prototype]]` of `null`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 * }
+	 *
+	 * _.isPlainObject(new Foo);
+	 * // => false
+	 *
+	 * _.isPlainObject([1, 2, 3]);
+	 * // => false
+	 *
+	 * _.isPlainObject({ 'x': 0, 'y': 0 });
+	 * // => true
+	 *
+	 * _.isPlainObject(Object.create(null));
+	 * // => true
+	 */
+	function isPlainObject(value) {
+	  if (!isObjectLike(value) || objectToString.call(value) != objectTag || isHostObject(value)) {
+	    return false;
+	  }
+	  var proto = objectProto;
+	  if (typeof value.constructor == 'function') {
+	    proto = getPrototypeOf(value);
+	  }
+	  if (proto === null) {
+	    return true;
+	  }
+	  var Ctor = proto.constructor;
+	  return (typeof Ctor == 'function' &&
+	    Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString);
+	}
+
+	module.exports = isPlainObject;
+
+
+/***/ },
+/* 176 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is a host object in IE < 9.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
+	 */
+	function isHostObject(value) {
+	  // Many host objects are `Object` objects that can coerce to strings
+	  // despite having improperly defined `toString` methods.
+	  var result = false;
+	  if (value != null && typeof value.toString != 'function') {
+	    try {
+	      result = !!(value + '');
+	    } catch (e) {}
+	  }
+	  return result;
+	}
+
+	module.exports = isHostObject;
+
+
+/***/ },
+/* 177 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	module.exports = isObjectLike;
+
+
+/***/ },
+/* 178 */
 /***/ function(module, exports) {
 
 	/**
@@ -20937,7 +21071,7 @@
 
 
 /***/ },
-/* 176 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -20995,7 +21129,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 177 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21006,11 +21140,11 @@
 
 	var _redux = __webpack_require__(165);
 
-	var _reduxThunk = __webpack_require__(178);
+	var _reduxThunk = __webpack_require__(181);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _join = __webpack_require__(179);
+	var _join = __webpack_require__(182);
 
 	var _join2 = _interopRequireDefault(_join);
 
@@ -21023,7 +21157,7 @@
 	exports.default = (0, _redux.createStore)(reducers, (0, _redux.applyMiddleware)(_reduxThunk2.default));
 
 /***/ },
-/* 178 */
+/* 181 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21042,7 +21176,7 @@
 	module.exports = thunkMiddleware;
 
 /***/ },
-/* 179 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21054,7 +21188,7 @@
 	});
 	exports.default = signin;
 
-	var _join = __webpack_require__(180);
+	var _join = __webpack_require__(183);
 
 	function signin() {
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? {
@@ -21126,7 +21260,7 @@
 	}
 
 /***/ },
-/* 180 */
+/* 183 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -21151,7 +21285,7 @@
 	exports.JOIN_NOT_AVAILABLE_EMAIL = JOIN_NOT_AVAILABLE_EMAIL;
 
 /***/ },
-/* 181 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21165,7 +21299,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Join = __webpack_require__(182);
+	var _Join = __webpack_require__(185);
 
 	var _Join2 = _interopRequireDefault(_Join);
 
@@ -21180,7 +21314,7 @@
 	}
 
 /***/ },
-/* 182 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21197,17 +21331,17 @@
 
 	var _reactRedux = __webpack_require__(159);
 
-	var _classnames = __webpack_require__(183);
+	var _classnames = __webpack_require__(186);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _join = __webpack_require__(184);
+	var _join = __webpack_require__(187);
 
-	var _connection = __webpack_require__(185);
+	var _connection = __webpack_require__(188);
 
-	var _validators = __webpack_require__(197);
+	var _validators = __webpack_require__(200);
 
-	var _join2 = __webpack_require__(198);
+	var _join2 = __webpack_require__(201);
 
 	var _join3 = _interopRequireDefault(_join2);
 
@@ -21383,7 +21517,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Join);
 
 /***/ },
-/* 183 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -21437,7 +21571,7 @@
 
 
 /***/ },
-/* 184 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21447,7 +21581,7 @@
 	});
 	exports.joinNotAvailableEmail = exports.joinInvalidPassword = exports.joinInvalidEmail = exports.joinEmptyPassword = exports.joinEmptyEmail = exports.joinPasswordChange = exports.joinEmailChange = undefined;
 
-	var _join = __webpack_require__(180);
+	var _join = __webpack_require__(183);
 
 	function joinEmailChange(email) {
 	  return {
@@ -21502,7 +21636,7 @@
 	exports.joinNotAvailableEmail = joinNotAvailableEmail;
 
 /***/ },
-/* 185 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21512,7 +21646,7 @@
 	});
 	exports.socketInstance = exports.socketId = exports.subscribeOnce = exports.subscribe = exports.send = exports.connected = undefined;
 
-	var _wsSession = __webpack_require__(186);
+	var _wsSession = __webpack_require__(189);
 
 	var _wsSession2 = _interopRequireDefault(_wsSession);
 
@@ -21534,7 +21668,7 @@
 	exports.socketInstance = socketInstance;
 
 /***/ },
-/* 186 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21543,9 +21677,9 @@
 	  value: true
 	});
 
-	var _cookie = __webpack_require__(187);
+	var _cookie = __webpack_require__(190);
 
-	var _shortid = __webpack_require__(188);
+	var _shortid = __webpack_require__(191);
 
 	function session(url) {
 	  var connects = new Set();
@@ -21625,7 +21759,7 @@
 	exports.default = session;
 
 /***/ },
-/* 187 */
+/* 190 */
 /***/ function(module, exports) {
 
 	/*!
@@ -21789,23 +21923,23 @@
 
 
 /***/ },
-/* 188 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	module.exports = __webpack_require__(189);
+	module.exports = __webpack_require__(192);
 
 
 /***/ },
-/* 189 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var alphabet = __webpack_require__(190);
-	var encode = __webpack_require__(192);
-	var decode = __webpack_require__(194);
-	var isValid = __webpack_require__(195);
+	var alphabet = __webpack_require__(193);
+	var encode = __webpack_require__(195);
+	var decode = __webpack_require__(197);
+	var isValid = __webpack_require__(198);
 
 	// Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
 	// This number should be updated every year or so to keep the generated id short.
@@ -21820,7 +21954,7 @@
 	// has a unique value for worker
 	// Note: I don't know if this is automatically set when using third
 	// party cluster solutions such as pm2.
-	var clusterWorkerId = __webpack_require__(196) || 0;
+	var clusterWorkerId = __webpack_require__(199) || 0;
 
 	// Counter is used when shortid is called multiple times in one second.
 	var counter;
@@ -21903,12 +22037,12 @@
 
 
 /***/ },
-/* 190 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomFromSeed = __webpack_require__(191);
+	var randomFromSeed = __webpack_require__(194);
 
 	var ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
 	var alphabet;
@@ -22007,7 +22141,7 @@
 
 
 /***/ },
-/* 191 */
+/* 194 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -22038,12 +22172,12 @@
 
 
 /***/ },
-/* 192 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomByte = __webpack_require__(193);
+	var randomByte = __webpack_require__(196);
 
 	function encode(lookup, number) {
 	    var loopCounter = 0;
@@ -22063,7 +22197,7 @@
 
 
 /***/ },
-/* 193 */
+/* 196 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -22083,11 +22217,11 @@
 
 
 /***/ },
-/* 194 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var alphabet = __webpack_require__(190);
+	var alphabet = __webpack_require__(193);
 
 	/**
 	 * Decode the id to get the version and worker
@@ -22106,11 +22240,11 @@
 
 
 /***/ },
-/* 195 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var alphabet = __webpack_require__(190);
+	var alphabet = __webpack_require__(193);
 
 	function isShortId(id) {
 	    if (!id || typeof id !== 'string' || id.length < 6 ) {
@@ -22131,7 +22265,7 @@
 
 
 /***/ },
-/* 196 */
+/* 199 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -22140,7 +22274,7 @@
 
 
 /***/ },
-/* 197 */
+/* 200 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -22196,16 +22330,16 @@
 	exports.passwordValidator = passwordValidator;
 
 /***/ },
-/* 198 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(199);
+	var content = __webpack_require__(202);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(201)(content, {});
+	var update = __webpack_require__(204)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -22222,10 +22356,10 @@
 	}
 
 /***/ },
-/* 199 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(200)();
+	exports = module.exports = __webpack_require__(203)();
 	// imports
 
 
@@ -22236,7 +22370,7 @@
 
 
 /***/ },
-/* 200 */
+/* 203 */
 /***/ function(module, exports) {
 
 	/*
@@ -22292,7 +22426,7 @@
 
 
 /***/ },
-/* 201 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
