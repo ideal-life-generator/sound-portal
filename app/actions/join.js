@@ -1,79 +1,29 @@
 import {
-  JOIN_EMAIL_CHANGE,
-  JOIN_PASSWORD_CHANGE,
-  JOIN_EMPTY_EMAIL,
-  JOIN_EMPTY_PASSWORD,
-  JOIN_INVALID_EMAIL,
-  JOIN_INVALID_PASSWORD,
-  JOIN_NOT_AVAILABLE_EMAIL,
-  JOIN_SHOW,
-  JOIN_HIDE
+  GOOGLE_AUTH_STATE,
+  USERNAME_STATE,
+  USER_STATE,
+  USERNAME_CHANGE
 } from "constants/join"
 
-function joinEmailChange (email) {
-  return {
-    type: JOIN_EMAIL_CHANGE,
-    email
-  }
-}
+const googleAuthState = () => ({
+  type: GOOGLE_AUTH_STATE
+})
 
-function joinPasswordChange (password) {
-  return {
-    type: JOIN_PASSWORD_CHANGE,
-    password
-  }
-}
+const usernameState = () => ({
+  type: USERNAME_STATE
+})
 
-function joinEmptyEmail () {
-  return {
-    type: JOIN_EMPTY_EMAIL
-  }
-}
+const userState = () => ({
+  type: USER_STATE
+})
 
-function joinEmptyPassword () {
-  return {
-    type: JOIN_EMPTY_PASSWORD
-  }
-}
-
-function joinInvalidEmail () {
-  return {
-    type: JOIN_INVALID_EMAIL
-  }
-}
-
-function joinInvalidPassword () {
-  return {
-    type: JOIN_INVALID_PASSWORD
-  }
-}
-
-function joinNotAvailableEmail () {
-  return {
-    type: JOIN_NOT_AVAILABLE_EMAIL
-  }
-}
-
-function joinShow () {
-  return {
-    type: JOIN_SHOW
-  }
-}
-
-function joinHide () {
-  return {
-    type: JOIN_HIDE
-  }
-}
+const usernameChange = username => ({
+  type: USERNAME_CHANGE,
+  username
+})
 
 export {
-  joinEmailChange,    
-  joinPasswordChange,
-  joinEmptyEmail,
-  joinEmptyPassword,
-  joinInvalidEmail,
-  joinInvalidPassword,
-  joinNotAvailableEmail,
-  joinShow,
-  joinHide
+  googleAuthState,
+  usernameState,
+  usernameChange
 }

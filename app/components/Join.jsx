@@ -1,155 +1,144 @@
-import React, { Component, PropTypes } from "react"
+import React, { Component } from "react"
+import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import classNames from "classnames"
+import join from "styles/join-popup.less"
+
 import {
-  joinEmailChange,
-  joinPasswordChange,
-  joinEmptyEmail,
-  joinEmptyPassword,
-  joinInvalidEmail,
-  joinInvalidPassword,
-  joinNotAvailableEmail,
-  joinShow,
-  joinHide
+  googleAuthState,
+  usernameState,
+  userState,
+  usernameChange
 } from "actions/join"
+
+import {
+  updateUser,
+  updateUsername
+} from "actions/user"
+
 import {
   send,
   subscribe
 } from "connection"
+
 import {
   validation,
-  emailValidator,
-  passwordValidator
-} from "utils/validators"
-import join from "styles/join.less"
+  errorMessages,
+  usernameValidator
+} from "utils/validation"
 
-const errorDescriptions = [
-  "unknown",
-  "email is empty",
-  "email is invalid",
-  "password is empty",
-  "password is invalid",
-  "email is not available"
-]
+import popup from "utils/popup"
+
+const googleAuthPopup = () => {
+  const pop = popup(
+    "https://accounts.google.com/o/oauth2/auth?"
+    + "client_id=205946784859-n4ckbriqes7j9etrh7dvm9608qr958qs.apps.googleusercontent.com&"
+    + "scope=email&"
+    + "access_type=offline&"
+    + "response_type=code&"
+    + "prompt=consent&"
+    + `redirect_uri=http://localhost:5000/google-access`
+  , 650, 500)
+}
 
 class Join extends Component {
   componentDidMount () {
-    const { onMount } = this.props
-    onMount()
+    const { updateUser, usernameState, userState, updateUsername } = this.props
+    subscribe("join.google-auth", (errors, user) => {
+      if (errors) { errors.forEach(error => console.log(errorMessages(error))) }
+      else {
+        const { email, token } = user
+        localStorage.setItem("email", email)
+        localStorage.setItem("token", token)
+        updateUser(user)
+        usernameState()
+      }
+    })
+    subscribe("join.username", (errors, username) => {
+      if (errors) { errors.forEach(error => console.log(errorMessages(error))) }
+      else {
+        updateUsername(username)
+        userState()
+      }
+    })
   }
   render () {
     const {
-      onShow,
-      onHide,
-      onEmailChange,
-      onPasswordChange,
-      onJoin,
-      isShowed,
-      email: {  email, emailIsEmpty, emailIsInvalid, emailIsNotAvailable },
-      password: { password, passwordIsEmpty, passwordIsInvalid },
+      join: {
+        state,
+        username: { username: joinUsername }
+      },
+      user: {
+        user: {
+          id,
+          email,
+          token,
+          username
+        }
+      },
+      googleAuthState,
+      usernameState,
+      usernameChange
     } = this.props
-    let form
-    let close
-    if (isShowed) {
-      close = 
-        <button onClick={() => {
-          onHide()
-        }}>
-          Close
-        </button>
-      form = 
-        <form
-          onSubmit={event => event.preventDefault()}
-          autoComplete="off"
-          noValidate>
-          <div>
-            <input
-              className={emailClasses}
-              type="text"
-              placeholder="Username"
-              onChange={({ target: { value: username } }) => {
-                onEmailChange(username)
-              }}
-              defaultValue={email} />
-            {email}
-          </div>
-        </form>
+    let usernameInput
+    switch (state) {
+      case 1:
+        usernameInput =
+          <input
+            className={usernameClasses}
+            type="text"
+            onChange={({ target: { value: username } }) => usernameChange(username)}
+            defaultValue={joinUsername}
+            placeholder="Username"
+            autoFocus />
+        break
     }
-    const emailClasses = classNames("email", {
-      empty: emailIsEmpty,
-      invalid: emailIsInvalid,
-      "not-available": emailIsNotAvailable
-    })
-    const passwordClasses = classNames("password", {
-      empty: passwordIsEmpty,
-      invalid: passwordIsInvalid
-    })
-    const joinButtonDisable = !email || !password || emailIsEmpty || emailIsInvalid || passwordIsEmpty || passwordIsInvalid
+    let usernameClasses = classNames("username")
     return (
       <aside className="join">
-        {close}
-        <button className="join-button" onClick={() => {
-          onShow()
-        }}>
-          Join
-        </button>
-        {form}
+        <form
+          className="join-form"
+          onSubmit={event => {
+            event.preventDefault()
+            validation(usernameValidator(joinUsername), errors => {
+              if (errors) errors.forEach(error => console.log(errorMessages(error)))
+              else {
+                send("join.username", { email, token, username: joinUsername })
+              }
+            })
+          }}
+          autoComplete="off"
+          noValidate>
+          {usernameInput}
+          <h5>{username}</h5>
+          <button
+            onClick={event => {
+              switch (state) {
+                case 0:
+                  event.preventDefault()
+                  googleAuthPopup()
+                  break
+                case 1:
+                  break
+              }
+            }}>
+            Join
+          </button>
+        </form>
       </aside>
     )
   }
 }
 
-function mapStateToProps ({ join }) { return join }
+const mapStateToProps = ({ join, user }) => ({ join, user })
 
-function mapDispatchToProps (dispatch) {
-  return {
-    onMount () {
-      subscribe("join.check-email", (errors) => {
-        if (errors && errors.includes(5)) dispatch(joinNotAvailableEmail())
-      })
-      subscribe("join", (errors, user) => {
-        if (errors) {
-          if (errors.includes(1)) dispatch(joinEmptyEmail())
-          if (errors.includes(2)) dispatch(joinInvalidEmail())
-          if (errors.includes(3)) dispatch(joinEmptyPassword())
-          if (errors.includes(4)) dispatch(joinInvalidPassword())
-          if (errors.includes(5)) dispatch(joinNotAvailableEmail())
-        }
-        else {
-          console.log(user)
-        }
-      })
-    },
-    onShow () {
-      dispatch(joinShow())
-    },
-    onHide () {
-      dispatch(joinHide())
-    },
-    onEmailChange (email, ownProps) {
-      console.log(ownProps)
-      validation(emailValidator(email), (errors) => {
-        if (!errors) send("join.check-email", { email })
-      })
-      dispatch(joinEmailChange(email))
-    },
-    onPasswordChange (password) {
-      dispatch(joinPasswordChange(password))
-    },
-    onJoin ({ email, password }) {
-      validation(emailValidator(email), passwordValidator(password), (errors) => {
-        if (errors) {
-          if (errors.includes(1)) dispatch(joinEmptyEmail())
-          if (errors.includes(2)) dispatch(joinInvalidEmail())
-          if (errors.includes(3)) dispatch(joinEmptyPassword())
-          if (errors.includes(4)) dispatch(joinInvalidPassword())
-        }
-        else {
-          send("join", { email, password })
-        }
-      })
-    }
-  }
-}
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  googleAuthState,
+  usernameState,
+  userState,
+  usernameChange,
+  updateUser,
+  updateUsername
+}, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Join)

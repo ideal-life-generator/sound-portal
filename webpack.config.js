@@ -14,20 +14,20 @@ module.exports = [
       loaders: [
         {
           test: /\.html$/,
-          loader: "file-loader"
+          loader: "file"
         },
         {
             test: /\.css$/,
-          loader: "style-loader!css-loader"
+          loader: "style!css"
         },
         {
           test: /\.less$/,
-          loader: "style-loader!css-loader!less-loader"
+          loader: "style!css!less"
         },
         {
           test: /\.js$/,
           exclude: /node_modules/,
-          loader: "babel-loader",
+          loader: "babel",
           query: {
             presets: [ "es2015", "stage-2" ]
           }
@@ -35,10 +35,14 @@ module.exports = [
         {
           test: /\.jsx$/,
           exclude: /node_modules/,
-          loader: "babel-loader",
+          loader: "babel",
           query: {
             presets: [ "es2015", "stage-2", "react" ]
           }
+        },
+        {
+          test: /\.json$/,
+          loader: "json"
         }
       ]
     },

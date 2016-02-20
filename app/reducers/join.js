@@ -1,99 +1,41 @@
 import {
-  JOIN_EMAIL_CHANGE,
-  JOIN_PASSWORD_CHANGE,
-  JOIN_EMPTY_EMAIL,
-  JOIN_EMPTY_PASSWORD,
-  JOIN_INVALID_EMAIL,
-  JOIN_INVALID_PASSWORD,
-  JOIN_NOT_AVAILABLE_EMAIL,
-  JOIN_SHOW,
-  JOIN_HIDE
+  GOOGLE_AUTH_STATE,
+  USERNAME_STATE,
+  USER_STATE,
+  USERNAME_CHANGE
 } from "constants/join"
 
-export default function signin (state = {
-  isShowed: false,
-  email: {
-    emailIsEmpty: false,
-    emailIsInvalid: false,
-    emailIsNotAvailable: false,
-    email: ""
-  },
-  password: {
-    passwordIsEmpty: false,
-    passwordIsIvalid: false,
-    password: ""
+export default function user (state = {
+  state: 0,
+  username: {
+    isEmpty: false,
+    isInvalid: false,
+    isNotAvailable: false,
+    username: ""
   }
 }, action) {
   switch (action.type) {
-    case JOIN_SHOW:
+    case GOOGLE_AUTH_STATE:
       return {
         ...state,
-        isShowed: true
+        state: 0
       }
-    case JOIN_HIDE:
+    case USERNAME_STATE:
       return {
         ...state,
-        isShowed: false
+        state: 1
       }
-    case JOIN_EMAIL_CHANGE:
+    case USER_STATE:
       return {
         ...state,
-        email: {
-          ...state.email,
-          emailIsEmpty: false,
-          emailIsInvalid: false,
-          emailIsNotAvailable: false,
-          email: action.email
-        }
+        state: 2
       }
-    case JOIN_PASSWORD_CHANGE:
+    case USERNAME_CHANGE:
       return {
         ...state,
-        password: {
-          ...state.password,
-          passwordIsEmpty: false,
-          passwordIsInvalid: false,
-          password: action.password
-        }
-      }
-    case JOIN_EMPTY_EMAIL:
-      return {
-        ...state,
-        email: {
-          ...state.email,
-          emailIsEmpty: true
-        }
-      }
-    case JOIN_EMPTY_PASSWORD:
-      return {
-        ...state,
-        password: {
-          ...state.password,
-          passwordIsEmpty: true
-        }
-      }
-    case JOIN_INVALID_EMAIL:
-      return {
-        ...state,
-        email: {
-          ...state.email,
-          emailIsInvalid: true
-        }
-      }
-    case JOIN_INVALID_PASSWORD:
-      return {
-        ...state,
-        password: {
-          ...state.password,
-          passwordIsInvalid: true
-        }
-      }
-    case JOIN_NOT_AVAILABLE_EMAIL:
-      return {
-        ...state,
-        email: {
-          ...state.email,
-          emailIsNotAvailable: true
+        username: {
+          ...state.username,
+          username: action.username
         }
       }
     default:
