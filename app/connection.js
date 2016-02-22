@@ -6,5 +6,6 @@ export const {
   subscribe,
   subscribeOnce,
   socketId,
-  socketInstance
+  socketInstance,
+  setSecure
 } = session(`ws://localhost:5001`)

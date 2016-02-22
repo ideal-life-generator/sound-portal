@@ -13,12 +13,15 @@ import {
 
 import {
   updateUser,
+  deleteUser,
   updateUsername
 } from "actions/user"
 
 import {
+  connected,
   send,
-  subscribe
+  subscribe,
+  setSecure
 } from "connection"
 
 import {
@@ -38,23 +41,75 @@ const googleAuthPopup = () => {
     + "response_type=code&"
     + "prompt=consent&"
     + `redirect_uri=http://localhost:5000/google-access`
-  , 650, 500)
+  , 500, 350)
 }
 
 class Join extends Component {
   componentDidMount () {
-    const { updateUser, usernameState, userState, updateUsername } = this.props
+    const {
+      googleAuthState,
+      usernameState,
+      userState,
+      updateUser,
+      deleteUser,
+      updateUsername
+    } = this.props
+    const { email, token } = localStorage
+    setSecure({ email, token })
+    if (email && token) {
+      connected(() => send("user.request", email))
+    }
+    subscribe("user.response", (errors, { id, email, username }) => {
+      if (errors) { errors.forEach(error => console.log(errorMessages(error))) }
+      else {
+        if (username) {
+          updateUser({ id, email, username })
+          userState()
+        }
+        else {
+          updateUser({ id, email })
+          usernameState()
+        }
+      }
+    })
+    subscribe("user.delete.response", (errors) => {
+      if (errors) { errors.forEach(error => console.log(errorMessages(error))) }
+      else {
+        localStorage.removeItem("email")
+        localStorage.removeItem("token")
+        deleteUser()
+        googleAuthState()
+      }
+    })
     subscribe("join.google-auth", (errors, user) => {
       if (errors) { errors.forEach(error => console.log(errorMessages(error))) }
       else {
-        const { email, token } = user
+        const { id, email, token, username } = user
+        setSecure({ email, token })
+        localStorage.setItem("email", email)
+        localStorage.setItem("token", token)
+        if (username) {
+          updateUser({ id, email, username })
+          userState()
+        }
+        else {
+          updateUser({ id, email })
+          usernameState()
+        }
+      }
+    })
+    subscribe("user.good", (errors, user) => {
+      if (errors) { errors.forEach(error => console.log(errorMessages(error))) }
+      else {
+        const { email, token, username } = user
+        setSecure({ email, token })
         localStorage.setItem("email", email)
         localStorage.setItem("token", token)
         updateUser(user)
-        usernameState()
+        if (!username) { usernameState() }
       }
     })
-    subscribe("join.username", (errors, username) => {
+    subscribe("join.username.response", (errors, username) => {
       if (errors) { errors.forEach(error => console.log(errorMessages(error))) }
       else {
         updateUsername(username)
@@ -78,9 +133,11 @@ class Join extends Component {
       },
       googleAuthState,
       usernameState,
-      usernameChange
+      usernameChange,
+      deleteUser
     } = this.props
     let usernameInput
+    let usernameText
     switch (state) {
       case 1:
         usernameInput =
@@ -92,8 +149,17 @@ class Join extends Component {
             placeholder="Username"
             autoFocus />
         break
+      case 2:
+        let usernameText =
+          <h5 className="username">{username}</h5>
+        break
     }
-    let usernameClasses = classNames("username")
+    let usernameClasses = classNames("username-input")
+    const buttonClasses = classNames("main-button", {
+      "on-auth": state === 0,
+      "on-username": state === 1,
+      "on-user": state === 2
+    })
     return (
       <aside className="join">
         <form
@@ -103,15 +169,16 @@ class Join extends Component {
             validation(usernameValidator(joinUsername), errors => {
               if (errors) errors.forEach(error => console.log(errorMessages(error)))
               else {
-                send("join.username", { email, token, username: joinUsername })
+                send("join.username.request", { email, token, username: joinUsername })
               }
             })
           }}
           autoComplete="off"
           noValidate>
           {usernameInput}
-          <h5>{username}</h5>
+          {usernameText}
           <button
+            className={buttonClasses}
             onClick={event => {
               switch (state) {
                 case 0:
@@ -119,6 +186,10 @@ class Join extends Component {
                   googleAuthPopup()
                   break
                 case 1:
+                  break
+                case 2:
+                  event.preventDefault()
+                  send("user.delete.request", { email, token })
                   break
               }
             }}>
@@ -138,6 +209,7 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   userState,
   usernameChange,
   updateUser,
+  deleteUser,
   updateUsername
 }, dispatch)
 

@@ -51,6 +51,10 @@ const SOCKET_SERVER_PORT = 5001
 
 import join from "./server/api/join"
 
+import {
+  tokenVerification
+} from "./server/db/users"
+
 pg.connect(DB_SERVER_PATH, (error, db, done) => {
   if (error) { throw error }
   else {
@@ -59,7 +63,19 @@ pg.connect(DB_SERVER_PATH, (error, db, done) => {
       host: SOCKET_SERVER_PATH,
       port: SOCKET_SERVER_PORT
     })
-    const { connections, single, session, exceptSingle, exceptSession, all, subscribe } = sessions(wsServer)
+    const { connections, single, session, exceptSingle, exceptSession, all, subscribe, setStrategy } = sessions({
+      wsServer: wsServer,
+      secureIdentifiers: [
+        "user.request",
+        "user.delete.request"
+      ],
+      strategy ({ email, token }, success, cancel) {
+        tokenVerification(db, { email, token }, (errors, exists) => {
+          if (exists) { success() }
+          else { cancel(errors) }
+        })
+      }
+    })
     connections(({ current, currentSession, exceptCurrent, exceptCurrentSession, socketId, socketSessionId, socket }) => {
       join(db, { currentSession, subscribe })
     })

@@ -1,13 +1,15 @@
 import { parse } from "cookie"
 import { generate } from "shortid"
 
-function session (url) {
+export default function session (url) {
   const connects = new Set()
   const subscribes = new Map()
 
+  let secure
+
   const cookieObj = parse(document.cookie)
-  let { socketSessionId } = cookieObj  
-  if (Boolean(socketSessionId) === false) {
+  let { socketSessionId } = cookieObj
+  if (!socketSessionId) {
     socketSessionId = generate()
     document.cookie = `socketSessionId=${socketSessionId};`
   }
@@ -15,12 +17,10 @@ function session (url) {
   const socketInstance = new WebSocket(url)
 
   socketInstance.addEventListener("open", () => {
-    connects.forEach((callback) => {
-      callback()
-    })
+    connects.forEach(callback => callback())
   })
 
-  socketInstance.addEventListener("message", (event) => {
+  socketInstance.addEventListener("message", event => {
     const { data: messageJSON } = event
     const { identifier, data } = JSON.parse(messageJSON)
     const callback = subscribes.get(identifier)
@@ -37,7 +37,7 @@ function session (url) {
   }
 
   function send (identifier, ...data) {
-    socketInstance.send(JSON.stringify({ identifier, data }))
+    socketInstance.send(JSON.stringify({ identifier, data, secure }))
   }
 
   function subscribe (identifier, callback) {
@@ -56,14 +56,15 @@ function session (url) {
     return unsubscribe
   }
 
+  function setSecure (pairs) { secure = pairs }
+
   return {
     connected,
     send,
     subscribe,
     subscribeOnce,
     socketSessionId,
-    socketInstance
+    socketInstance,
+    setSecure
   }
 }
-
-export default session

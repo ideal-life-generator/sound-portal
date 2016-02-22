@@ -1,13 +1,27 @@
 import {
+  get,
   existEmail,
   insert,
   update,
   tokenVerification,
   existUsername,
-  updateUsername
+  updateUsername,
+  deleteToken
 } from "./../db/users"
 
 export default function (db, { currentSession, subscribe }, current) {
+  subscribe("user.request", email => {
+    get(db, email, (errors, user) => {
+      if (errors) { currentSession("user.response", errors) }
+      else { currentSession("user.response", null, user) }
+    })
+  })
+  subscribe("user.delete.request", ({ email, token }) => {
+    deleteToken(db, { email }, errors => {
+      if (errors) { currentSession("user.delete.response", errors) }
+      else { currentSession("user.delete.response") }
+    })
+  })
   subscribe("join.google-auth", code => {
     getRefresh(code, ({ refresh_token }) => {
       getToken(refresh_token, token => {
@@ -31,30 +45,30 @@ export default function (db, { currentSession, subscribe }, current) {
       })
     })
   })
-  subscribe("join.username", ({ email, token, username }) => {
-    tokenVerification(db, { email, token }, (errors, exists) => {
-      if (errors) { currentSession("join.username", errors) }
-      else if (exists) {
-        existUsername(db, username, (errors, exists) => {
-          if (errors) { currentSession("join.username", errors) }
-          else if (!exists) {
-            updateUsername(db, { email, username }, (errors, username) => {
-              if (errors) { currentSession("join.username", errors) }
-              else { currentSession("join.username", null, username) }
-            })
-          }
-          else {
-            currentSession("join.username", [ 4 ])
-          }
+  // subscribe("user.check", ({ email, token }) => {
+  //   tokenVerification(db, { email, token }, (errors, exists) => {
+  //     if (errors) { currentSession("user.check", errors) }
+  //     else if (exists) {
+  //       deleteToken(db, { email }, errors => {
+  //         if (errors) { currentSession("user.check", errors) }
+  //         else { currentSession("user.check") }
+  //       })
+  //     }
+  //   })
+  // })
+  subscribe("join.username.request", ({ email, token, username }) => {
+    existUsername(db, username, (errors, exists) => {
+      if (errors) { currentSession("join.username.response", errors) }
+      else if (!exists) {
+        updateUsername(db, { email, username }, (errors, username) => {
+          if (errors) { currentSession("join.username.response", errors) }
+          else { currentSession("join.username.response", null, username) }
         })
       }
-      else {
-        currentSession("join.username", "Verification is not passed")
-      }
+      else { currentSession("join.username.response", [ 4 ]) }
     })
   })
 }
-
 
 
 const DRIVE_ACCESSING_PATH = `

@@ -25,5 +25,6 @@ const usernameChange = username => ({
 export {
   googleAuthState,
   usernameState,
+  userState,
   usernameChange
 }

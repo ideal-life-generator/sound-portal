@@ -12,13 +12,16 @@ import {
 //   "username" CITEXT UNIQUE
 // );
 
-function existEmail (db, email, callback) {
+function tokenVerification (db, { email, token }, callback) {
   validation(emailValidator(email), (errors) => {
     if (errors) { callback(errors) }
     else {
       db.query(`
-        SELECT EXISTS(SELECT 1 FROM users WHERE email=$1);
-      `, [ email ], (error, result) => {
+        SELECT EXISTS(
+          SELECT 1 FROM users
+          WHERE email=$1 AND token=$2
+        );
+      `, [ email, token ], (error, result) => {
         if (error) { callback([ 0 ]) }
         else {
           const { rows: [ { exists } ] } = result
@@ -34,12 +37,50 @@ function get (db, email, callback) {
     if (errors) { callback(errors) }
     else {
       db.query(`
-        SELECT * FROM users WHERE email=$1;
+        SELECT
+          id,
+          email,
+          username
+        FROM users WHERE email=$1;
       `, [ email ], (error, result) => {
-        if (error) { console.log(error); callback([ 0 ]) }
+        if (error) { callback([ 0 ]) }
         else {
           const { rows: [ user ] } = result
           callback(null, user)
+        }
+      })
+    }
+  })
+}
+
+function deleteToken (db, { email }, callback) {
+  validation(emailValidator(email), (errors) => {
+    if (errors) { callback(errors) }
+    else {
+      db.query(`
+        UPDATE users SET
+          refresh_token='',
+          token=''
+        WHERE email=$1;
+      `, [ email ], (error) => {
+        if (error) { callback([ 0 ]) }
+        else { callback() }
+      })
+    }
+  })
+}
+
+function existEmail (db, email, callback) {
+  validation(emailValidator(email), (errors) => {
+    if (errors) { callback(errors) }
+    else {
+      db.query(`
+        SELECT EXISTS(SELECT 1 FROM users WHERE email=$1);
+      `, [ email ], (error, result) => {
+        if (error) { callback([ 0 ]) }
+        else {
+          const { rows: [ { exists } ] } = result
+          callback(null, exists)
         }
       })
     }
@@ -95,26 +136,6 @@ function update (db, { email, refresh_token }, callback) {
   })
 }
 
-function tokenVerification (db, { email, token }, callback) {
-  validation(emailValidator(email), (errors) => {
-    if (errors) { callback(errors) }
-    else {
-      db.query(`
-        SELECT EXISTS(
-          SELECT 1 FROM users
-          WHERE email=$1 AND token=$2
-        );
-      `, [ email, token ], (error, result) => {
-        if (error) { callback([ 0 ]) }
-        else {
-          const { rows: [ { exists } ] } = result
-          callback(null, exists)
-        }
-      })
-    }
-  })
-}
-
 function existUsername (db, username, callback) {
   validation(usernameValidator(username), (errors) => {
     if (errors) { callback(errors) }
@@ -136,7 +157,7 @@ function existUsername (db, username, callback) {
 }
 
 function updateUsername (db, { email, username }, callback) {
-  validation(usernameValidator(username), (errors) => {
+  validation(emailValidator(email), usernameValidator(username), (errors) => {
     if (errors) { callback(errors) }
     else {
       const token = randomBytes(16, "base64").toString("base64")
@@ -148,7 +169,6 @@ function updateUsername (db, { email, username }, callback) {
       `, [ email, username ], (error, result) => {
         if (error) { callback([ 0 ]) }
         else {
-          const { rows: [ { username } ] } = result
           callback(null, username)
         }
       })
@@ -157,10 +177,12 @@ function updateUsername (db, { email, username }, callback) {
 }
 
 export {
+  get,
   existEmail,
   insert,
   update,
   tokenVerification,
   existUsername,
-  updateUsername
+  updateUsername,
+  deleteToken
 }

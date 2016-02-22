@@ -58,7 +58,7 @@
 
 	var _store2 = _interopRequireDefault(_store);
 
-	var _Main = __webpack_require__(181);
+	var _Main = __webpack_require__(182);
 
 	var _Main2 = _interopRequireDefault(_Main);
 
@@ -21007,11 +21007,11 @@
 
 	var _redux = __webpack_require__(165);
 
-	var _join = __webpack_require__(179);
+	var _join = __webpack_require__(178);
 
 	var _join2 = _interopRequireDefault(_join);
 
-	var _user = __webpack_require__(203);
+	var _user = __webpack_require__(180);
 
 	var _user2 = _interopRequireDefault(_user);
 
@@ -21025,8 +21025,7 @@
 	exports.default = (0, _redux.createStore)(reducers);
 
 /***/ },
-/* 178 */,
-/* 179 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21039,7 +21038,7 @@
 
 	exports.default = user;
 
-	var _join = __webpack_require__(180);
+	var _join = __webpack_require__(179);
 
 	function user() {
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? {
@@ -21078,7 +21077,7 @@
 	}
 
 /***/ },
-/* 180 */
+/* 179 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -21097,7 +21096,76 @@
 	exports.USERNAME_CHANGE = USERNAME_CHANGE;
 
 /***/ },
+/* 180 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	exports.default = user;
+
+	var _user = __webpack_require__(181);
+
+	function user() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? {
+	    user: {
+	      id: NaN,
+	      email: "",
+	      token: "",
+	      username: ""
+	    }
+	  } : arguments[0];
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case _user.UPDATE_USER:
+	      return _extends({}, state, {
+	        user: action.user
+	      });
+	    case _user.DELETE_USER:
+	      return _extends({}, state, {
+	        user: {
+	          id: NaN,
+	          email: "",
+	          token: "",
+	          username: ""
+	        }
+	      });
+	    case _user.UPDATE_USERNAME:
+	      return _extends({}, state, {
+	        user: _extends({}, state.user, {
+	          username: action.username
+	        })
+	      });
+	    default:
+	      return state;
+	  }
+	}
+
+/***/ },
 /* 181 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var UPDATE_USER = "UPDATE_USER";
+	var DELETE_USER = "DELETE_USER";
+	var UPDATE_USERNAME = "UPDATE_USERNAME";
+
+	exports.UPDATE_USER = UPDATE_USER;
+	exports.DELETE_USER = DELETE_USER;
+	exports.UPDATE_USERNAME = UPDATE_USERNAME;
+
+/***/ },
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21111,7 +21179,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Join = __webpack_require__(182);
+	var _Join = __webpack_require__(183);
 
 	var _Join2 = _interopRequireDefault(_Join);
 
@@ -21126,7 +21194,7 @@
 	}
 
 /***/ },
-/* 182 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21145,23 +21213,23 @@
 
 	var _reactRedux = __webpack_require__(159);
 
-	var _classnames = __webpack_require__(183);
+	var _classnames = __webpack_require__(184);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _joinPopup = __webpack_require__(184);
+	var _joinPopup = __webpack_require__(185);
 
 	var _joinPopup2 = _interopRequireDefault(_joinPopup);
 
-	var _join = __webpack_require__(188);
+	var _join = __webpack_require__(189);
 
-	var _user = __webpack_require__(205);
+	var _user = __webpack_require__(190);
 
-	var _connection = __webpack_require__(189);
+	var _connection = __webpack_require__(191);
 
-	var _validation = __webpack_require__(201);
+	var _validation = __webpack_require__(203);
 
-	var _popup = __webpack_require__(202);
+	var _popup = __webpack_require__(204);
 
 	var _popup2 = _interopRequireDefault(_popup);
 
@@ -21174,7 +21242,7 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var googleAuthPopup = function googleAuthPopup() {
-	  var pop = (0, _popup2.default)("https://accounts.google.com/o/oauth2/auth?" + "client_id=205946784859-n4ckbriqes7j9etrh7dvm9608qr958qs.apps.googleusercontent.com&" + "scope=email&" + "access_type=offline&" + "response_type=code&" + "prompt=consent&" + "redirect_uri=http://localhost:5000/google-access", 650, 500);
+	  var pop = (0, _popup2.default)("https://accounts.google.com/o/oauth2/auth?" + "client_id=205946784859-n4ckbriqes7j9etrh7dvm9608qr958qs.apps.googleusercontent.com&" + "scope=email&" + "access_type=offline&" + "response_type=code&" + "prompt=consent&" + "redirect_uri=http://localhost:5000/google-access", 500, 350);
 	};
 
 	var Join = function (_Component) {
@@ -21190,27 +21258,96 @@
 	    key: "componentDidMount",
 	    value: function componentDidMount() {
 	      var _props = this.props;
-	      var updateUser = _props.updateUser;
+	      var googleAuthState = _props.googleAuthState;
 	      var usernameState = _props.usernameState;
 	      var userState = _props.userState;
+	      var updateUser = _props.updateUser;
+	      var deleteUser = _props.deleteUser;
 	      var updateUsername = _props.updateUsername;
+	      var _localStorage = localStorage;
+	      var email = _localStorage.email;
+	      var token = _localStorage.token;
 
+	      (0, _connection.setSecure)({ email: email, token: token });
+	      if (email && token) {
+	        (0, _connection.connected)(function () {
+	          return (0, _connection.send)("user.request", email);
+	        });
+	      }
+	      (0, _connection.subscribe)("user.response", function (errors, _ref) {
+	        var id = _ref.id;
+	        var email = _ref.email;
+	        var username = _ref.username;
+
+	        if (errors) {
+	          errors.forEach(function (error) {
+	            return console.log((0, _validation.errorMessages)(error));
+	          });
+	        } else {
+	          if (username) {
+	            updateUser({ id: id, email: email, username: username });
+	            userState();
+	          } else {
+	            updateUser({ id: id, email: email });
+	            usernameState();
+	          }
+	        }
+	      });
+	      (0, _connection.subscribe)("user.delete.response", function (errors) {
+	        if (errors) {
+	          errors.forEach(function (error) {
+	            return console.log((0, _validation.errorMessages)(error));
+	          });
+	        } else {
+	          localStorage.removeItem("email");
+	          localStorage.removeItem("token");
+	          deleteUser();
+	          googleAuthState();
+	        }
+	      });
 	      (0, _connection.subscribe)("join.google-auth", function (errors, user) {
 	        if (errors) {
 	          errors.forEach(function (error) {
 	            return console.log((0, _validation.errorMessages)(error));
 	          });
 	        } else {
-	          var email = user.email;
-	          var token = user.token;
+	          var id = user.id;
+	          var _email = user.email;
+	          var _token = user.token;
+	          var username = user.username;
 
-	          localStorage.setItem("email", email);
-	          localStorage.setItem("token", token);
-	          updateUser(user);
-	          usernameState();
+	          (0, _connection.setSecure)({ email: _email, token: _token });
+	          localStorage.setItem("email", _email);
+	          localStorage.setItem("token", _token);
+	          if (username) {
+	            updateUser({ id: id, email: _email, username: username });
+	            userState();
+	          } else {
+	            updateUser({ id: id, email: _email });
+	            usernameState();
+	          }
 	        }
 	      });
-	      (0, _connection.subscribe)("join.username", function (errors, username) {
+	      (0, _connection.subscribe)("user.good", function (errors, user) {
+	        if (errors) {
+	          errors.forEach(function (error) {
+	            return console.log((0, _validation.errorMessages)(error));
+	          });
+	        } else {
+	          var _email2 = user.email;
+	          var _token2 = user.token;
+	          var username = user.username;
+
+	          (0, _connection.setSecure)({ email: _email2, token: _token2 });
+	          localStorage.setItem("email", _email2);
+	          localStorage.setItem("token", _token2);
+	          updateUser(user);
+	          if (!username) {
+	            usernameState();
+	          }
+	        }
+	      });
+	      (0, _connection.subscribe)("join.username.response", function (errors, username) {
 	        if (errors) {
 	          errors.forEach(function (error) {
 	            return console.log((0, _validation.errorMessages)(error));
@@ -21236,23 +21373,37 @@
 	      var googleAuthState = _props2.googleAuthState;
 	      var usernameState = _props2.usernameState;
 	      var usernameChange = _props2.usernameChange;
+	      var deleteUser = _props2.deleteUser;
 
 	      var usernameInput = undefined;
+	      var usernameText = undefined;
 	      switch (state) {
 	        case 1:
 	          usernameInput = _react2.default.createElement("input", {
 	            className: usernameClasses,
 	            type: "text",
-	            onChange: function onChange(_ref) {
-	              var username = _ref.target.value;
+	            onChange: function onChange(_ref2) {
+	              var username = _ref2.target.value;
 	              return usernameChange(username);
 	            },
 	            defaultValue: joinUsername,
 	            placeholder: "Username",
 	            autoFocus: true });
 	          break;
+	        case 2:
+	          var usernameText = _react2.default.createElement(
+	            "h5",
+	            { className: "username" },
+	            username
+	          );
+	          break;
 	      }
-	      var usernameClasses = (0, _classnames2.default)("username");
+	      var usernameClasses = (0, _classnames2.default)("username-input");
+	      var buttonClasses = (0, _classnames2.default)("main-button", {
+	        "on-auth": state === 0,
+	        "on-username": state === 1,
+	        "on-user": state === 2
+	      });
 	      return _react2.default.createElement(
 	        "aside",
 	        { className: "join" },
@@ -21266,21 +21417,18 @@
 	                if (errors) errors.forEach(function (error) {
 	                  return console.log((0, _validation.errorMessages)(error));
 	                });else {
-	                  (0, _connection.send)("join.username", { email: email, token: token, username: joinUsername });
+	                  (0, _connection.send)("join.username.request", { email: email, token: token, username: joinUsername });
 	                }
 	              });
 	            },
 	            autoComplete: "off",
 	            noValidate: true },
 	          usernameInput,
-	          _react2.default.createElement(
-	            "h5",
-	            null,
-	            username
-	          ),
+	          usernameText,
 	          _react2.default.createElement(
 	            "button",
 	            {
+	              className: buttonClasses,
 	              onClick: function onClick(event) {
 	                switch (state) {
 	                  case 0:
@@ -21288,6 +21436,10 @@
 	                    googleAuthPopup();
 	                    break;
 	                  case 1:
+	                    break;
+	                  case 2:
+	                    event.preventDefault();
+	                    (0, _connection.send)("user.delete.request", { email: email, token: token });
 	                    break;
 	                }
 	              } },
@@ -21301,9 +21453,9 @@
 	  return Join;
 	}(_react.Component);
 
-	var mapStateToProps = function mapStateToProps(_ref2) {
-	  var join = _ref2.join;
-	  var user = _ref2.user;
+	var mapStateToProps = function mapStateToProps(_ref3) {
+	  var join = _ref3.join;
+	  var user = _ref3.user;
 	  return { join: join, user: user };
 	};
 
@@ -21314,6 +21466,7 @@
 	    userState: _join.userState,
 	    usernameChange: _join.usernameChange,
 	    updateUser: _user.updateUser,
+	    deleteUser: _user.deleteUser,
 	    updateUsername: _user.updateUsername
 	  }, dispatch);
 	};
@@ -21321,7 +21474,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Join);
 
 /***/ },
-/* 183 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -21375,16 +21528,16 @@
 
 
 /***/ },
-/* 184 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(185);
+	var content = __webpack_require__(186);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(187)(content, {});
+	var update = __webpack_require__(188)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -21401,21 +21554,21 @@
 	}
 
 /***/ },
-/* 185 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(186)();
+	exports = module.exports = __webpack_require__(187)();
 	// imports
 
 
 	// module
-	exports.push([module.id, ".join {\n  position: absolute;\n  right: 15px;\n  top: 15px;\n  height: 35px;\n}\n.join .join-activator {\n  position: absolute;\n  right: 5px;\n  top: 50%;\n  z-index: 2;\n  transform: translateY(-50%);\n}\n.join .google-auth {\n  display: block;\n  height: 100%;\n  position: absolute;\n  right: 65px;\n  line-height: 35px;\n}\n.join .form-closer {\n  border: 1px solid black;\n  position: fixed;\n  top: 0px;\n  bottom: 0px;\n  left: 0px;\n  right: 0px;\n  z-index: 0;\n}\n.join .join-form {\n  position: relative;\n  z-index: 1;\n  height: 100%;\n}\n.join .join-form .username {\n  height: 100%;\n  padding-top: 0px;\n  padding-bottom: 0px;\n}\n", ""]);
+	exports.push([module.id, ".join {\n  position: absolute;\n  right: 15px;\n  top: 15px;\n  height: 35px;\n}\n.join .join-activator {\n  position: absolute;\n  right: 5px;\n  top: 50%;\n  z-index: 2;\n  transform: translateY(-50%);\n}\n.join .google-auth {\n  display: block;\n  height: 100%;\n  position: absolute;\n  right: 65px;\n  line-height: 35px;\n}\n.join .form-closer {\n  border: 1px solid black;\n  position: fixed;\n  top: 0px;\n  bottom: 0px;\n  left: 0px;\n  right: 0px;\n  z-index: 0;\n}\n.join .join-form {\n  position: relative;\n  z-index: 1;\n  height: 100%;\n}\n.join .join-form .username {\n  height: 100%;\n  margin-top: 0px;\n  margin-bottom: 0px;\n  position: absolute;\n  right: 60px;\n}\n.join .join-form .username-input {\n  height: 100%;\n  padding-top: 0px;\n  padding-bottom: 0px;\n}\n.join .main-button.on-auth {\n  box-shadow: 0px 0px 5px 0px green;\n}\n.join .main-button.on-username {\n  box-shadow: 0px 0px 5px 0px yellow;\n}\n.join .main-button.on-user {\n  box-shadow: 0px 0px 5px 0px red;\n}\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 186 */
+/* 187 */
 /***/ function(module, exports) {
 
 	/*
@@ -21471,7 +21624,7 @@
 
 
 /***/ },
-/* 187 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -21725,7 +21878,7 @@
 
 
 /***/ },
-/* 188 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21733,9 +21886,9 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.usernameChange = exports.usernameState = exports.googleAuthState = undefined;
+	exports.usernameChange = exports.userState = exports.usernameState = exports.googleAuthState = undefined;
 
-	var _join = __webpack_require__(180);
+	var _join = __webpack_require__(179);
 
 	var googleAuthState = function googleAuthState() {
 	  return {
@@ -21764,10 +21917,11 @@
 
 	exports.googleAuthState = googleAuthState;
 	exports.usernameState = usernameState;
+	exports.userState = userState;
 	exports.usernameChange = usernameChange;
 
 /***/ },
-/* 189 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21775,9 +21929,46 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.socketInstance = exports.socketId = exports.subscribeOnce = exports.subscribe = exports.send = exports.connected = undefined;
+	exports.updateUsername = exports.deleteUser = exports.updateUser = undefined;
 
-	var _wsSession = __webpack_require__(190);
+	var _user = __webpack_require__(181);
+
+	var updateUser = function updateUser(user) {
+	  return {
+	    type: _user.UPDATE_USER,
+	    user: user
+	  };
+	};
+
+	var deleteUser = function deleteUser() {
+	  return {
+	    type: _user.DELETE_USER
+	  };
+	};
+
+	var updateUsername = function updateUsername(username) {
+	  return {
+	    type: _user.UPDATE_USERNAME,
+	    username: username
+	  };
+	};
+
+	exports.updateUser = updateUser;
+	exports.deleteUser = deleteUser;
+	exports.updateUsername = updateUsername;
+
+/***/ },
+/* 191 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.setSecure = exports.socketInstance = exports.socketId = exports.subscribeOnce = exports.subscribe = exports.send = exports.connected = undefined;
+
+	var _wsSession = __webpack_require__(192);
 
 	var _wsSession2 = _interopRequireDefault(_wsSession);
 
@@ -21791,15 +21982,17 @@
 	var subscribeOnce = _session.subscribeOnce;
 	var socketId = _session.socketId;
 	var socketInstance = _session.socketInstance;
+	var setSecure = _session.setSecure;
 	exports.connected = connected;
 	exports.send = send;
 	exports.subscribe = subscribe;
 	exports.subscribeOnce = subscribeOnce;
 	exports.socketId = socketId;
 	exports.socketInstance = socketInstance;
+	exports.setSecure = setSecure;
 
 /***/ },
-/* 190 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21807,19 +22000,22 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.default = session;
 
-	var _cookie = __webpack_require__(191);
+	var _cookie = __webpack_require__(193);
 
-	var _shortid = __webpack_require__(192);
+	var _shortid = __webpack_require__(194);
 
 	function session(url) {
 	  var connects = new Set();
 	  var subscribes = new Map();
 
+	  var secure = undefined;
+
 	  var cookieObj = (0, _cookie.parse)(document.cookie);
 	  var socketSessionId = cookieObj.socketSessionId;
 
-	  if (Boolean(socketSessionId) === false) {
+	  if (!socketSessionId) {
 	    socketSessionId = (0, _shortid.generate)();
 	    document.cookie = "socketSessionId=" + socketSessionId + ";";
 	  }
@@ -21828,7 +22024,7 @@
 
 	  socketInstance.addEventListener("open", function () {
 	    connects.forEach(function (callback) {
-	      callback();
+	      return callback();
 	    });
 	  });
 
@@ -21858,7 +22054,7 @@
 	      data[_key - 1] = arguments[_key];
 	    }
 
-	    socketInstance.send(JSON.stringify({ identifier: identifier, data: data }));
+	    socketInstance.send(JSON.stringify({ identifier: identifier, data: data, secure: secure }));
 	  }
 
 	  function subscribe(identifier, callback) {
@@ -21877,20 +22073,23 @@
 	    return unsubscribe;
 	  }
 
+	  function setSecure(pairs) {
+	    secure = pairs;
+	  }
+
 	  return {
 	    connected: connected,
 	    send: send,
 	    subscribe: subscribe,
 	    subscribeOnce: subscribeOnce,
 	    socketSessionId: socketSessionId,
-	    socketInstance: socketInstance
+	    socketInstance: socketInstance,
+	    setSecure: setSecure
 	  };
 	}
 
-	exports.default = session;
-
 /***/ },
-/* 191 */
+/* 193 */
 /***/ function(module, exports) {
 
 	/*!
@@ -22054,23 +22253,23 @@
 
 
 /***/ },
-/* 192 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	module.exports = __webpack_require__(193);
+	module.exports = __webpack_require__(195);
 
 
 /***/ },
-/* 193 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var alphabet = __webpack_require__(194);
-	var encode = __webpack_require__(196);
-	var decode = __webpack_require__(198);
-	var isValid = __webpack_require__(199);
+	var alphabet = __webpack_require__(196);
+	var encode = __webpack_require__(198);
+	var decode = __webpack_require__(200);
+	var isValid = __webpack_require__(201);
 
 	// Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
 	// This number should be updated every year or so to keep the generated id short.
@@ -22085,7 +22284,7 @@
 	// has a unique value for worker
 	// Note: I don't know if this is automatically set when using third
 	// party cluster solutions such as pm2.
-	var clusterWorkerId = __webpack_require__(200) || 0;
+	var clusterWorkerId = __webpack_require__(202) || 0;
 
 	// Counter is used when shortid is called multiple times in one second.
 	var counter;
@@ -22168,12 +22367,12 @@
 
 
 /***/ },
-/* 194 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomFromSeed = __webpack_require__(195);
+	var randomFromSeed = __webpack_require__(197);
 
 	var ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
 	var alphabet;
@@ -22272,7 +22471,7 @@
 
 
 /***/ },
-/* 195 */
+/* 197 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -22303,12 +22502,12 @@
 
 
 /***/ },
-/* 196 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomByte = __webpack_require__(197);
+	var randomByte = __webpack_require__(199);
 
 	function encode(lookup, number) {
 	    var loopCounter = 0;
@@ -22328,7 +22527,7 @@
 
 
 /***/ },
-/* 197 */
+/* 199 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -22348,11 +22547,11 @@
 
 
 /***/ },
-/* 198 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var alphabet = __webpack_require__(194);
+	var alphabet = __webpack_require__(196);
 
 	/**
 	 * Decode the id to get the version and worker
@@ -22371,11 +22570,11 @@
 
 
 /***/ },
-/* 199 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var alphabet = __webpack_require__(194);
+	var alphabet = __webpack_require__(196);
 
 	function isShortId(id) {
 	    if (!id || typeof id !== 'string' || id.length < 6 ) {
@@ -22396,7 +22595,7 @@
 
 
 /***/ },
-/* 200 */
+/* 202 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -22405,7 +22604,7 @@
 
 
 /***/ },
-/* 201 */
+/* 203 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -22460,7 +22659,7 @@
 	exports.usernameValidator = usernameValidator;
 
 /***/ },
-/* 202 */
+/* 204 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -22478,94 +22677,6 @@
 	  var top = height / 2 - popupHeight / 2 + dualScreenTop;
 	  return window.open(url, null, "\n    toolbar=no,\n    location=no,\n    directories=no,\n    status=no,\n    menubar=no,\n    scrollbars=no,\n    resizable=no,\n    copyhistory=no,\n    width=" + popupWidth + ",\n    height=" + popupHeight + ",\n    left=" + left + ",\n    top=" + top + "\n  ");
 	}
-
-/***/ },
-/* 203 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	exports.default = user;
-
-	var _user = __webpack_require__(204);
-
-	function user() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? {
-	    user: {
-	      id: NaN,
-	      email: "",
-	      token: "",
-	      username: ""
-	    }
-	  } : arguments[0];
-	  var action = arguments[1];
-
-	  switch (action.type) {
-	    case _user.UPDATE_USER:
-	      return _extends({}, state, {
-	        user: action.user
-	      });
-	    case _user.UPDATE_USERNAME:
-	      return _extends({}, state, {
-	        user: _extends({}, state.user, {
-	          username: action.username
-	        })
-	      });
-	    default:
-	      return state;
-	  }
-	}
-
-/***/ },
-/* 204 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var UPDATE_USER = "UPDATE_USER";
-	var UPDATE_USERNAME = "UPDATE_USERNAME";
-
-	exports.UPDATE_USER = UPDATE_USER;
-	exports.UPDATE_USERNAME = UPDATE_USERNAME;
-
-/***/ },
-/* 205 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.updateUsername = exports.updateUser = undefined;
-
-	var _user = __webpack_require__(204);
-
-	var updateUser = function updateUser(user) {
-	  return {
-	    type: _user.UPDATE_USER,
-	    user: user
-	  };
-	};
-
-	var updateUsername = function updateUsername(username) {
-	  return {
-	    type: _user.UPDATE_USERNAME,
-	    username: username
-	  };
-	};
-
-	exports.updateUser = updateUser;
-	exports.updateUsername = updateUsername;
 
 /***/ }
 /******/ ]);
