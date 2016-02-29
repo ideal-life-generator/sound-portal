@@ -6,7 +6,7 @@
     var socket = new WebSocket("ws://localhost:5001")
     socket.addEventListener("open", function (event) {
       socket.send(JSON.stringify({
-        identifier: "join.google-auth",
+        identifier: "authorization.google-drive.refresh-token.request",
         data: [ window.location.search.slice(6) ]
       }));
       window.close()

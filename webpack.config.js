@@ -8,14 +8,11 @@ module.exports = [
     entry: "./index.jsx",
     output: {
       path: path.join(__dirname, "app/build"),
+      publicPath: "build/",
       filename: "bundle.js"
     },
     module: {
       loaders: [
-        {
-          test: /\.html$/,
-          loader: "file"
-        },
         {
             test: /\.css$/,
           loader: "style!css"
@@ -41,6 +38,10 @@ module.exports = [
           }
         },
         {
+          test: /\.woff$/,
+          loader: "file"
+        },
+        {
           test: /\.json$/,
           loader: "json"
         }
@@ -48,7 +49,7 @@ module.exports = [
     },
     resolve: {
       root: path.resolve("./app"),
-      extensions: [ "", ".js", ".jsx", ".less" ]
+      extensions: [ "", ".js", ".jsx", ".less", ".woff" ]
     }
   }
 ];

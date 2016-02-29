@@ -15,18 +15,6 @@ import { parse as ursParse } from "url"
 import { parse as qsParse } from "qs"
 
 const httpServer = createServer(({ url }, res) => {
-  // if (url.includes("/google-access")) {
-  //   const { code } = qsParse(ursParse(url).query)
-  //   getRefresh(code, (access) => {
-  //     getToken(access.refresh_token, (token) => {
-  //       profile(token, ({ email }) => {
-  //         console.log(email)
-  //         console.log()
-  //       })
-  //     })
-  //   })
-  //   res.end(url)
-  // }
   const { pathname } = ursParse(url)
   switch (pathname) {
     case "/google-access":
@@ -49,7 +37,7 @@ const DB_SERVER_PATH = "postgres://red_dragon:12345678@localhost:5432/sound_port
 const SOCKET_SERVER_PATH = "localhost"
 const SOCKET_SERVER_PORT = 5001
 
-import join from "./server/api/join"
+import authorization from "./server/api/authorization"
 
 import {
   tokenVerification
@@ -77,7 +65,7 @@ pg.connect(DB_SERVER_PATH, (error, db, done) => {
       }
     })
     connections(({ current, currentSession, exceptCurrent, exceptCurrentSession, socketId, socketSessionId, socket }) => {
-      join(db, { currentSession, subscribe })
+      authorization(db, { currentSession, subscribe })
     })
   }
 })

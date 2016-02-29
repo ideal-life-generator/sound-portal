@@ -1,20 +1,28 @@
 import { randomBytes } from "crypto"
 import {
   validation,
+  usernameValidator,
   emailValidator,
-  usernameValidator
+  passwordValidator,
+  tokenVerificator,
+  refreshTokenValidator
 } from "./../utils/validation"
 
 // CREATE TABLE users (
 //   "id" SERIAL UNIQUE,
+//   "username" CITEXT UNIQUE,
 //   "email" CITEXT UNIQUE,
-//   "refresh_token" TEXT UNIQUE,
-//   "username" CITEXT UNIQUE
+//   "password" TINYTEXT,
+//   "refresh_token" TINYTEXT UNIQUE,
+//   "token" TINYTEXT UNIQUE
 // );
 
 function tokenVerification (db, { email, token }, callback) {
-  validation(emailValidator(email), (errors) => {
-    if (errors) { callback(errors) }
+  validation(
+    emailValidator(email),
+    tokenVerificator(token)
+  , (errors) => {
+    if (errors) callback(errors)
     else {
       db.query(`
         SELECT EXISTS(
@@ -22,7 +30,10 @@ function tokenVerification (db, { email, token }, callback) {
           WHERE email=$1 AND token=$2
         );
       `, [ email, token ], (error, result) => {
-        if (error) { callback([ 0 ]) }
+        if (error) {
+          console.log(error)
+          callback([ 0 ])
+        }
         else {
           const { rows: [ { exists } ] } = result
           callback(null, exists)
@@ -32,9 +43,144 @@ function tokenVerification (db, { email, token }, callback) {
   })
 }
 
+function usernameExist (db, username, callback) {
+  validation(usernameValidator(username), (errors) => {
+    if (errors) callback(errors)
+    else {
+      db.query(`
+        SELECT EXISTS(
+          SELECT 1 FROM users
+          WHERE username=$1
+        );
+      `, [ username ], (error, result) => {
+        if (error) {
+          console.log(error)
+          callback([ 0 ])
+        }
+        else {
+          const { rows: [ { exists } ] } = result
+          callback(null, exists)
+        }
+      })
+    }
+  })
+}
+
+function emailExist (db, email, callback) {
+  validation(emailValidator(email), (errors) => {
+    if (errors) callback(errors)
+    else {
+      db.query(`
+        SELECT EXISTS(
+          SELECT 1 FROM users
+          WHERE email=$1
+        );
+      `, [ email ], (error, result) => {
+        if (error) {
+          console.log(error)
+          callback([ 0 ])
+        }
+        else {
+          const { rows: [ { exists } ] } = result
+          callback(null, exists)
+        }
+      })
+    }
+  })
+}
+
+function refreshTokenExist (db, refresh_token, callback) {
+  validation(refreshTokenValidator(refresh_token), (errors) => {
+    if (errors) callback(errors)
+    else {
+      db.query(`
+        SELECT EXISTS(
+          SELECT 1 FROM users
+          WHERE refresh_token=$1
+        );
+      `, [ refresh_token ], (error, result) => {
+        if (error) {
+          console.log(error)
+          callback([ 0 ])
+        }
+        else {
+          const { rows: [ { exists } ] } = result
+          callback(null, exists)
+        }
+      })
+    }
+  })
+}
+
+function addUser (db, { username, email, password, refresh_token }, callback) {
+  validation(
+    usernameValidator(username),
+    emailValidator(email),
+    passwordValidator(password),
+    refreshTokenValidator(refresh_token),
+  (errors) => {
+    if (errors) callback(errors)
+    else {
+      const token = randomBytes(16, "base64").toString("base64")
+      db.query(`
+        INSERT INTO users (
+          "username",
+          "email",
+          "password",
+          "refresh_token",
+          "token"
+        )
+        SELECT
+          $1,
+          $2,
+          $3,
+          $4,
+          $5
+        WHERE NOT EXISTS (SELECT 1 FROM users WHERE username=$1 AND email=$2)
+        RETURNING id, username, email, refresh_token, token;
+      `, [ username, email, password, refresh_token, token ], (error, result) => {
+        if (error) {
+          console.log(error)
+          callback([ 0 ])
+        }
+        else {
+          const { rows: [ user ] } = result
+          callback(null, user)
+        }
+      })
+    }
+  })
+}
+
+function getUser (db, { username, password }, callback) {
+  validation(
+    usernameValidator(username),
+    passwordValidator(password)
+  , (errors) => {
+    if (errors) callback(errors)
+    else {
+      db.query(`
+        SELECT
+          id,
+          username,
+          email,
+          token
+        FROM users
+        WHERE username=$1 AND password=$2;
+      `, [ username, password ], (error, result) => {
+        if (error) { callback([ 0 ]) }
+        else {
+          const { rows: [ user ] } = result
+          callback(null, user)
+        }
+      })
+    }
+  })
+}
+
 function get (db, email, callback) {
   validation(emailValidator(email), (errors) => {
-    if (errors) { callback(errors) }
+    if (errors) callback(errors)
     else {
       db.query(`
         SELECT
@@ -55,7 +201,7 @@ function get (db, email, callback) {
 
 function deleteToken (db, { email }, callback) {
   validation(emailValidator(email), (errors) => {
-    if (errors) { callback(errors) }
+    if (errors) callback(errors)
     else {
       db.query(`
         UPDATE users SET
@@ -72,7 +218,7 @@ function deleteToken (db, { email }, callback) {
 
 function existEmail (db, email, callback) {
   validation(emailValidator(email), (errors) => {
-    if (errors) { callback(errors) }
+    if (errors) callback(errors)
     else {
       db.query(`
         SELECT EXISTS(SELECT 1 FROM users WHERE email=$1);
@@ -89,7 +235,7 @@ function existEmail (db, email, callback) {
 
 function insert (db, { email, refresh_token }, callback) {
   validation(emailValidator(email), (errors) => {
-    if (errors) { callback(errors) }
+    if (errors) callback(errors)
     else {
       const token = randomBytes(16, "base64").toString("base64")
       db.query(`
@@ -116,7 +262,7 @@ function insert (db, { email, refresh_token }, callback) {
 
 function update (db, { email, refresh_token }, callback) {
   validation(emailValidator(email), (errors) => {
-    if (errors) { callback(errors) }
+    if (errors) callback(errors)
     else {
       const token = randomBytes(16, "base64").toString("base64")
       db.query(`
@@ -138,7 +284,7 @@ function update (db, { email, refresh_token }, callback) {
 
 function existUsername (db, username, callback) {
   validation(usernameValidator(username), (errors) => {
-    if (errors) { callback(errors) }
+    if (errors) callback(errors)
     else {
       db.query(`
         SELECT EXISTS(
@@ -158,7 +304,7 @@ function existUsername (db, username, callback) {
 
 function updateUsername (db, { email, username }, callback) {
   validation(emailValidator(email), usernameValidator(username), (errors) => {
-    if (errors) { callback(errors) }
+    if (errors) callback(errors)
     else {
       const token = randomBytes(16, "base64").toString("base64")
       db.query(`
@@ -177,12 +323,10 @@ function updateUsername (db, { email, username }, callback) {
 }
 
 export {
-  get,
-  existEmail,
-  insert,
-  update,
   tokenVerification,
-  existUsername,
-  updateUsername,
-  deleteToken
+  usernameExist,
+  emailExist,
+  refreshTokenExist,
+  getUser,
+  addUser
 }

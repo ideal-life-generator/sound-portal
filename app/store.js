@@ -1,10 +1,10 @@
-import { createStore, combineReducers } from "redux"
-import join from "reducers/join"
-import user from "reducers/user"
+import { createStore, combineReducers, applyMiddleware } from "redux"
+import thunkMiddleware from "redux-thunk"
+import authorization from "reducers/authorization"
 
-const reducers = combineReducers({
-  join,
-  user
-})
-
-export default createStore(reducers)
+export default createStore(
+  combineReducers({
+    authorization
+  })
+  , applyMiddleware(thunkMiddleware)
+)
