@@ -1,6 +1,7 @@
 export function validation (...results) {
   const callback = results.pop()
   const returns = results.filter(result => result)
+
   if (returns.length) callback(returns)
   else callback(null)
 }
@@ -29,45 +30,44 @@ const MESSAGES = {
 export function errorMessages (code) {
   if (typeof code === "number") {
     const { [ code ]: message } = MESSAGES
-    if (message) {
-      return message
-    }
+
+    if (message) return message
   }
 }
 
 const USERNAME_VALIDATOR = /^[a-zA-Z0-9 ._-]{3,36}$/
 export function usernameValidator (username) {
   if (username) {
-    if (USERNAME_VALIDATOR.test(username)) { return }
-    else { return 52 }
+    if (USERNAME_VALIDATOR.test(username)) return
+    else return 52
   }
-  else { return 51 }
+  else return 51
 }
 
 const EMAIL_VALIDATOR = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 export function emailValidator (email) {
   if (email) {
-    if (EMAIL_VALIDATOR.test(email)) { return }
-    else { return 67 }
+    if (EMAIL_VALIDATOR.test(email)) return
+    else return 67
   }
-  else { return 66 }
+  else return 66
 }
 
 const PASSWORD_VALIDATOR = /^[a-zA-Z0-9 .!@#$%^&*_-]{6,36}$/
 export function passwordValidator (password) {
   if (password) {
-    if (PASSWORD_VALIDATOR.test(password)) { return }
-    else { return 82 }
+    if (PASSWORD_VALIDATOR.test(password)) return
+    else return 82
   }
-  else { return 81 }
+  else return 81
 }
 
 export function refreshTokenValidator (refresh_token) {
-  if (refresh_token) { return }
-  else { return 96 }
+  if (refresh_token) return
+  else return 96
 }
 
-export function tokenVerificator (token) {
-  if (token) { return }
-  else { return 111 }
+export function tokenValodator (token) {
+  if (token) return
+  else return 111
 }

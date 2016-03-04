@@ -1,10 +1,9 @@
-export default function popup (url, popupWidth, popupHeight) {
-  const dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left
-  const dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top
-  const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
-  const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
-  const left = width / 2 - popupWidth / 2 + dualScreenLeft
-  const top = height / 2 - popupHeight / 2 + dualScreenTop
+export default function popup (url, {
+  width,
+  height
+}) {
+  const left = window.screenLeft + window.innerWidth / 2 - width / 2
+  const top = window.screenTop + window.innerHeight / 2 - height / 2
   return window.open(url, null, `
     toolbar=no,
     location=no,
@@ -14,8 +13,8 @@ export default function popup (url, popupWidth, popupHeight) {
     scrollbars=no,
     resizable=no,
     copyhistory=no,
-    width=${popupWidth},
-    height=${popupHeight},
+    width=${width},
+    height=${height},
     left=${left},
     top=${top}
   `)

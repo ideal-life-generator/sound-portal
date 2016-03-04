@@ -2,7 +2,7 @@
   "name": "sound-portal",
   "version": "0.0.0",
   "scripts": {
-    "nodemon": "nodemon server --watch server.js --watch server --exec babel-node --presets es2015 --stage 2",
+    "nodemon": "nodemon server --watch server.js --watch server --exec babel-node",
     "webpack": "webpack --watch --progress"
   },
   "devDependencies": {

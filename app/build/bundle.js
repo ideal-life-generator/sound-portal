@@ -58,15 +58,19 @@
 
 	var _store2 = _interopRequireDefault(_store);
 
-	var _common = __webpack_require__(194);
+	var _common = __webpack_require__(197);
 
 	var _common2 = _interopRequireDefault(_common);
 
-	var _fontello = __webpack_require__(198);
+	var _fontello = __webpack_require__(201);
 
 	var _fontello2 = _interopRequireDefault(_fontello);
 
-	var _Main = __webpack_require__(201);
+	var _fontello3 = __webpack_require__(203);
+
+	var _fontello4 = _interopRequireDefault(_fontello3);
+
+	var _Main = __webpack_require__(204);
 
 	var _Main2 = _interopRequireDefault(_Main);
 
@@ -21019,15 +21023,13 @@
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _authorization = __webpack_require__(179);
+	var _reducers = __webpack_require__(179);
 
-	var _authorization2 = _interopRequireDefault(_authorization);
+	var _reducers2 = _interopRequireDefault(_reducers);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	exports.default = (0, _redux.createStore)((0, _redux.combineReducers)({
-	  authorization: _authorization2.default
-	}), (0, _redux.applyMiddleware)(_reduxThunk2.default));
+	exports.default = (0, _redux.createStore)(_reducers2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default));
 
 /***/ },
 /* 178 */
@@ -21058,96 +21060,101 @@
 	  value: true
 	});
 
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	var _redux = __webpack_require__(165);
 
-	exports.default = function () {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? {
-	    isActive: true,
-	    login: {
-	      isActive: true,
-	      username: "abc",
-	      usernameIsEmpty: false,
-	      usernameIsInvalid: false,
-	      password: "12345678",
-	      passwordIsEmpty: false,
-	      passwordIsInvalid: false
-	    },
-	    signup: {
-	      isActive: false,
-	      username: "wsadas",
-	      usernameIsEmpty: false,
-	      usernameIsInvalid: false,
-	      usernameIsUsed: false,
-	      email: "dsdf@ddsa.sadas",
-	      emailIsEmpty: false,
-	      emailIsInvalid: false,
-	      emailIsUsed: false,
-	      password: "dasdsadaas",
-	      passwordIsEmpty: false,
-	      passwordIsInvalid: false,
-	      refresh_token: "1/cJfrzMKaMOfzBtNSAd5OYM-DYP_YJtea74oWWrGyVikMEudVrK5jSpoR30zcRFq6",
-	      refreshTokenIsRequired: false,
-	      refreshTokenIsSuccess: true,
-	      refreshTokenIsUnsuccess: false
-	    }
-	  } : arguments[0];
-	  var action = arguments[1];
-
-	  switch (action.type) {
-	    case _authorization.AUTHORIZATION_ACTIVE:
-	      return {
-	        isActive: true,
-	        login: (0, _login2.default)(state.login, action),
-	        signup: (0, _signup2.default)(state.signup, action)
-	      };
-	    case _authorization.AUTHORIZATION_NOT_ACTIVE:
-	      return {
-	        isActive: false,
-	        login: (0, _login2.default)(state.login, action),
-	        signup: (0, _signup2.default)(state.signup, action)
-	      };
-	    default:
-	      return _extends({}, state, {
-	        login: (0, _login2.default)(state.login, action),
-	        signup: (0, _signup2.default)(state.signup, action)
-	      });
-	  }
-	};
-
-	var _authorization = __webpack_require__(180);
-
-	var _login = __webpack_require__(216);
+	var _login = __webpack_require__(180);
 
 	var _login2 = _interopRequireDefault(_login);
 
-	var _signup = __webpack_require__(218);
+	var _signup = __webpack_require__(196);
 
 	var _signup2 = _interopRequireDefault(_signup);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	exports.default = (0, _redux.combineReducers)({
+	  login: _login2.default,
+	  signup: _signup2.default
+	});
+
 /***/ },
 /* 180 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var AUTHORIZATION_ACTIVE = exports.AUTHORIZATION_ACTIVE = "AUTHORIZATION_ACTIVE";
-	var authorizationActive = exports.authorizationActive = function authorizationActive() {
-	  return {
-	    type: AUTHORIZATION_ACTIVE
-	  };
-	};
 
-	var AUTHORIZATION_NOT_ACTIVE = exports.AUTHORIZATION_NOT_ACTIVE = "AUTHORIZATION_NOT_ACTIVE";
-	var authorizationNotActive = exports.authorizationNotActive = function authorizationNotActive() {
-	  return {
-	    type: AUTHORIZATION_NOT_ACTIVE
-	  };
-	};
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	exports.default = login;
+
+	var _login = __webpack_require__(181);
+
+	function login() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? {
+	    isActive: false,
+	    isUsed: false,
+	    username: "abc",
+	    usernameIsEmpty: false,
+	    usernameIsInvalid: false,
+	    password: "12345678",
+	    passwordIsEmpty: false,
+	    passwordIsInvalid: false
+	  } : arguments[0];
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case _login.LOGIN_ACTIVE:
+	      return _extends({}, state, {
+	        isActive: true
+	      });
+	    case _login.LOGIN_NOT_ACTIVE:
+	      return _extends({}, state, {
+	        isActive: false
+	      });
+	    case _login.LOGIN_USED:
+	      return _extends({}, state, {
+	        isUsed: true
+	      });
+	    case _login.LOGIN_NOT_USED:
+	      return _extends({}, state, {
+	        isUsed: false
+	      });
+	    case _login.LOGIN_SET_USERNAME:
+	      return _extends({}, state, {
+	        username: action.username,
+	        usernameIsEmpty: false,
+	        usernameIsInvalid: false
+	      });
+	    case _login.LOGIN_USERNAME_SET_EMPTY:
+	      return _extends({}, state, {
+	        usernameIsEmpty: true
+	      });
+	    case _login.LOGIN_USERNAME_SET_INVALID:
+	      return _extends({}, state, {
+	        usernameIsInvalid: true
+	      });
+	    case _login.LOGIN_SET_PASSWORD:
+	      return _extends({}, state, {
+	        password: action.password,
+	        passwordIsEmpty: false,
+	        passwordIsInvalid: false
+	      });
+	    case _login.LOGIN_PASSWORD_SET_EMPTY:
+	      return _extends({}, state, {
+	        passwordIsEmpty: true
+	      });
+	    case _login.LOGIN_PASSWORD_SET_INVALID:
+	      return _extends({}, state, {
+	        passwordIsInvalid: true
+	      });
+	    default:
+	      return state;
+	  }
+	}
 
 /***/ },
 /* 181 */
@@ -21158,9 +21165,161 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.LOGIN_PASSWORD_SET_INVALID = exports.LOGIN_PASSWORD_SET_EMPTY = exports.LOGIN_SET_PASSWORD = exports.LOGIN_USERNAME_SET_INVALID = exports.LOGIN_USERNAME_SET_EMPTY = exports.LOGIN_SET_USERNAME = exports.LOGIN_NOT_USED = exports.LOGIN_USED = exports.LOGIN_NOT_ACTIVE = exports.LOGIN_ACTIVE = undefined;
+	exports.loginActive = loginActive;
+	exports.loginNotActive = loginNotActive;
+	exports.loginUsed = loginUsed;
+	exports.loginNotUsed = loginNotUsed;
+	exports.loginSetUsername = loginSetUsername;
+	exports.loginEmptyUsername = loginEmptyUsername;
+	exports.loginInvalidUsername = loginInvalidUsername;
+	exports.loginSetPassword = loginSetPassword;
+	exports.loginEmptyPassword = loginEmptyPassword;
+	exports.loginInvalidPassword = loginInvalidPassword;
+	exports.login = login;
+	exports.loginSubmit = loginSubmit;
+
+	var _connection = __webpack_require__(182);
+
+	var _validation = __webpack_require__(194);
+
+	var _signup = __webpack_require__(195);
+
+	var LOGIN_ACTIVE = exports.LOGIN_ACTIVE = "LOGIN_ACTIVE";
+	var LOGIN_NOT_ACTIVE = exports.LOGIN_NOT_ACTIVE = "LOGIN_NOT_ACTIVE";
+	var LOGIN_USED = exports.LOGIN_USED = "LOGIN_USED";
+	var LOGIN_NOT_USED = exports.LOGIN_NOT_USED = "LOGIN_NOT_USED";
+	var LOGIN_SET_USERNAME = exports.LOGIN_SET_USERNAME = "LOGIN_SET_USERNAME";
+	var LOGIN_USERNAME_SET_EMPTY = exports.LOGIN_USERNAME_SET_EMPTY = "LOGIN_USERNAME_SET_EMPTY";
+	var LOGIN_USERNAME_SET_INVALID = exports.LOGIN_USERNAME_SET_INVALID = "LOGIN_USERNAME_SET_INVALID";
+	var LOGIN_SET_PASSWORD = exports.LOGIN_SET_PASSWORD = "LOGIN_SET_PASSWORD";
+	var LOGIN_PASSWORD_SET_EMPTY = exports.LOGIN_PASSWORD_SET_EMPTY = "LOGIN_PASSWORD_SET_EMPTY";
+	var LOGIN_PASSWORD_SET_INVALID = exports.LOGIN_PASSWORD_SET_INVALID = "LOGIN_PASSWORD_SET_INVALID";
+
+	function loginActive() {
+	  return {
+	    type: LOGIN_ACTIVE
+	  };
+	}
+
+	function loginNotActive() {
+	  return {
+	    type: LOGIN_NOT_ACTIVE
+	  };
+	}
+
+	function loginUsed() {
+	  return {
+	    type: LOGIN_USED
+	  };
+	}
+
+	function loginNotUsed() {
+	  return {
+	    type: LOGIN_NOT_USED
+	  };
+	}
+
+	function loginSetUsername(username) {
+	  return {
+	    type: LOGIN_SET_USERNAME,
+	    username: username
+	  };
+	}
+
+	function loginEmptyUsername() {
+	  return {
+	    type: LOGIN_USERNAME_SET_EMPTY
+	  };
+	}
+
+	function loginInvalidUsername() {
+	  return {
+	    type: LOGIN_USERNAME_SET_INVALID
+	  };
+	}
+
+	function loginSetPassword(password) {
+	  return {
+	    type: LOGIN_SET_PASSWORD,
+	    password: password
+	  };
+	}
+
+	function loginEmptyPassword() {
+	  return {
+	    type: LOGIN_PASSWORD_SET_EMPTY
+	  };
+	}
+
+	function loginInvalidPassword() {
+	  return {
+	    type: LOGIN_PASSWORD_SET_INVALID
+	  };
+	}
+
+	function login() {
+	  return function (dispatch, getState) {
+	    var state = getState();
+	    var isLogin = state.login.isActive;
+	    var isSignup = state.signup.isActive;
+
+
+	    if (!isLogin) {
+	      dispatch(loginActive());
+	      dispatch(loginUsed());
+	    }
+
+	    if (isSignup) {
+	      dispatch((0, _signup.signupNotActive)());
+	      dispatch((0, _signup.signupNotUsed)());
+	    }
+	  };
+	}
+
+	function loginSubmit() {
+	  return function (dispatch, getState) {
+	    var state = getState();
+	    var _state$login = state.login;
+	    var username = _state$login.username;
+	    var password = _state$login.password;
+
+
+	    (0, _validation.validation)((0, _validation.usernameValidator)(username), (0, _validation.passwordValidator)(password), function (errors) {
+	      if (errors) {
+	        errors.forEach(function (error) {
+	          return console.log((0, _validation.errorMessages)(error));
+	        });
+
+	        if (errors.includes(51)) dispatch(loginEmptyUsername());
+
+	        if (errors.includes(52)) dispatch(loginInvalidUsername());
+
+	        if (errors.includes(81)) dispatch(loginEmptyPassword());
+
+	        if (errors.includes(82)) dispatch(loginInvalidPassword());
+	      } else {
+	        (0, _connection.send)("authorization.login.request", {
+	          username: username,
+	          password: password
+	        });
+	      }
+	    });
+	  };
+	}
+
+/***/ },
+/* 182 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	exports.setSecure = exports.socketInstance = exports.socketId = exports.subscribeOnce = exports.subscribe = exports.send = exports.connected = undefined;
 
-	var _wsSession = __webpack_require__(182);
+	var _wsSession = __webpack_require__(183);
 
 	var _wsSession2 = _interopRequireDefault(_wsSession);
 
@@ -21184,7 +21343,7 @@
 	exports.setSecure = setSecure;
 
 /***/ },
-/* 182 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21194,25 +21353,23 @@
 	});
 	exports.default = session;
 
-	var _cookie = __webpack_require__(183);
+	var _cookie = __webpack_require__(184);
 
-	var _shortid = __webpack_require__(184);
+	var _shortid = __webpack_require__(185);
 
 	function session(url) {
 	  var connects = new Set();
 	  var subscribes = new Map();
-
-	  var secure = undefined;
-
+	  var socketInstance = new WebSocket(url);
 	  var cookieObj = (0, _cookie.parse)(document.cookie);
+	  var secure = undefined;
 	  var socketSessionId = cookieObj.socketSessionId;
+
 
 	  if (!socketSessionId) {
 	    socketSessionId = (0, _shortid.generate)();
 	    document.cookie = "socketSessionId=" + socketSessionId + ";";
 	  }
-
-	  var socketInstance = new WebSocket(url);
 
 	  socketInstance.addEventListener("open", function () {
 	    connects.forEach(function (callback) {
@@ -21229,13 +21386,13 @@
 	    var data = _JSON$parse.data;
 
 	    var callback = subscribes.get(identifier);
-	    if (Boolean(callback)) {
-	      callback.apply(null, data);
-	    }
+
+	    if (callback) callback.apply(null, data);
 	  });
 
 	  function connected(callback) {
 	    connects.add(callback);
+
 	    return function unsubscribe() {
 	      connects.delete(callback);
 	    };
@@ -21246,22 +21403,31 @@
 	      data[_key - 1] = arguments[_key];
 	    }
 
-	    socketInstance.send(JSON.stringify({ identifier: identifier, data: data, secure: secure }));
+	    var messageJSON = JSON.stringify({
+	      identifier: identifier,
+	      data: data,
+	      secure: secure
+	    });
+
+	    socketInstance.send(messageJSON);
 	  }
 
 	  function subscribe(identifier, callback) {
 	    subscribes.set(identifier, callback);
+
 	    return function unsubscribe() {
 	      subscribes.delete(identifier);
 	    };
 	  }
 
 	  function subscribeOnce(identifier, callback) {
+	    var unsubscribe = subscribe(identifier, handler);
+
 	    function handler() {
 	      callback.apply(null, arguments);
 	      unsubscribe();
 	    }
-	    var unsubscribe = subscribe(identifier, handler);
+
 	    return unsubscribe;
 	  }
 
@@ -21281,7 +21447,7 @@
 	}
 
 /***/ },
-/* 183 */
+/* 184 */
 /***/ function(module, exports) {
 
 	/*!
@@ -21445,23 +21611,23 @@
 
 
 /***/ },
-/* 184 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	module.exports = __webpack_require__(185);
-
-
-/***/ },
 /* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+	module.exports = __webpack_require__(186);
 
-	var alphabet = __webpack_require__(186);
-	var encode = __webpack_require__(188);
-	var decode = __webpack_require__(190);
-	var isValid = __webpack_require__(191);
+
+/***/ },
+/* 186 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var alphabet = __webpack_require__(187);
+	var encode = __webpack_require__(189);
+	var decode = __webpack_require__(191);
+	var isValid = __webpack_require__(192);
 
 	// Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
 	// This number should be updated every year or so to keep the generated id short.
@@ -21476,7 +21642,7 @@
 	// has a unique value for worker
 	// Note: I don't know if this is automatically set when using third
 	// party cluster solutions such as pm2.
-	var clusterWorkerId = __webpack_require__(192) || 0;
+	var clusterWorkerId = __webpack_require__(193) || 0;
 
 	// Counter is used when shortid is called multiple times in one second.
 	var counter;
@@ -21559,12 +21725,12 @@
 
 
 /***/ },
-/* 186 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomFromSeed = __webpack_require__(187);
+	var randomFromSeed = __webpack_require__(188);
 
 	var ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
 	var alphabet;
@@ -21663,7 +21829,7 @@
 
 
 /***/ },
-/* 187 */
+/* 188 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21694,12 +21860,12 @@
 
 
 /***/ },
-/* 188 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomByte = __webpack_require__(189);
+	var randomByte = __webpack_require__(190);
 
 	function encode(lookup, number) {
 	    var loopCounter = 0;
@@ -21719,7 +21885,7 @@
 
 
 /***/ },
-/* 189 */
+/* 190 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21739,11 +21905,11 @@
 
 
 /***/ },
-/* 190 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var alphabet = __webpack_require__(186);
+	var alphabet = __webpack_require__(187);
 
 	/**
 	 * Decode the id to get the version and worker
@@ -21762,11 +21928,11 @@
 
 
 /***/ },
-/* 191 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var alphabet = __webpack_require__(186);
+	var alphabet = __webpack_require__(187);
 
 	function isShortId(id) {
 	    if (!id || typeof id !== 'string' || id.length < 6 ) {
@@ -21787,7 +21953,7 @@
 
 
 /***/ },
-/* 192 */
+/* 193 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21796,7 +21962,7 @@
 
 
 /***/ },
-/* 193 */
+/* 194 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -21820,6 +21986,7 @@
 	  var returns = results.filter(function (result) {
 	    return result;
 	  });
+
 	  if (returns.length) callback(returns);else callback(null);
 	}
 
@@ -21848,78 +22015,400 @@
 	  if (typeof code === "number") {
 	    var message = MESSAGES[code];
 
-	    if (message) {
-	      return message;
-	    }
+
+	    if (message) return message;
 	  }
 	}
 
 	var USERNAME_VALIDATOR = /^[a-zA-Z0-9 ._-]{3,36}$/;
 	function usernameValidator(username) {
 	  if (username) {
-	    if (USERNAME_VALIDATOR.test(username)) {
-	      return;
-	    } else {
-	      return 52;
-	    }
-	  } else {
-	    return 51;
-	  }
+	    if (USERNAME_VALIDATOR.test(username)) return;else return 52;
+	  } else return 51;
 	}
 
 	var EMAIL_VALIDATOR = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	function emailValidator(email) {
 	  if (email) {
-	    if (EMAIL_VALIDATOR.test(email)) {
-	      return;
-	    } else {
-	      return 67;
-	    }
-	  } else {
-	    return 66;
-	  }
+	    if (EMAIL_VALIDATOR.test(email)) return;else return 67;
+	  } else return 66;
 	}
 
 	var PASSWORD_VALIDATOR = /^[a-zA-Z0-9 .!@#$%^&*_-]{6,36}$/;
 	function passwordValidator(password) {
 	  if (password) {
-	    if (PASSWORD_VALIDATOR.test(password)) {
-	      return;
-	    } else {
-	      return 82;
-	    }
-	  } else {
-	    return 81;
-	  }
+	    if (PASSWORD_VALIDATOR.test(password)) return;else return 82;
+	  } else return 81;
 	}
 
 	function refreshTokenValidator(refresh_token) {
-	  if (refresh_token) {
-	    return;
-	  } else {
-	    return 96;
-	  }
+	  if (refresh_token) return;else return 96;
 	}
 
 	function tokenVerificator(token) {
-	  if (token) {
-	    return;
-	  } else {
-	    return 111;
+	  if (token) return;else return 111;
+	}
+
+/***/ },
+/* 195 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.SIGNUP_PASSWORD_SET_INVALID = exports.SIGNUP_PASSWORD_SET_EMPTY = exports.SIGNUP_SET_PASSWORD = exports.SIGNUP_EMAIL_SET_USED = exports.SIGNUP_EMAIL_SET_INVALID = exports.SIGNUP_EMAIL_SET_EMPTY = exports.SIGNUP_SET_EMAIL = exports.SIGNUP_USERNAME_SET_USED = exports.SIGNUP_USERNAME_SET_INVALID = exports.SIGNUP_USERNAME_SET_EMPTY = exports.SIGNUP_SET_USERNAME = exports.SIGNUP_REFRESH_TOKEN_SET_UNSUCCESS = exports.SIGNUP_REFRESH_TOKEN_SET_REQUIRED = exports.SIGNUP_SET_REFRESH_TOKEN = exports.SIGNUP_NOT_USED = exports.SIGNUP_USED = exports.SIGNUP_NOT_ACTIVE = exports.SIGNUP_ACTIVE = undefined;
+	exports.signupActive = signupActive;
+	exports.signupNotActive = signupNotActive;
+	exports.signupUsed = signupUsed;
+	exports.signupNotUsed = signupNotUsed;
+	exports.signupSetRefreshToken = signupSetRefreshToken;
+	exports.signupResfreshTokenRequired = signupResfreshTokenRequired;
+	exports.signupResfreshTokenUnsuccess = signupResfreshTokenUnsuccess;
+	exports.signupSetUsername = signupSetUsername;
+	exports.signupEmptyUsername = signupEmptyUsername;
+	exports.signupInvalidUsername = signupInvalidUsername;
+	exports.signupUsedUsername = signupUsedUsername;
+	exports.signupSetEmail = signupSetEmail;
+	exports.signupEmptyEmail = signupEmptyEmail;
+	exports.signupInvalidEmail = signupInvalidEmail;
+	exports.signupUsedEmail = signupUsedEmail;
+	exports.signupSetPassword = signupSetPassword;
+	exports.signupEmptyPassword = signupEmptyPassword;
+	exports.signupInvalidPassword = signupInvalidPassword;
+	exports.signup = signup;
+	exports.signupSubmit = signupSubmit;
+
+	var _connection = __webpack_require__(182);
+
+	var _validation = __webpack_require__(194);
+
+	var _login = __webpack_require__(181);
+
+	var SIGNUP_ACTIVE = exports.SIGNUP_ACTIVE = "SIGNUP_ACTIVE";
+	var SIGNUP_NOT_ACTIVE = exports.SIGNUP_NOT_ACTIVE = "SIGNUP_NOT_ACTIVE";
+	var SIGNUP_USED = exports.SIGNUP_USED = "SIGNUP_USED";
+	var SIGNUP_NOT_USED = exports.SIGNUP_NOT_USED = "SIGNUP_NOT_USED";
+	var SIGNUP_SET_REFRESH_TOKEN = exports.SIGNUP_SET_REFRESH_TOKEN = "SIGNUP_SET_REFRESH_TOKEN";
+	var SIGNUP_REFRESH_TOKEN_SET_REQUIRED = exports.SIGNUP_REFRESH_TOKEN_SET_REQUIRED = "SIGNUP_REFRESH_TOKEN_SET_REQUIRED";
+	var SIGNUP_REFRESH_TOKEN_SET_UNSUCCESS = exports.SIGNUP_REFRESH_TOKEN_SET_UNSUCCESS = "SIGNUP_REFRESH_TOKEN_SET_UNSUCCESS";
+	var SIGNUP_SET_USERNAME = exports.SIGNUP_SET_USERNAME = "SIGNUP_SET_USERNAME";
+	var SIGNUP_USERNAME_SET_EMPTY = exports.SIGNUP_USERNAME_SET_EMPTY = "SIGNUP_USERNAME_SET_EMPTY";
+	var SIGNUP_USERNAME_SET_INVALID = exports.SIGNUP_USERNAME_SET_INVALID = "SIGNUP_USERNAME_SET_INVALID";
+	var SIGNUP_USERNAME_SET_USED = exports.SIGNUP_USERNAME_SET_USED = "SIGNUP_USERNAME_SET_USED";
+	var SIGNUP_SET_EMAIL = exports.SIGNUP_SET_EMAIL = "SIGNUP_SET_EMAIL";
+	var SIGNUP_EMAIL_SET_EMPTY = exports.SIGNUP_EMAIL_SET_EMPTY = "SIGNUP_EMAIL_SET_EMPTY";
+	var SIGNUP_EMAIL_SET_INVALID = exports.SIGNUP_EMAIL_SET_INVALID = "SIGNUP_EMAIL_SET_INVALID";
+	var SIGNUP_EMAIL_SET_USED = exports.SIGNUP_EMAIL_SET_USED = "SIGNUP_EMAIL_SET_USED";
+	var SIGNUP_SET_PASSWORD = exports.SIGNUP_SET_PASSWORD = "SIGNUP_SET_PASSWORD";
+	var SIGNUP_PASSWORD_SET_EMPTY = exports.SIGNUP_PASSWORD_SET_EMPTY = "SIGNUP_PASSWORD_SET_EMPTY";
+	var SIGNUP_PASSWORD_SET_INVALID = exports.SIGNUP_PASSWORD_SET_INVALID = "SIGNUP_PASSWORD_SET_INVALID";
+
+	function signupActive() {
+	  return {
+	    type: SIGNUP_ACTIVE
+	  };
+	}
+
+	function signupNotActive() {
+	  return {
+	    type: SIGNUP_NOT_ACTIVE
+	  };
+	}
+
+	function signupUsed() {
+	  return {
+	    type: SIGNUP_USED
+	  };
+	}
+
+	function signupNotUsed() {
+	  return {
+	    type: SIGNUP_NOT_USED
+	  };
+	}
+
+	function signupSetRefreshToken(refresh_token) {
+	  return {
+	    type: SIGNUP_SET_REFRESH_TOKEN,
+	    refresh_token: refresh_token
+	  };
+	}
+
+	function signupResfreshTokenRequired() {
+	  return {
+	    type: SIGNUP_REFRESH_TOKEN_SET_REQUIRED
+	  };
+	}
+
+	function signupResfreshTokenUnsuccess() {
+	  return {
+	    type: SIGNUP_REFRESH_TOKEN_SET_UNSUCCESS
+	  };
+	}
+
+	function signupSetUsername(username) {
+	  return {
+	    type: SIGNUP_SET_USERNAME,
+	    username: username
+	  };
+	}
+
+	function signupEmptyUsername() {
+	  return {
+	    type: SIGNUP_USERNAME_SET_EMPTY
+	  };
+	}
+
+	function signupInvalidUsername() {
+	  return {
+	    type: SIGNUP_USERNAME_SET_INVALID
+	  };
+	}
+
+	function signupUsedUsername() {
+	  return {
+	    type: SIGNUP_USERNAME_SET_USED
+	  };
+	}
+
+	function signupSetEmail(email) {
+	  return {
+	    type: SIGNUP_SET_EMAIL,
+	    email: email
+	  };
+	}
+
+	function signupEmptyEmail() {
+	  return {
+	    type: SIGNUP_EMAIL_SET_EMPTY
+	  };
+	}
+
+	function signupInvalidEmail() {
+	  return {
+	    type: SIGNUP_EMAIL_SET_INVALID
+	  };
+	}
+
+	function signupUsedEmail() {
+	  return {
+	    type: SIGNUP_EMAIL_SET_USED
+	  };
+	}
+
+	function signupSetPassword(password) {
+	  return {
+	    type: SIGNUP_SET_PASSWORD,
+	    password: password
+	  };
+	}
+
+	function signupEmptyPassword() {
+	  return {
+	    type: SIGNUP_PASSWORD_SET_EMPTY
+	  };
+	}
+
+	function signupInvalidPassword() {
+	  return {
+	    type: SIGNUP_PASSWORD_SET_INVALID
+	  };
+	}
+
+	function signup() {
+	  return function (dispatch, getState) {
+	    var state = getState();
+	    var isLogin = state.login.isActive;
+	    var isSignup = state.signup.isActive;
+
+
+	    if (!isSignup) {
+	      dispatch(signupActive());
+	      dispatch(signupUsed());
+	    }
+
+	    if (isLogin) {
+	      dispatch((0, _login.loginNotActive)());
+	      dispatch((0, _login.loginNotUsed)());
+	    }
+	  };
+	}
+
+	function signupSubmit() {
+	  return function (dispatch, getState) {
+	    var state = getState();
+	    var _state$signup = state.signup;
+	    var username = _state$signup.username;
+	    var email = _state$signup.email;
+	    var password = _state$signup.password;
+	    var refresh_token = _state$signup.refresh_token;
+
+
+	    (0, _validation.validation)((0, _validation.usernameValidator)(username), (0, _validation.emailValidator)(email), (0, _validation.passwordValidator)(password), (0, _validation.refreshTokenValidator)(refresh_token), function (errors) {
+	      if (errors) {
+	        errors.forEach(function (error) {
+	          return console.log((0, _validation.errorMessages)(error));
+	        });
+
+	        if (errors.includes(51)) dispatch(signupEmptyUsername());
+	        if (errors.includes(52)) dispatch(signupInvalidUsername());
+	        if (errors.includes(66)) dispatch(signupEmptyEmail());
+	        if (errors.includes(67)) dispatch(signupInvalidEmail());
+	        if (errors.includes(81)) dispatch(signupEmptyPassword());
+	        if (errors.includes(82)) dispatch(signupInvalidPassword());
+	        if (errors.includes(96)) dispatch(signupResfreshTokenRequired());
+	      } else {
+	        (0, _connection.send)("authorization.signin.request", {
+	          username: username,
+	          email: email,
+	          password: password,
+	          refresh_token: refresh_token
+	        });
+	      }
+	    });
+	  };
+	}
+
+/***/ },
+/* 196 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	exports.default = signup;
+
+	var _signup = __webpack_require__(195);
+
+	function signup() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? {
+	    isActive: true,
+	    isUsed: true,
+	    username: "wsadas",
+	    usernameIsEmpty: false,
+	    usernameIsInvalid: false,
+	    usernameIsUsed: false,
+	    email: "dsdf@ddsa.sadas",
+	    emailIsEmpty: false,
+	    emailIsInvalid: false,
+	    emailIsUsed: false,
+	    password: "dasdsadaas",
+	    passwordIsEmpty: false,
+	    passwordIsInvalid: false,
+	    refresh_token: "1/cJfrzMKaMOfzBtNSAd5OYM-DYP_YJtea74oWWrGyVikMEudVrK5jSpoR30zcRFq6",
+	    refreshTokenIsRequired: false,
+	    refreshTokenIsSuccess: true,
+	    refreshTokenIsUnsuccess: false
+	  } : arguments[0];
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case _signup.SIGNUP_ACTIVE:
+	      return _extends({}, state, {
+	        isActive: true
+	      });
+	    case _signup.SIGNUP_NOT_ACTIVE:
+	      return _extends({}, state, {
+	        isActive: false
+	      });
+	    case _signup.SIGNUP_USED:
+	      return _extends({}, state, {
+	        isUsed: true
+	      });
+	    case _signup.SIGNUP_NOT_USED:
+	      return _extends({}, state, {
+	        isUsed: false
+	      });
+	    case _signup.SIGNUP_SET_REFRESH_TOKEN:
+	      return _extends({}, state, {
+	        refresh_token: action.refresh_token,
+	        refreshTokenIsSuccess: true,
+	        refreshTokenIsRequired: false,
+	        refreshTokenIsUnsuccess: false
+	      });
+	    case _signup.SIGNUP_REFRESH_TOKEN_SET_REQUIRED:
+	      return _extends({}, state, {
+	        refreshTokenIsRequired: true
+	      });
+	    case _signup.SIGNUP_REFRESH_TOKEN_SET_UNSUCCESS:
+	      return _extends({}, state, {
+	        refreshTokenIsUnsuccess: true
+	      });
+	    case _signup.SIGNUP_SET_USERNAME:
+	      return _extends({}, state, {
+	        username: action.username,
+	        usernameIsEmpty: false,
+	        usernameIsInvalid: false,
+	        usernameIsUsed: false
+	      });
+	    case _signup.SIGNUP_USERNAME_SET_EMPTY:
+	      return _extends({}, state, {
+	        usernameIsEmpty: true
+	      });
+	    case _signup.SIGNUP_USERNAME_SET_INVALID:
+	      return _extends({}, state, {
+	        usernameIsInvalid: true
+	      });
+	    case _signup.SIGNUP_USERNAME_SET_USED:
+	      return _extends({}, state, {
+	        usernameIsUsed: true
+	      });
+	    case _signup.SIGNUP_SET_EMAIL:
+	      return _extends({}, state, {
+	        email: action.email,
+	        emailIsEmpty: false,
+	        emailIsInvalid: false,
+	        emailIsUsed: false
+	      });
+	    case _signup.SIGNUP_EMAIL_SET_EMPTY:
+	      return _extends({}, state, {
+	        emailIsEmpty: true
+	      });
+	    case _signup.SIGNUP_EMAIL_SET_INVALID:
+	      return _extends({}, state, {
+	        emailIsInvalid: true
+	      });
+	    case _signup.SIGNUP_EMAIL_SET_USED:
+	      return _extends({}, state, {
+	        emailIsUsed: true
+	      });
+	    case _signup.SIGNUP_SET_PASSWORD:
+	      return _extends({}, state, {
+	        password: action.password,
+	        passwordIsEmpty: false,
+	        passwordIsInvalid: false
+	      });
+	    case _signup.SIGNUP_PASSWORD_SET_EMPTY:
+	      return _extends({}, state, {
+	        passwordIsEmpty: true
+	      });
+	    case _signup.SIGNUP_PASSWORD_SET_INVALID:
+	      return _extends({}, state, {
+	        passwordIsInvalid: true
+	      });
+	    default:
+	      return state;
 	  }
 	}
 
 /***/ },
-/* 194 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(195);
+	var content = __webpack_require__(198);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(197)(content, {});
+	var update = __webpack_require__(200)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -21936,10 +22425,10 @@
 	}
 
 /***/ },
-/* 195 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(196)();
+	exports = module.exports = __webpack_require__(199)();
 	// imports
 
 
@@ -21950,7 +22439,7 @@
 
 
 /***/ },
-/* 196 */
+/* 199 */
 /***/ function(module, exports) {
 
 	/*
@@ -22006,7 +22495,7 @@
 
 
 /***/ },
-/* 197 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -22260,16 +22749,16 @@
 
 
 /***/ },
-/* 198 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(199);
+	var content = __webpack_require__(202);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(197)(content, {});
+	var update = __webpack_require__(200)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -22286,27 +22775,27 @@
 	}
 
 /***/ },
-/* 199 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(196)();
+	exports = module.exports = __webpack_require__(199)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "@font-face {\n  font-family: \"fontello\";\n  src: url(" + __webpack_require__(200) + ") format(\"woff\");\n  font-weight: normal;\n  font-style: normal;\n}\n \n[class^=\"icon-\"]:before, [class*=\" icon-\"]:before {\n  font-family: \"fontello\";\n  font-style: normal;\n  font-weight: normal;\n  text-align: center;\n}\n \n.icon-power:before { content: \"\\E801\"; }", ""]);
+	exports.push([module.id, "@font-face {\n  font-family: \"fontello\";\n  src: url(" + __webpack_require__(203) + ") format(\"woff\");\n  font-weight: normal;\n  font-style: normal;\n}\n \n[class^=\"icon-\"]:before, [class*=\" icon-\"]:before {\n  font-family: \"fontello\";\n  font-style: normal;\n  font-weight: normal;\n  text-align: center;\n}\n \n.icon-power:before { content: \"\\E801\"; }", ""]);
 
 	// exports
 
 
 /***/ },
-/* 200 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "85c2cba4e9e1cd7ebc2cf479518c536b.woff";
 
 /***/ },
-/* 201 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22320,53 +22809,16 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _UserPanel = __webpack_require__(202);
+	var _UserPanel = __webpack_require__(205);
 
 	var _UserPanel2 = _interopRequireDefault(_UserPanel);
 
-	var _main = __webpack_require__(203);
+	var _main = __webpack_require__(225);
 
 	var _main2 = _interopRequireDefault(_main);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// class Box extends Component {
-	//   render () {
-	//     return (
-	//       <div>DIV</div>
-	//     )
-	//   }
-	// }
-
-	// const ConnectedBox = connect()(Box)
-
-	// class AnimatedBox extends ConnectedBox {
-	//   componentWillEnter () {
-	//     console.log(this)
-	//     console.log("componentWillEnter")
-	//   }
-	// }
-
-	// export default React.createClass({
-	//   getInitialState () {
-	//     return {
-	//       active: false
-	//     }
-	//   },
-	//   render () {
-	//     return (
-	//       <div className="main">
-	//         <TransitionGroup>
-	//           {this.state.active ? <AnimatedBox /> : null}
-	//         </TransitionGroup>
-	//         <button onClick={() => this.setState({ active: !this.state.active })}>Click</button>
-	//       </div>
-	//     )
-	//   }
-	// })
-
-	// import TransitionGroup from "react-addons-transition-group"
-	// import { connect } from "react-redux"
 	function Main() {
 	  return _react2.default.createElement(
 	    "div",
@@ -22376,7 +22828,7 @@
 	}
 
 /***/ },
-/* 202 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22385,534 +22837,58 @@
 	  value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _redux = __webpack_require__(165);
-
 	var _reactRedux = __webpack_require__(159);
-
-	var _classnames = __webpack_require__(205);
-
-	var _classnames2 = _interopRequireDefault(_classnames);
 
 	var _reactAddonsCssTransitionGroup = __webpack_require__(206);
 
 	var _reactAddonsCssTransitionGroup2 = _interopRequireDefault(_reactAddonsCssTransitionGroup);
 
-	var _userPanel = __webpack_require__(213);
+	var _MainButton = __webpack_require__(213);
+
+	var _MainButton2 = _interopRequireDefault(_MainButton);
+
+	var _Authorization = __webpack_require__(215);
+
+	var _Authorization2 = _interopRequireDefault(_Authorization);
+
+	var _userPanel = __webpack_require__(223);
 
 	var _userPanel2 = _interopRequireDefault(_userPanel);
 
-	var _connection = __webpack_require__(181);
-
-	var _popup = __webpack_require__(215);
-
-	var _popup2 = _interopRequireDefault(_popup);
-
-	var _authorization = __webpack_require__(180);
-
-	var _login = __webpack_require__(219);
-
-	var _signup = __webpack_require__(220);
-
-	var _combiners = __webpack_require__(223);
-
-	var _validation = __webpack_require__(193);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var MainButton = function MainButton(_ref) {
+	function UserPanel(_ref) {
 	  var isAuthorization = _ref.isAuthorization;
-	  var isLogin = _ref.isLogin;
-	  var isSignup = _ref.isSignup;
-	  var authorizationActive = _ref.authorizationActive;
-	  var authorizationNotActive = _ref.authorizationNotActive;
-	  return _react2.default.createElement("button", {
-	    className: (0, _classnames2.default)("main-button icon-power", { "is-authorization": isAuthorization, "is-login": isLogin, "is-signup": isSignup }),
-	    onClick: function onClick(event) {
-	      event.preventDefault();
-	      if (!isAuthorization) authorizationActive();else authorizationNotActive();
-	    } });
-	};
 
-	var MainButtonConnected = (0, _reactRedux.connect)(function (_ref2) {
-	  var authorization = _ref2.authorization;
-	  var _ref2$authorization = _ref2.authorization;
-	  var isAuthorization = _ref2$authorization.isActive;
-	  var isLogin = _ref2$authorization.login.isActive;
-	  var isSignup = _ref2$authorization.signup.isActive;
-
-	  return { isAuthorization: isAuthorization, isLogin: isLogin, isSignup: isSignup };
-	}, function (dispatch) {
-	  return (0, _redux.bindActionCreators)({ authorizationActive: _authorization.authorizationActive, authorizationNotActive: _authorization.authorizationNotActive }, dispatch);
-	})(MainButton);
-
-	var googleAuthPopup = function googleAuthPopup() {
-	  (0, _popup2.default)("https://accounts.google.com/o/oauth2/auth?" + "client_id=205946784859-n4ckbriqes7j9etrh7dvm9608qr958qs.apps.googleusercontent.com&" + "scope=email&" + "access_type=offline&" + "response_type=code&" + "prompt=consent&" + "redirect_uri=http://localhost:5000/google-access", 500, 350);
-	};
-
-	var GoogleDrive = function (_Component) {
-	  _inherits(GoogleDrive, _Component);
-
-	  function GoogleDrive() {
-	    _classCallCheck(this, GoogleDrive);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(GoogleDrive).apply(this, arguments));
-	  }
-
-	  _createClass(GoogleDrive, [{
-	    key: "componentDidMount",
-	    value: function componentDidMount() {
-	      var _props = this.props;
-	      var update = _props.update;
-	      var unsuccess = _props.unsuccess;
-
-	      (0, _connection.subscribe)("authorization.google-drive.refresh-token.response", function (errors, refresh_token) {
-	        if (errors) unsuccess();else update(refresh_token);
-	      });
-	    }
-	  }, {
-	    key: "render",
-	    value: function render() {
-	      var _props2 = this.props;
-	      var isSuccess = _props2.isSuccess;
-	      var isRequired = _props2.isRequired;
-	      var isUnsuccess = _props2.isUnsuccess;
-
-	      var googleDriveClasses = (0, _classnames2.default)("google-drive", {
-	        "is-success": isSuccess,
-	        "is-required": isRequired,
-	        "is-unsuccess": isUnsuccess
-	      });
-	      return _react2.default.createElement(
-	        "button",
-	        {
-	          className: googleDriveClasses,
-	          onClick: function onClick(event) {
-	            event.preventDefault();
-	            googleAuthPopup();
-	          } },
-	        "Google Drive"
-	      );
-	    }
-	  }]);
-
-	  return GoogleDrive;
-	}(_react.Component);
-
-	var GoogleDriveConnected = (0, _reactRedux.connect)(function (_ref3) {
-	  var _ref3$authorization$s = _ref3.authorization.signup;
-	  var isSuccess = _ref3$authorization$s.refreshTokenIsSuccess;
-	  var isRequired = _ref3$authorization$s.refreshTokenIsRequired;
-	  var isUnsuccess = _ref3$authorization$s.refreshTokenIsUnsuccess;
-	  return { isSuccess: isSuccess, isRequired: isRequired, isUnsuccess: isUnsuccess };
-	}, function (dispatch) {
-	  return (0, _redux.bindActionCreators)({ update: _signup.signupSetRefreshToken, unsuccess: _signup.signupResfreshTokenUnsuccess }, dispatch);
-	})(GoogleDrive);
-
-	function Username(_ref4) {
-	  var isLogin = _ref4.isLogin;
-	  var valueInLogin = _ref4.valueInLogin;
-	  var isEmptyInLogin = _ref4.isEmptyInLogin;
-	  var isInvalidInLogin = _ref4.isInvalidInLogin;
-	  var updateInLogin = _ref4.updateInLogin;
-	  var isSignup = _ref4.isSignup;
-	  var valueInSignup = _ref4.valueInSignup;
-	  var isEmptyInSignup = _ref4.isEmptyInSignup;
-	  var isInvalidInSignup = _ref4.isInvalidInSignup;
-	  var isUsedInSignup = _ref4.isUsedInSignup;
-	  var isUserInSignup = _ref4.isUserInSignup;
-	  var updateInSignup = _ref4.updateInSignup;
-
-	  var classes = undefined;
-	  var value = undefined;
-	  if (isLogin) {
-	    classes = (0, _classnames2.default)("field", { "is-empty": isEmptyInLogin, "is-invalid": isInvalidInLogin });
-	    value = valueInLogin;
-	  }
-	  if (isSignup) {
-	    classes = (0, _classnames2.default)("field", { "is-empty": isEmptyInSignup, "is-invalid": isInvalidInSignup, "is-used": isUsedInSignup });
-	    value = valueInSignup;
-	  }
-	  return _react2.default.createElement("input", {
-	    className: classes,
-	    type: "text",
-	    onChange: function onChange(_ref5) {
-	      var value = _ref5.target.value;
-
-	      if (isLogin) updateInLogin(value);
-	      if (isSignup) updateInSignup(value);
-	    },
-	    value: value,
-	    placeholder: "Username" });
-	}
-
-	var UsernameConnected = (0, _reactRedux.connect)(function (_ref6) {
-	  var _ref6$authorization = _ref6.authorization;
-	  var _ref6$authorization$l = _ref6$authorization.login;
-	  var isLogin = _ref6$authorization$l.isActive;
-	  var valueInLogin = _ref6$authorization$l.username;
-	  var isEmptyInLogin = _ref6$authorization$l.usernameIsEmpty;
-	  var isInvalidInLogin = _ref6$authorization$l.usernameIsInvalid;
-	  var _ref6$authorization$s = _ref6$authorization.signup;
-	  var isSignup = _ref6$authorization$s.isActive;
-	  var valueInSignup = _ref6$authorization$s.username;
-	  var isEmptyInSignup = _ref6$authorization$s.usernameIsEmpty;
-	  var isInvalidInSignup = _ref6$authorization$s.usernameIsInvalid;
-	  var isUsedInSignup = _ref6$authorization$s.usernameIsUsed;
-	  return { isLogin: isLogin, valueInLogin: valueInLogin, isEmptyInLogin: isEmptyInLogin, isInvalidInLogin: isInvalidInLogin, isSignup: isSignup, valueInSignup: valueInSignup, isEmptyInSignup: isEmptyInSignup, isInvalidInSignup: isInvalidInSignup, isUsedInSignup: isUsedInSignup };
-	}, function (dispatch) {
-	  return (0, _redux.bindActionCreators)({ updateInLogin: _login.loginSetUsername, updateInSignup: _signup.signupSetUsername }, dispatch);
-	})(Username);
-
-	var Email = function Email(_ref7) {
-	  var value = _ref7.value;
-	  var isEmpty = _ref7.isEmpty;
-	  var isInvalid = _ref7.isInvalid;
-	  var isUsed = _ref7.isUsed;
-	  var update = _ref7.update;
-	  return _react2.default.createElement("input", {
-	    className: (0, _classnames2.default)("field", { "is-empty": isEmpty, "is-invalid": isInvalid, "is-used": isUsed }),
-	    type: "text",
-	    onChange: function onChange(_ref8) {
-	      var value = _ref8.target.value;
-	      return update(value);
-	    },
-	    defaultValue: value,
-	    placeholder: "Email" });
-	};
-
-	var EmailConnected = (0, _reactRedux.connect)(function (_ref9) {
-	  var _ref9$authorization$s = _ref9.authorization.signup;
-	  var value = _ref9$authorization$s.email;
-	  var isEmpty = _ref9$authorization$s.emailIsEmpty;
-	  var isInvalid = _ref9$authorization$s.emailIsInvalid;
-	  var isUsed = _ref9$authorization$s.emailIsUsed;
-	  return { value: value, isEmpty: isEmpty, isInvalid: isInvalid, isUsed: isUsed };
-	}, function (dispatch) {
-	  return (0, _redux.bindActionCreators)({ update: _signup.signupSetEmail }, dispatch);
-	})(Email);
-
-	function Password(_ref10) {
-	  var isLogin = _ref10.isLogin;
-	  var valueInLogin = _ref10.valueInLogin;
-	  var isEmptyInLogin = _ref10.isEmptyInLogin;
-	  var isInvalidInLogin = _ref10.isInvalidInLogin;
-	  var isSignup = _ref10.isSignup;
-	  var valueInSignup = _ref10.valueInSignup;
-	  var isEmptyInSignup = _ref10.isEmptyInSignup;
-	  var isInvalidInSignup = _ref10.isInvalidInSignup;
-	  var updateInLogin = _ref10.updateInLogin;
-	  var updateInSignup = _ref10.updateInSignup;
-
-	  var classes = undefined;
-	  var value = undefined;
-	  if (isLogin) {
-	    classes = (0, _classnames2.default)("field", { "is-empty": isEmptyInLogin, "is-invalid": isInvalidInLogin });
-	    value = valueInLogin;
-	  }
-	  if (isSignup) {
-	    classes = (0, _classnames2.default)("field", { "is-empty": isEmptyInSignup, "is-invalid": isInvalidInSignup });
-	    value = valueInSignup;
-	  }
-	  return _react2.default.createElement("input", {
-	    className: classes,
-	    type: "password",
-	    onChange: function onChange(_ref11) {
-	      var value = _ref11.target.value;
-
-	      if (isLogin) updateInLogin(value);
-	      if (isSignup) updateInSignup(value);
-	    },
-	    value: value,
-	    placeholder: "Password" });
-	}
-
-	var PasswordConnected = (0, _reactRedux.connect)(function (_ref12) {
-	  var _ref12$authorization = _ref12.authorization;
-	  var _ref12$authorization$ = _ref12$authorization.login;
-	  var isLogin = _ref12$authorization$.isActive;
-	  var valueInLogin = _ref12$authorization$.password;
-	  var isEmptyInLogin = _ref12$authorization$.passwordIsEmpty;
-	  var isInvalidInLogin = _ref12$authorization$.passwordIsInvalid;
-	  var _ref12$authorization$2 = _ref12$authorization.signup;
-	  var isSignup = _ref12$authorization$2.isActive;
-	  var valueInSignup = _ref12$authorization$2.password;
-	  var isEmptyInSignup = _ref12$authorization$2.passwordIsEmpty;
-	  var isInvalidInSignup = _ref12$authorization$2.passwordIsInvalid;
-	  return { isLogin: isLogin, valueInLogin: valueInLogin, isEmptyInLogin: isEmptyInLogin, isInvalidInLogin: isInvalidInLogin, isSignup: isSignup, valueInSignup: valueInSignup, isEmptyInSignup: isEmptyInSignup, isInvalidInSignup: isInvalidInSignup };
-	}, function (dispatch) {
-	  return (0, _redux.bindActionCreators)({ updateInLogin: _login.loginSetPassword, updateInSignup: _signup.signupSetPassword }, dispatch);
-	})(Password);
-
-	var LoginButton = function LoginButton(_ref13) {
-	  var isSignup = _ref13.isSignup;
-	  var isLogin = _ref13.isLogin;
-	  var login = _ref13.login;
-	  return _react2.default.createElement(
-	    "button",
-	    {
-	      className: (0, _classnames2.default)("authorization-button", { "primary": isLogin, "secondary": isSignup }),
-	      onClick: function onClick(event) {
-	        if (isSignup) {
-	          event.preventDefault();
-	          login();
-	        }
-	      } },
-	    "Login"
-	  );
-	};
-
-	var LoginButtonConnected = (0, _reactRedux.connect)(function (_ref14) {
-	  var _ref14$authorization = _ref14.authorization;
-	  var isLogin = _ref14$authorization.login.isActive;
-	  var isSignup = _ref14$authorization.signup.isActive;
-	  return { isLogin: isLogin, isSignup: isSignup };
-	}, function (dispatch) {
-	  return (0, _redux.bindActionCreators)({ login: _combiners.login }, dispatch);
-	})(LoginButton);
-
-	var SignupButton = function SignupButton(_ref15) {
-	  var isSignup = _ref15.isSignup;
-	  var isLogin = _ref15.isLogin;
-	  var signup = _ref15.signup;
-	  return _react2.default.createElement(
-	    "button",
-	    {
-	      className: (0, _classnames2.default)("authorization-button", { "primary": isSignup, "secondary": isLogin }),
-	      onClick: function onClick(event) {
-	        if (isLogin) {
-	          event.preventDefault();
-	          signup();
-	        }
-	      } },
-	    "Signup"
-	  );
-	};
-
-	var SignupButtonConnected = (0, _reactRedux.connect)(function (_ref16) {
-	  var _ref16$authorization = _ref16.authorization;
-	  var isLogin = _ref16$authorization.login.isActive;
-	  var isSignup = _ref16$authorization.signup.isActive;
-	  return { isLogin: isLogin, isSignup: isSignup };
-	}, function (dispatch) {
-	  return (0, _redux.bindActionCreators)({ signup: _combiners.signup }, dispatch);
-	})(SignupButton);
-
-	var Authorization = function (_Component2) {
-	  _inherits(Authorization, _Component2);
-
-	  function Authorization() {
-	    _classCallCheck(this, Authorization);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Authorization).apply(this, arguments));
-	  }
-
-	  _createClass(Authorization, [{
-	    key: "componentDidMount",
-	    value: function componentDidMount() {
-	      var _props3 = this.props;
-	      var signupUsedUsername = _props3.signupUsedUsername;
-	      var signupUsedEmail = _props3.signupUsedEmail;
-	      var signupResfreshTokenUnsuccess = _props3.signupResfreshTokenUnsuccess;
-
-	      (0, _connection.subscribe)("authorization.login.response", function (errors, user) {
-	        if (errors) errors.forEach(function (error) {
-	          return console.log((0, _validation.errorMessages)(error));
-	        });else if (user) console.log(user);else console.log("User doesn't exist.");
-	      });
-	      (0, _connection.subscribe)("authorization.signin.response", function (errors, user) {
-	        if (errors) {
-	          errors.forEach(function (error) {
-	            return console.log((0, _validation.errorMessages)(error));
-	          });
-	          if (errors.includes(53)) {
-	            signupUsedUsername();
-	          }
-	          if (errors.includes(68)) {
-	            signupUsedEmail();
-	          }
-	          if (errors.includes(112)) {
-	            signupResfreshTokenUnsuccess();
-	          }
-	        } else if (user) console.log(user);else console.log("User not created.");
-	      });
-	    }
-	  }, {
-	    key: "render",
-	    value: function render() {
-	      var _props4 = this.props;
-	      var isLogin = _props4.isLogin;
-	      var loginUsername = _props4.loginUsername;
-	      var loginPassword = _props4.loginPassword;
-	      var isSignup = _props4.isSignup;
-	      var submit = _props4.submit;
-
-	      return _react2.default.createElement(
-	        _reactAddonsCssTransitionGroup2.default,
-	        {
-	          component: "form",
-	          className: (0, _classnames2.default)("authorization", {}),
-	          transitionName: { enter: "enter", leave: "leave" },
-	          transitionEnterTimeout: 500,
-	          transitionLeaveTimeout: 500,
-	          onSubmit: function onSubmit(event) {
-	            event.preventDefault();
-	            submit({ username: loginUsername, password: loginPassword });
-	          } },
-	        isSignup ? _react2.default.createElement(GoogleDriveConnected, null) : null,
-	        _react2.default.createElement(UsernameConnected, null),
-	        isSignup ? _react2.default.createElement(EmailConnected, null) : null,
-	        _react2.default.createElement(PasswordConnected, null),
-	        _react2.default.createElement(LoginButtonConnected, null),
-	        _react2.default.createElement(SignupButtonConnected, null)
-	      );
-	    }
-	  }]);
-
-	  return Authorization;
-	}(_react.Component);
-
-	var AuthorizationConnected = (0, _reactRedux.connect)(function (_ref17) {
-	  var _ref17$authorization = _ref17.authorization;
-	  var _ref17$authorization$ = _ref17$authorization.login;
-	  var isLogin = _ref17$authorization$.isActive;
-	  var loginUsername = _ref17$authorization$.username;
-	  var loginPassword = _ref17$authorization$.password;
-	  var isSignup = _ref17$authorization.signup.isActive;
-	  return { isLogin: isLogin, loginUsername: loginUsername, loginPassword: loginPassword, isSignup: isSignup };
-	}, function (dispatch) {
-	  return (0, _redux.bindActionCreators)({ submit: _combiners.submit, signupUsedUsername: _signup.signupUsedUsername, signupUsedEmail: _signup.signupUsedEmail, signupResfreshTokenUnsuccess: _signup.signupResfreshTokenUnsuccess }, dispatch);
-	})(Authorization);
-
-	var UserPanel = function UserPanel(_ref18) {
-	  var isAuthorization = _ref18.isAuthorization;
 	  return _react2.default.createElement(
 	    _reactAddonsCssTransitionGroup2.default,
 	    {
 	      component: "aside",
 	      className: "user-panel",
-	      transitionName: { enter: "enter", leave: "leave" },
+	      transitionName: {
+	        enter: "enter",
+	        leave: "leave"
+	      },
 	      transitionEnterTimeout: 500,
-	      transitionLeaveTimeout: 500 },
-	    isAuthorization ? _react2.default.createElement(AuthorizationConnected, null) : null,
-	    _react2.default.createElement(MainButtonConnected, null)
+	      transitionLeaveTimeout: 500
+	    },
+	    _react2.default.createElement(_MainButton2.default, null),
+	    isAuthorization && _react2.default.createElement(_Authorization2.default, null)
 	  );
-	};
-
-	exports.default = (0, _reactRedux.connect)(function (_ref19) {
-	  var _ref19$authorization = _ref19.authorization;
-	  var isAuthorization = _ref19$authorization.isActive;
-	  var isLogin = _ref19$authorization.login.isActive;
-	  var isSignup = _ref19$authorization.signup.isActive;
-	  return { isAuthorization: isAuthorization };
-	}, function (dispatch) {
-	  return (0, _redux.bindActionCreators)({}, dispatch);
-	})(UserPanel);
-
-/***/ },
-/* 203 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(204);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(197)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./main.less", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./main.less");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
 	}
 
-/***/ },
-/* 204 */
-/***/ function(module, exports, __webpack_require__) {
+	function mapStateToProps(_ref2) {
+	  var loginIsActive = _ref2.login.isActive;
+	  var signupIsActive = _ref2.signup.isActive;
 
-	exports = module.exports = __webpack_require__(196)();
-	// imports
+	  return { isAuthorization: loginIsActive || signupIsActive };
+	}
 
-
-	// module
-	exports.push([module.id, ".main {\n  min-height: 100%;\n  display: flex;\n  align-items: flex-start;\n  justify-content: flex-end;\n  overflow: hidden;\n}\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 205 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	  Copyright (c) 2016 Jed Watson.
-	  Licensed under the MIT License (MIT), see
-	  http://jedwatson.github.io/classnames
-	*/
-	/* global define */
-
-	(function () {
-		'use strict';
-
-		var hasOwn = {}.hasOwnProperty;
-
-		function classNames () {
-			var classes = [];
-
-			for (var i = 0; i < arguments.length; i++) {
-				var arg = arguments[i];
-				if (!arg) continue;
-
-				var argType = typeof arg;
-
-				if (argType === 'string' || argType === 'number') {
-					classes.push(arg);
-				} else if (Array.isArray(arg)) {
-					classes.push(classNames.apply(null, arg));
-				} else if (argType === 'object') {
-					for (var key in arg) {
-						if (hasOwn.call(arg, key) && arg[key]) {
-							classes.push(key);
-						}
-					}
-				}
-			}
-
-			return classes.join(' ');
-		}
-
-		if (typeof module !== 'undefined' && module.exports) {
-			module.exports = classNames;
-		} else if (true) {
-			// register as 'classnames', consistent with npm package name
-			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
-				return classNames;
-			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-		} else {
-			window.classNames = classNames;
-		}
-	}());
-
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(UserPanel);
 
 /***/ },
 /* 206 */
@@ -23712,13 +23688,1109 @@
 /* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _redux = __webpack_require__(165);
+
+	var _reactRedux = __webpack_require__(159);
+
+	var _classnames = __webpack_require__(214);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _login = __webpack_require__(181);
+
+	var _signup = __webpack_require__(195);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var MainButton = function (_Component) {
+	  _inherits(MainButton, _Component);
+
+	  function MainButton(props) {
+	    _classCallCheck(this, MainButton);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MainButton).call(this, props));
+
+	    _this.onButton = _this.onButton.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(MainButton, [{
+	    key: "onButton",
+	    value: function onButton(event) {
+	      event.preventDefault();
+
+	      var _props = this.props;
+	      var isLogin = _props.isLogin;
+	      var loginActive = _props.loginActive;
+	      var loginNotActive = _props.loginNotActive;
+	      var loginUsed = _props.loginUsed;
+	      var loginNotUsed = _props.loginNotUsed;
+	      var isSignup = _props.isSignup;
+	      var isSignupUsed = _props.isSignupUsed;
+	      var signupActive = _props.signupActive;
+	      var signupNotActive = _props.signupNotActive;
+	      var signupUsed = _props.signupUsed;
+
+
+	      if (!isLogin && !isSignup && !isSignupUsed) {
+	        loginActive();
+	        loginUsed();
+	      } else if (!isLogin && !isSignup && isSignupUsed) {
+	        signupActive();
+	        signupUsed();
+	      } else if (isLogin) loginNotActive();else if (isSignup) signupNotActive();
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      var _props2 = this.props;
+	      var isLogin = _props2.isLogin;
+	      var isSignup = _props2.isSignup;
+
+
+	      return _react2.default.createElement("button", {
+	        className: (0, _classnames2.default)("main-button icon-power", {
+	          "is-login": isLogin,
+	          "is-signup": isSignup
+	        }),
+	        onClick: this.onButton
+	      });
+	    }
+	  }]);
+
+	  return MainButton;
+	}(_react.Component);
+
+	function mapStateToProps(_ref) {
+	  var _ref$login = _ref.login;
+	  var isLogin = _ref$login.isActive;
+	  var isLoginUsed = _ref$login.isUsed;
+	  var _ref$signup = _ref.signup;
+	  var isSignup = _ref$signup.isActive;
+	  var isSignupUsed = _ref$signup.isUsed;
+
+	  return {
+	    isLogin: isLogin,
+	    isLoginUsed: isLoginUsed,
+	    isSignup: isSignup,
+	    isSignupUsed: isSignupUsed
+	  };
+	}
+
+	function mapDispatchToProps(dispatch) {
+	  return (0, _redux.bindActionCreators)({
+	    loginActive: _login.loginActive,
+	    loginNotActive: _login.loginNotActive,
+	    loginUsed: _login.loginUsed,
+	    signupActive: _signup.signupActive,
+	    signupNotActive: _signup.signupNotActive,
+	    signupUsed: _signup.signupUsed
+	  }, dispatch);
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(MainButton);
+
+/***/ },
+/* 214 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	  Copyright (c) 2016 Jed Watson.
+	  Licensed under the MIT License (MIT), see
+	  http://jedwatson.github.io/classnames
+	*/
+	/* global define */
+
+	(function () {
+		'use strict';
+
+		var hasOwn = {}.hasOwnProperty;
+
+		function classNames () {
+			var classes = [];
+
+			for (var i = 0; i < arguments.length; i++) {
+				var arg = arguments[i];
+				if (!arg) continue;
+
+				var argType = typeof arg;
+
+				if (argType === 'string' || argType === 'number') {
+					classes.push(arg);
+				} else if (Array.isArray(arg)) {
+					classes.push(classNames.apply(null, arg));
+				} else if (argType === 'object') {
+					for (var key in arg) {
+						if (hasOwn.call(arg, key) && arg[key]) {
+							classes.push(key);
+						}
+					}
+				}
+			}
+
+			return classes.join(' ');
+		}
+
+		if (typeof module !== 'undefined' && module.exports) {
+			module.exports = classNames;
+		} else if (true) {
+			// register as 'classnames', consistent with npm package name
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+				return classNames;
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		} else {
+			window.classNames = classNames;
+		}
+	}());
+
+
+/***/ },
+/* 215 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _redux = __webpack_require__(165);
+
+	var _reactRedux = __webpack_require__(159);
+
+	var _connection = __webpack_require__(182);
+
+	var _reactAddonsCssTransitionGroup = __webpack_require__(206);
+
+	var _reactAddonsCssTransitionGroup2 = _interopRequireDefault(_reactAddonsCssTransitionGroup);
+
+	var _GoogleDrive = __webpack_require__(216);
+
+	var _GoogleDrive2 = _interopRequireDefault(_GoogleDrive);
+
+	var _Username = __webpack_require__(218);
+
+	var _Username2 = _interopRequireDefault(_Username);
+
+	var _Email = __webpack_require__(219);
+
+	var _Email2 = _interopRequireDefault(_Email);
+
+	var _Password = __webpack_require__(220);
+
+	var _Password2 = _interopRequireDefault(_Password);
+
+	var _LoginButton = __webpack_require__(221);
+
+	var _LoginButton2 = _interopRequireDefault(_LoginButton);
+
+	var _SignupButton = __webpack_require__(222);
+
+	var _SignupButton2 = _interopRequireDefault(_SignupButton);
+
+	var _login = __webpack_require__(181);
+
+	var _signup = __webpack_require__(195);
+
+	var _validation = __webpack_require__(194);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Authorization = function (_Component) {
+	  _inherits(Authorization, _Component);
+
+	  function Authorization(props) {
+	    _classCallCheck(this, Authorization);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Authorization).call(this, props));
+
+	    _this.onSubmit = _this.onSubmit.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(Authorization, [{
+	    key: "componentDidMount",
+	    value: function componentDidMount() {
+	      var _props = this.props;
+	      var signupUsedUsername = _props.signupUsedUsername;
+	      var signupUsedEmail = _props.signupUsedEmail;
+	      var signupResfreshTokenUnsuccess = _props.signupResfreshTokenUnsuccess;
+
+
+	      (0, _connection.subscribe)("authorization.login.response", function (errors, user) {
+	        if (errors) errors.forEach(function (error) {
+	          return console.log((0, _validation.errorMessages)(error));
+	        });else if (user) console.log(user);else console.log("User doesn't exist.");
+	      });
+
+	      (0, _connection.subscribe)("authorization.signin.response", function (errors, user) {
+	        if (errors) {
+	          errors.forEach(function (error) {
+	            return console.log((0, _validation.errorMessages)(error));
+	          });
+
+	          if (errors.includes(53)) signupUsedUsername();
+
+	          if (errors.includes(68)) signupUsedEmail();
+
+	          if (errors.includes(112)) signupResfreshTokenUnsuccess();
+	        } else if (user) console.log(user);else console.log("User not created.");
+	      });
+	    }
+	  }, {
+	    key: "onSubmit",
+	    value: function onSubmit(event) {
+	      event.preventDefault();
+
+	      var _props2 = this.props;
+	      var isLoginActive = _props2.isLoginActive;
+	      var isLoginUsed = _props2.isLoginUsed;
+	      var isSignupActive = _props2.isSignupActive;
+	      var isSignupUsed = _props2.isSignupUsed;
+	      var loginSubmit = _props2.loginSubmit;
+	      var signupSubmit = _props2.signupSubmit;
+
+
+	      if (isLoginActive && isLoginUsed) loginSubmit();
+
+	      if (isSignupActive && isSignupUsed) signupSubmit();
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      var isSignupUsed = this.props.isSignupUsed;
+
+
+	      return _react2.default.createElement(
+	        _reactAddonsCssTransitionGroup2.default,
+	        {
+	          component: "form",
+	          className: "authorization",
+	          transitionName: {
+	            enter: "enter",
+	            leave: "leave"
+	          },
+	          transitionEnterTimeout: 500,
+	          transitionLeaveTimeout: 500,
+	          onSubmit: this.onSubmit
+	        },
+	        isSignupUsed && _react2.default.createElement(_GoogleDrive2.default, null),
+	        _react2.default.createElement(_Username2.default, null),
+	        isSignupUsed && _react2.default.createElement(_Email2.default, null),
+	        _react2.default.createElement(_Password2.default, null),
+	        _react2.default.createElement(_LoginButton2.default, null),
+	        _react2.default.createElement(_SignupButton2.default, null)
+	      );
+	    }
+	  }]);
+
+	  return Authorization;
+	}(_react.Component);
+
+	function mapStateToProps(_ref) {
+	  var _ref$login = _ref.login;
+	  var isLoginActive = _ref$login.isActive;
+	  var isLoginUsed = _ref$login.isUsed;
+	  var _ref$signup = _ref.signup;
+	  var isSignupActive = _ref$signup.isActive;
+	  var isSignupUsed = _ref$signup.isUsed;
+
+	  return {
+	    isLoginActive: isLoginActive,
+	    isLoginUsed: isLoginUsed,
+	    isSignupActive: isSignupActive,
+	    isSignupUsed: isSignupUsed
+	  };
+	}
+
+	function mapDispatchToProps(dispatch) {
+	  return (0, _redux.bindActionCreators)({
+	    loginSubmit: _login.loginSubmit,
+	    signupUsedUsername: _signup.signupUsedUsername,
+	    signupUsedEmail: _signup.signupUsedEmail,
+	    signupResfreshTokenUnsuccess: _signup.signupResfreshTokenUnsuccess,
+	    signupSubmit: _signup.signupSubmit
+	  }, dispatch);
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Authorization);
+
+/***/ },
+/* 216 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _redux = __webpack_require__(165);
+
+	var _reactRedux = __webpack_require__(159);
+
+	var _connection = __webpack_require__(182);
+
+	var _classnames = __webpack_require__(214);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _signup = __webpack_require__(195);
+
+	var _popup = __webpack_require__(217);
+
+	var _popup2 = _interopRequireDefault(_popup);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var GoogleDrive = function (_Component) {
+	  _inherits(GoogleDrive, _Component);
+
+	  function GoogleDrive(props) {
+	    _classCallCheck(this, GoogleDrive);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(GoogleDrive).call(this, props));
+
+	    _this.onPopup = _this.onPopup.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(GoogleDrive, [{
+	    key: "componentDidMount",
+	    value: function componentDidMount() {
+	      var _props = this.props;
+	      var set = _props.set;
+	      var unsuccess = _props.unsuccess;
+
+
+	      (0, _connection.subscribe)("authorization.google-drive.refresh-token.response", function (errors, refresh_token) {
+	        if (errors) unsuccess();else set(refresh_token);
+	      });
+	    }
+	  }, {
+	    key: "onPopup",
+	    value: function onPopup(event) {
+	      event.preventDefault();
+	      (0, _popup2.default)("https://accounts.google.com/o/oauth2/auth?" + "client_id=205946784859-n4ckbriqes7j9etrh7dvm9608qr958qs.apps.googleusercontent.com&" + "scope=email&" + "access_type=offline&" + "response_type=code&" + "prompt=consent&" + "redirect_uri=http://localhost:5000/google-access", {
+	        width: 500,
+	        height: 350
+	      });
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      var _props2 = this.props;
+	      var isSuccess = _props2.isSuccess;
+	      var isRequired = _props2.isRequired;
+	      var isUnsuccess = _props2.isUnsuccess;
+
+
+	      return _react2.default.createElement(
+	        "button",
+	        {
+	          type: "button",
+	          className: (0, _classnames2.default)("google-drive", {
+	            "is-success": isSuccess,
+	            "is-required": isRequired,
+	            "is-unsuccess": isUnsuccess
+	          }),
+	          onClick: this.onPopup
+	        },
+	        "Google Drive"
+	      );
+	    }
+	  }]);
+
+	  return GoogleDrive;
+	}(_react.Component);
+
+	function mapStateToProps(_ref) {
+	  var _ref$signup = _ref.signup;
+	  var isSuccess = _ref$signup.refreshTokenIsSuccess;
+	  var isRequired = _ref$signup.refreshTokenIsRequired;
+	  var isUnsuccess = _ref$signup.refreshTokenIsUnsuccess;
+
+	  return {
+	    isSuccess: isSuccess,
+	    isRequired: isRequired,
+	    isUnsuccess: isUnsuccess
+	  };
+	}
+
+	function mapDispatchToProps(dispatch) {
+	  return (0, _redux.bindActionCreators)({
+	    set: _signup.signupSetRefreshToken,
+	    unsuccess: _signup.signupResfreshTokenUnsuccess
+	  }, dispatch);
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(GoogleDrive);
+
+/***/ },
+/* 217 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = popup;
+	function popup(url, _ref) {
+	  var width = _ref.width;
+	  var height = _ref.height;
+
+	  var left = window.screenLeft + window.innerWidth / 2 - width / 2;
+	  var top = window.screenTop + window.innerHeight / 2 - height / 2;
+	  return window.open(url, null, "\n    toolbar=no,\n    location=no,\n    directories=no,\n    status=no,\n    menubar=no,\n    scrollbars=no,\n    resizable=no,\n    copyhistory=no,\n    width=" + width + ",\n    height=" + height + ",\n    left=" + left + ",\n    top=" + top + "\n  ");
+	}
+
+/***/ },
+/* 218 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _redux = __webpack_require__(165);
+
+	var _reactRedux = __webpack_require__(159);
+
+	var _classnames = __webpack_require__(214);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _login = __webpack_require__(181);
+
+	var _signup = __webpack_require__(195);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Username = function (_Component) {
+	  _inherits(Username, _Component);
+
+	  function Username(props) {
+	    _classCallCheck(this, Username);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Username).call(this, props));
+
+	    _this.onUpdateInLogin = _this.onUpdateInLogin.bind(_this);
+	    _this.onUpdateInSignup = _this.onUpdateInSignup.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(Username, [{
+	    key: "onUpdateInLogin",
+	    value: function onUpdateInLogin(_ref) {
+	      var value = _ref.target.value;
+	      var updateInLogin = this.props.updateInLogin;
+
+
+	      updateInLogin(value);
+	    }
+	  }, {
+	    key: "onUpdateInSignup",
+	    value: function onUpdateInSignup(_ref2) {
+	      var value = _ref2.target.value;
+	      var updateInSignup = this.props.updateInSignup;
+
+
+	      updateInSignup(value);
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      var _props = this.props;
+	      var isLoginUsed = _props.isLoginUsed;
+	      var valueInLogin = _props.valueInLogin;
+	      var isEmptyInLogin = _props.isEmptyInLogin;
+	      var isInvalidInLogin = _props.isInvalidInLogin;
+	      var isSignupUsed = _props.isSignupUsed;
+	      var valueInSignup = _props.valueInSignup;
+	      var isEmptyInSignup = _props.isEmptyInSignup;
+	      var isInvalidInSignup = _props.isInvalidInSignup;
+	      var isUsedInSignup = _props.isUsedInSignup;
+	      var isUserInSignup = _props.isUserInSignup;
+
+	      var classes = undefined;
+	      var onUpdate = undefined;
+	      var value = undefined;
+
+	      if (isLoginUsed) {
+	        classes = (0, _classnames2.default)("field", {
+	          "is-empty": isEmptyInLogin,
+	          "is-invalid": isInvalidInLogin
+	        });
+	        onUpdate = this.onUpdateInLogin;
+	        value = valueInLogin;
+	      }
+
+	      if (isSignupUsed) {
+	        classes = (0, _classnames2.default)("field", {
+	          "is-empty": isEmptyInSignup,
+	          "is-invalid": isInvalidInSignup,
+	          "is-used": isUsedInSignup
+	        });
+	        onUpdate = this.onUpdateInSignup;
+	        value = valueInSignup;
+	      }
+
+	      return _react2.default.createElement("input", {
+	        className: classes,
+	        type: "text",
+	        onChange: onUpdate,
+	        value: value,
+	        placeholder: "Username" });
+	    }
+	  }]);
+
+	  return Username;
+	}(_react.Component);
+
+	function mapStateToProps(_ref3) {
+	  var _ref3$login = _ref3.login;
+	  var isLoginUsed = _ref3$login.isUsed;
+	  var valueInLogin = _ref3$login.username;
+	  var isEmptyInLogin = _ref3$login.usernameIsEmpty;
+	  var isInvalidInLogin = _ref3$login.usernameIsInvalid;
+	  var _ref3$signup = _ref3.signup;
+	  var isSignupUsed = _ref3$signup.isUsed;
+	  var valueInSignup = _ref3$signup.username;
+	  var isEmptyInSignup = _ref3$signup.usernameIsEmpty;
+	  var isInvalidInSignup = _ref3$signup.usernameIsInvalid;
+	  var isUsedInSignup = _ref3$signup.usernameIsUsed;
+
+	  return {
+	    isLoginUsed: isLoginUsed,
+	    valueInLogin: valueInLogin,
+	    isEmptyInLogin: isEmptyInLogin,
+	    isInvalidInLogin: isInvalidInLogin,
+	    isSignupUsed: isSignupUsed,
+	    valueInSignup: valueInSignup,
+	    isEmptyInSignup: isEmptyInSignup,
+	    isInvalidInSignup: isInvalidInSignup,
+	    isUsedInSignup: isUsedInSignup
+	  };
+	}
+
+	function mapDispatchToProps(dispatch) {
+	  return (0, _redux.bindActionCreators)({
+	    updateInLogin: _login.loginSetUsername,
+	    updateInSignup: _signup.signupSetUsername
+	  }, dispatch);
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Username);
+
+/***/ },
+/* 219 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _redux = __webpack_require__(165);
+
+	var _reactRedux = __webpack_require__(159);
+
+	var _classnames = __webpack_require__(214);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _signup = __webpack_require__(195);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Email = function (_Component) {
+	  _inherits(Email, _Component);
+
+	  function Email(props) {
+	    _classCallCheck(this, Email);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Email).call(this, props));
+
+	    _this.onUpdate = _this.onUpdate.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(Email, [{
+	    key: "onUpdate",
+	    value: function onUpdate(_ref) {
+	      var value = _ref.target.value;
+	      var update = this.props.update;
+
+
+	      update(value);
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      var _props = this.props;
+	      var value = _props.value;
+	      var isEmpty = _props.isEmpty;
+	      var isInvalid = _props.isInvalid;
+	      var isUsed = _props.isUsed;
+
+
+	      return _react2.default.createElement("input", {
+	        className: (0, _classnames2.default)("field", {
+	          "is-empty": isEmpty,
+	          "is-invalid": isInvalid,
+	          "is-used": isUsed
+	        }),
+	        type: "text",
+	        onChange: this.onUpdate,
+	        defaultValue: value,
+	        placeholder: "Email" });
+	    }
+	  }]);
+
+	  return Email;
+	}(_react.Component);
+
+	function mapStateToProps(_ref2) {
+	  var _ref2$signup = _ref2.signup;
+	  var value = _ref2$signup.email;
+	  var isEmpty = _ref2$signup.emailIsEmpty;
+	  var isInvalid = _ref2$signup.emailIsInvalid;
+	  var isUsed = _ref2$signup.emailIsUsed;
+
+	  return {
+	    value: value,
+	    isEmpty: isEmpty,
+	    isInvalid: isInvalid,
+	    isUsed: isUsed
+	  };
+	}
+
+	function mapDispatchToProps(dispatch) {
+	  return (0, _redux.bindActionCreators)({ update: _signup.signupSetEmail }, dispatch);
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Email);
+
+/***/ },
+/* 220 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _redux = __webpack_require__(165);
+
+	var _reactRedux = __webpack_require__(159);
+
+	var _classnames = __webpack_require__(214);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _login = __webpack_require__(181);
+
+	var _signup = __webpack_require__(195);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Password = function (_Component) {
+	  _inherits(Password, _Component);
+
+	  function Password(props) {
+	    _classCallCheck(this, Password);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Password).call(this, props));
+
+	    _this.onUpdateInLogin = _this.onUpdateInLogin.bind(_this);
+	    _this.onUpdateInSignup = _this.onUpdateInSignup.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(Password, [{
+	    key: "onUpdateInLogin",
+	    value: function onUpdateInLogin(_ref) {
+	      var value = _ref.target.value;
+	      var updateInLogin = this.props.updateInLogin;
+
+
+	      updateInLogin(value);
+	    }
+	  }, {
+	    key: "onUpdateInSignup",
+	    value: function onUpdateInSignup(_ref2) {
+	      var value = _ref2.target.value;
+	      var updateInSignup = this.props.updateInSignup;
+
+
+	      updateInSignup(value);
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      var _props = this.props;
+	      var isLoginUsed = _props.isLoginUsed;
+	      var valueInLogin = _props.valueInLogin;
+	      var isEmptyInLogin = _props.isEmptyInLogin;
+	      var isInvalidInLogin = _props.isInvalidInLogin;
+	      var isSignupUsed = _props.isSignupUsed;
+	      var valueInSignup = _props.valueInSignup;
+	      var isEmptyInSignup = _props.isEmptyInSignup;
+	      var isInvalidInSignup = _props.isInvalidInSignup;
+
+	      var classes = undefined;
+	      var onUpdate = undefined;
+	      var value = undefined;
+
+	      if (isLoginUsed) {
+	        classes = (0, _classnames2.default)("field", {
+	          "is-empty": isEmptyInLogin,
+	          "is-invalid": isInvalidInLogin
+	        });
+	        onUpdate = this.onUpdateInLogin;
+	        value = valueInLogin;
+	      }
+
+	      if (isSignupUsed) {
+	        classes = (0, _classnames2.default)("field", {
+	          "is-empty": isEmptyInSignup,
+	          "is-invalid": isInvalidInSignup
+	        });
+	        onUpdate = this.onUpdateInSignup;
+	        value = valueInSignup;
+	      }
+
+	      return _react2.default.createElement("input", {
+	        className: classes,
+	        type: "password",
+	        onChange: onUpdate,
+	        value: value,
+	        placeholder: "Password" });
+	    }
+	  }]);
+
+	  return Password;
+	}(_react.Component);
+
+	function mapStateToProps(_ref3) {
+	  var _ref3$login = _ref3.login;
+	  var isLoginUsed = _ref3$login.isUsed;
+	  var valueInLogin = _ref3$login.password;
+	  var isEmptyInLogin = _ref3$login.passwordIsEmpty;
+	  var isInvalidInLogin = _ref3$login.passwordIsInvalid;
+	  var _ref3$signup = _ref3.signup;
+	  var isSignupUsed = _ref3$signup.isUsed;
+	  var valueInSignup = _ref3$signup.password;
+	  var isEmptyInSignup = _ref3$signup.passwordIsEmpty;
+	  var isInvalidInSignup = _ref3$signup.passwordIsInvalid;
+
+	  return {
+	    isLoginUsed: isLoginUsed,
+	    valueInLogin: valueInLogin,
+	    isEmptyInLogin: isEmptyInLogin,
+	    isInvalidInLogin: isInvalidInLogin,
+	    isSignupUsed: isSignupUsed,
+	    valueInSignup: valueInSignup,
+	    isEmptyInSignup: isEmptyInSignup,
+	    isInvalidInSignup: isInvalidInSignup
+	  };
+	}
+
+	function mapDispatchToProps(dispatch) {
+	  return (0, _redux.bindActionCreators)({
+	    updateInLogin: _login.loginSetPassword,
+	    updateInSignup: _signup.signupSetPassword
+	  }, dispatch);
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Password);
+
+/***/ },
+/* 221 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _redux = __webpack_require__(165);
+
+	var _reactRedux = __webpack_require__(159);
+
+	var _classnames = __webpack_require__(214);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _login = __webpack_require__(181);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var LoginButton = function (_Component) {
+	  _inherits(LoginButton, _Component);
+
+	  function LoginButton(props) {
+	    _classCallCheck(this, LoginButton);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(LoginButton).call(this, props));
+
+	    _this.onLogin = _this.onLogin.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(LoginButton, [{
+	    key: "onLogin",
+	    value: function onLogin(event) {
+	      var _props = this.props;
+	      var isLoginUsed = _props.isLoginUsed;
+	      var login = _props.login;
+
+
+	      if (!isLoginUsed) {
+	        event.preventDefault();
+	        login();
+	      }
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      var _props2 = this.props;
+	      var isLoginUsed = _props2.isLoginUsed;
+	      var login = _props2.login;
+
+
+	      return _react2.default.createElement(
+	        "button",
+	        {
+	          type: isLoginUsed ? "submit" : "button",
+	          className: (0, _classnames2.default)("authorization-button", {
+	            "primary": isLoginUsed,
+	            "secondary": !isLoginUsed
+	          }),
+	          onClick: this.onLogin
+	        },
+	        "Login"
+	      );
+	    }
+	  }]);
+
+	  return LoginButton;
+	}(_react.Component);
+
+	function mapStateToProps(_ref) {
+	  var isLoginUsed = _ref.login.isUsed;
+
+	  return { isLoginUsed: isLoginUsed };
+	}
+
+	function mapDispatchToProps(dispatch) {
+	  return (0, _redux.bindActionCreators)({ login: _login.login }, dispatch);
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(LoginButton);
+
+/***/ },
+/* 222 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _redux = __webpack_require__(165);
+
+	var _reactRedux = __webpack_require__(159);
+
+	var _classnames = __webpack_require__(214);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _signup = __webpack_require__(195);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SignupButton = function (_Component) {
+	  _inherits(SignupButton, _Component);
+
+	  function SignupButton(props) {
+	    _classCallCheck(this, SignupButton);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SignupButton).call(this, props));
+
+	    _this.onSignup = _this.onSignup.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(SignupButton, [{
+	    key: "onSignup",
+	    value: function onSignup(event) {
+	      var _props = this.props;
+	      var isSignupUsed = _props.isSignupUsed;
+	      var signup = _props.signup;
+
+
+	      if (!isSignupUsed) {
+	        event.preventDefault();
+	        signup();
+	      }
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      var isSignupUsed = this.props.isSignupUsed;
+
+
+	      return _react2.default.createElement(
+	        "button",
+	        {
+	          type: isSignupUsed ? "submit" : "button",
+	          className: (0, _classnames2.default)("authorization-button", {
+	            "primary": isSignupUsed,
+	            "secondary": !isSignupUsed
+	          }),
+	          onClick: this.onSignup
+	        },
+	        "Signup"
+	      );
+	    }
+	  }]);
+
+	  return SignupButton;
+	}(_react.Component);
+
+	function mapStateToProps(_ref) {
+	  var isSignupUsed = _ref.signup.isUsed;
+
+	  return { isSignupUsed: isSignupUsed };
+	}
+
+	function mapDispatchToProps(dispatch) {
+	  return (0, _redux.bindActionCreators)({ signup: _signup.signup }, dispatch);
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SignupButton);
+
+/***/ },
+/* 223 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(214);
+	var content = __webpack_require__(224);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(197)(content, {});
+	var update = __webpack_require__(200)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -23735,508 +24807,58 @@
 	}
 
 /***/ },
-/* 214 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(196)();
+	exports = module.exports = __webpack_require__(199)();
 	// imports
 
 
 	// module
-	exports.push([module.id, ".user-panel {\n  position: absolute;\n  top: 15px;\n  right: 15px;\n  transform-style: preserve-3d;\n  perspective: 500px;\n}\n.user-panel .main-button {\n  position: absolute;\n  top: 0px;\n  right: 0px;\n  width: 35px;\n  height: 35px;\n  font-size: 28px;\n  text-shadow: 0px 0px 0px maroon;\n  border-radius: 50%;\n  transform-origin: 50% 53%;\n  transform: rotateZ(0deg);\n  transition: all 0.5s ease-in-out;\n}\n.user-panel .main-button.is-authorization.is-login {\n  transform: rotateZ(90deg);\n}\n.user-panel .main-button.is-authorization.is-signup {\n  transform: rotateZ(-90deg);\n}\n.user-panel .authorization {\n  outline: 1px solid black;\n  position: absolute;\n  top: 0px;\n  right: 50px;\n  width: 250px;\n  padding: 10px 10px 55px 10px;\n  transition: all 0.5s ease-in-out;\n}\n.user-panel .authorization.enter {\n  opacity: 0;\n  transform-origin: 0%;\n  transform: translateX(100px) translateZ(-150px) rotateY(35deg);\n}\n.user-panel .authorization.enter.enter-active {\n  opacity: 1;\n  transform-origin: 50%;\n  transform: translateX(0px) translateZ(0px) rotateY(0deg);\n}\n.user-panel .authorization.leave {\n  opacity: 1;\n  transform-origin: 100%;\n  transform: translateX(0px) translateZ(0px) rotateY(0deg);\n}\n.user-panel .authorization.leave.leave-active {\n  opacity: 0;\n  transform-origin: 50%;\n  transform: translateX(100px) translateZ(-150px) rotateY(35deg);\n}\n.user-panel .authorization .google-drive {\n  border: 1px solid black;\n  display: block;\n  width: 100%;\n  height: 50px;\n  opacity: 1;\n  transition: all 0.5s ease-in-out;\n}\n.user-panel .authorization .google-drive.enter {\n  height: 0px;\n  opacity: 0;\n}\n.user-panel .authorization .google-drive.enter.enter-active {\n  height: 50px;\n  opacity: 1;\n}\n.user-panel .authorization .google-drive.leave {\n  height: 50px;\n  opacity: 1;\n}\n.user-panel .authorization .google-drive.leave.leave-active {\n  height: 0px;\n  opacity: 0;\n}\n.user-panel .authorization .google-drive.is-required {\n  border-color: #FBB117;\n}\n.user-panel .authorization .google-drive.is-success {\n  border-color: green;\n}\n.user-panel .authorization .google-drive.is-unsuccess {\n  border-color: red;\n}\n.user-panel .authorization .field {\n  border: 1px solid black;\n  display: block;\n  width: 100%;\n  height: 30px;\n  margin-top: 10px;\n  transition: all 0.5s ease-in-out;\n}\n.user-panel .authorization .field.enter {\n  height: 0px;\n  margin-top: 0px;\n  opacity: 0;\n}\n.user-panel .authorization .field.enter.enter-active {\n  height: 30px;\n  margin-top: 10px;\n  opacity: 1;\n}\n.user-panel .authorization .field.leave {\n  height: 30px;\n  margin-top: 10px;\n  opacity: 1;\n}\n.user-panel .authorization .field.leave.leave-active {\n  height: 0px;\n  margin-top: 0px;\n  opacity: 0;\n}\n.user-panel .authorization .field.is-empty {\n  border-color: #FBB117;\n}\n.user-panel .authorization .field.is-invalid {\n  border-color: red;\n}\n.user-panel .authorization .field.is-used {\n  border-color: maroon;\n}\n.user-panel .authorization .field:first-child {\n  margin-top: 0px;\n}\n.user-panel .authorization .authorization-button {\n  color: white;\n  position: absolute;\n  padding: 5px;\n  transition: all 0.5s ease-in-out;\n}\n.user-panel .authorization .authorization-button.primary {\n  bottom: 10px;\n  height: 35px;\n  left: 10px;\n  background-color: red;\n  width: 135px;\n  font-size: 15px;\n}\n.user-panel .authorization .authorization-button.secondary {\n  bottom: 12px;\n  height: 31px;\n  left: 155px;\n  background-color: green;\n  width: 105px;\n  font-size: 13px;\n}\n", ""]);
+	exports.push([module.id, ".user-panel {\n  position: absolute;\n  top: 15px;\n  right: 15px;\n  transform-style: preserve-3d;\n  perspective: 500px;\n}\n.user-panel .main-button {\n  position: absolute;\n  top: 0px;\n  right: 0px;\n  width: 35px;\n  height: 35px;\n  font-size: 28px;\n  text-shadow: 0px 0px 0px maroon;\n  border-radius: 50%;\n  transform-origin: 50% 53%;\n  transform: rotateZ(0deg);\n  transition: all 0.5s ease-in-out;\n}\n.user-panel .main-button.is-login {\n  transform: rotateZ(90deg);\n}\n.user-panel .main-button.is-signup {\n  transform: rotateZ(-90deg);\n}\n.user-panel .authorization {\n  outline: 1px solid black;\n  position: absolute;\n  top: 0px;\n  right: 50px;\n  width: 250px;\n  padding: 10px 10px 55px 10px;\n  transition: all 0.5s ease-in-out;\n}\n.user-panel .authorization.enter {\n  opacity: 0;\n  transform-origin: 0%;\n  transform: translateX(100px) translateZ(-150px) rotateY(35deg);\n}\n.user-panel .authorization.enter.enter-active {\n  opacity: 1;\n  transform-origin: 50%;\n  transform: translateX(0px) translateZ(0px) rotateY(0deg);\n}\n.user-panel .authorization.leave {\n  opacity: 1;\n  transform-origin: 100%;\n  transform: translateX(0px) translateZ(0px) rotateY(0deg);\n}\n.user-panel .authorization.leave.leave-active {\n  opacity: 0;\n  transform-origin: 50%;\n  transform: translateX(100px) translateZ(-150px) rotateY(35deg);\n}\n.user-panel .authorization .google-drive {\n  border: 1px solid black;\n  display: block;\n  width: 100%;\n  height: 50px;\n  opacity: 1;\n  transition: all 0.5s ease-in-out;\n}\n.user-panel .authorization .google-drive.enter {\n  height: 0px;\n  opacity: 0;\n}\n.user-panel .authorization .google-drive.enter.enter-active {\n  height: 50px;\n  opacity: 1;\n}\n.user-panel .authorization .google-drive.leave {\n  height: 50px;\n  opacity: 1;\n}\n.user-panel .authorization .google-drive.leave.leave-active {\n  height: 0px;\n  opacity: 0;\n}\n.user-panel .authorization .google-drive.is-required {\n  border-color: #FBB117;\n}\n.user-panel .authorization .google-drive.is-success {\n  border-color: green;\n}\n.user-panel .authorization .google-drive.is-unsuccess {\n  border-color: maroon;\n}\n.user-panel .authorization .field {\n  border: 1px solid black;\n  display: block;\n  width: 100%;\n  height: 30px;\n  margin-top: 10px;\n  transition: all 0.5s ease-in-out;\n}\n.user-panel .authorization .field.enter {\n  height: 0px;\n  margin-top: 0px;\n  opacity: 0;\n}\n.user-panel .authorization .field.enter.enter-active {\n  height: 30px;\n  margin-top: 10px;\n  opacity: 1;\n}\n.user-panel .authorization .field.leave {\n  height: 30px;\n  margin-top: 10px;\n  opacity: 1;\n}\n.user-panel .authorization .field.leave.leave-active {\n  height: 0px;\n  margin-top: 0px;\n  opacity: 0;\n}\n.user-panel .authorization .field.is-empty {\n  border-color: #FBB117;\n}\n.user-panel .authorization .field.is-invalid {\n  border-color: red;\n}\n.user-panel .authorization .field.is-used {\n  border-color: maroon;\n}\n.user-panel .authorization .field:first-child {\n  margin-top: 0px;\n}\n.user-panel .authorization .authorization-button {\n  color: white;\n  position: absolute;\n  padding: 5px;\n  transition: all 0.5s ease-in-out;\n}\n.user-panel .authorization .authorization-button.primary {\n  bottom: 10px;\n  height: 35px;\n  left: 10px;\n  background-color: red;\n  width: 135px;\n  font-size: 15px;\n}\n.user-panel .authorization .authorization-button.secondary {\n  bottom: 12px;\n  height: 31px;\n  left: 155px;\n  background-color: green;\n  width: 105px;\n  font-size: 13px;\n}\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 215 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = popup;
-	function popup(url, popupWidth, popupHeight) {
-	  var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
-	  var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;
-	  var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
-	  var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
-	  var left = width / 2 - popupWidth / 2 + dualScreenLeft;
-	  var top = height / 2 - popupHeight / 2 + dualScreenTop;
-	  return window.open(url, null, "\n    toolbar=no,\n    location=no,\n    directories=no,\n    status=no,\n    menubar=no,\n    scrollbars=no,\n    resizable=no,\n    copyhistory=no,\n    width=" + popupWidth + ",\n    height=" + popupHeight + ",\n    left=" + left + ",\n    top=" + top + "\n  ");
-	}
-
-/***/ },
-/* 216 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	// style-loader: Adds some css to the DOM by adding a <style> tag
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	exports.default = function (login, action) {
-	  switch (action.type) {
-	    case _login.LOGIN_ACTIVE:
-	      return _extends({}, login, {
-	        isActive: true
-	      });
-	    case _login.LOGIN_NOT_ACTIVE:
-	      return _extends({}, login, {
-	        isActive: false
-	      });
-	    case _login.LOGIN_SET_USERNAME:
-	      return _extends({}, login, {
-	        username: action.username,
-	        usernameIsEmpty: false,
-	        usernameIsInvalid: false
-	      });
-	    case _login.LOGIN_USERNAME_SET_EMPTY:
-	      return _extends({}, login, {
-	        usernameIsEmpty: true
-	      });
-	    case _login.LOGIN_USERNAME_SET_INVALID:
-	      return _extends({}, login, {
-	        usernameIsInvalid: true
-	      });
-	    case _login.LOGIN_SET_PASSWORD:
-	      return _extends({}, login, {
-	        password: action.password,
-	        passwordIsEmpty: false,
-	        passwordIsInvalid: false
-	      });
-	    case _login.LOGIN_PASSWORD_SET_EMPTY:
-	      return _extends({}, login, {
-	        passwordIsEmpty: true
-	      });
-	    case _login.LOGIN_PASSWORD_SET_INVALID:
-	      return _extends({}, login, {
-	        passwordIsInvalid: true
-	      });
-	    default:
-	      return login;
-	  }
-	};
-
-	var _login = __webpack_require__(219);
+	// load the styles
+	var content = __webpack_require__(226);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(200)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./main.less", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/less-loader/index.js!./main.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
 
 /***/ },
-/* 217 */,
-/* 218 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	exports = module.exports = __webpack_require__(199)();
+	// imports
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
 
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	// module
+	exports.push([module.id, ".main {\n  min-height: 100%;\n  display: flex;\n  align-items: flex-start;\n  justify-content: flex-end;\n  overflow: hidden;\n}\n", ""]);
 
-	exports.default = function (signup, action) {
-	  switch (action.type) {
-	    case _signup.SIGNUP_ACTIVE:
-	      return _extends({}, signup, {
-	        isActive: true
-	      });
-	    case _signup.SIGNUP_NOT_ACTIVE:
-	      return _extends({}, signup, {
-	        isActive: false
-	      });
-	    case _signup.SET_REFRESH_TOKEN:
-	      return _extends({}, signup, {
-	        refresh_token: action.refresh_token,
-	        refreshTokenIsSuccess: true,
-	        refreshTokenIsRequired: false,
-	        refreshTokenIsUnsuccess: false
-	      });
-	    case _signup.REFRESH_TOKEN_SET_REQUIRED:
-	      return _extends({}, signup, {
-	        refreshTokenIsRequired: true
-	      });
-	    case _signup.REFRESH_TOKEN_SET_UNSUCCESS:
-	      return _extends({}, signup, {
-	        refreshTokenIsUnsuccess: true
-	      });
-	    case _signup.SIGNUP_SET_USERNAME:
-	      return _extends({}, signup, {
-	        username: action.username,
-	        usernameIsEmpty: false,
-	        usernameIsInvalid: false,
-	        usernameIsUsed: false
-	      });
-	    case _signup.SIGNUP_USERNAME_SET_EMPTY:
-	      return _extends({}, signup, {
-	        usernameIsEmpty: true
-	      });
-	    case _signup.SIGNUP_USERNAME_SET_INVALID:
-	      return _extends({}, signup, {
-	        usernameIsInvalid: true
-	      });
-	    case _signup.SIGNUP_USERNAME_SET_USED:
-	      return _extends({}, signup, {
-	        usernameIsUsed: true
-	      });
-	    case _signup.SIGNUP_SET_EMAIL:
-	      return _extends({}, signup, {
-	        email: action.email,
-	        emailIsEmpty: false,
-	        emailIsInvalid: false,
-	        emailIsUsed: false
-	      });
-	    case _signup.SIGNUP_EMAIL_SET_EMPTY:
-	      return _extends({}, signup, {
-	        emailIsEmpty: true
-	      });
-	    case _signup.SIGNUP_EMAIL_SET_INVALID:
-	      return _extends({}, signup, {
-	        emailIsInvalid: true
-	      });
-	    case _signup.SIGNUP_EMAIL_SET_USED:
-	      return _extends({}, signup, {
-	        emailIsUsed: true
-	      });
-	    case _signup.SIGNUP_SET_PASSWORD:
-	      return _extends({}, signup, {
-	        password: action.password,
-	        passwordIsEmpty: false,
-	        passwordIsInvalid: false
-	      });
-	    case _signup.SIGNUP_PASSWORD_SET_EMPTY:
-	      return _extends({}, signup, {
-	        passwordIsEmpty: true
-	      });
-	    case _signup.SIGNUP_PASSWORD_SET_INVALID:
-	      return _extends({}, signup, {
-	        passwordIsInvalid: true
-	      });
-	    default:
-	      return signup;
-	  }
-	};
+	// exports
 
-	var _signup = __webpack_require__(220);
-
-/***/ },
-/* 219 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var LOGIN_ACTIVE = exports.LOGIN_ACTIVE = "LOGIN_ACTIVE";
-	var loginActive = exports.loginActive = function loginActive() {
-	  return {
-	    type: LOGIN_ACTIVE
-	  };
-	};
-
-	var LOGIN_NOT_ACTIVE = exports.LOGIN_NOT_ACTIVE = "LOGIN_NOT_ACTIVE";
-	var loginNotActive = exports.loginNotActive = function loginNotActive() {
-	  return {
-	    type: LOGIN_NOT_ACTIVE
-	  };
-	};
-
-	var LOGIN_SET_USERNAME = exports.LOGIN_SET_USERNAME = "LOGIN_SET_USERNAME";
-	var loginSetUsername = exports.loginSetUsername = function loginSetUsername(username) {
-	  return {
-	    type: LOGIN_SET_USERNAME,
-	    username: username
-	  };
-	};
-
-	var LOGIN_USERNAME_SET_EMPTY = exports.LOGIN_USERNAME_SET_EMPTY = "LOGIN_USERNAME_SET_EMPTY";
-	var loginEmptyUsername = exports.loginEmptyUsername = function loginEmptyUsername() {
-	  return {
-	    type: LOGIN_USERNAME_SET_EMPTY
-	  };
-	};
-
-	var LOGIN_USERNAME_SET_INVALID = exports.LOGIN_USERNAME_SET_INVALID = "LOGIN_USERNAME_SET_INVALID";
-	var loginInvalidUsername = exports.loginInvalidUsername = function loginInvalidUsername() {
-	  return {
-	    type: LOGIN_USERNAME_SET_INVALID
-	  };
-	};
-
-	var LOGIN_SET_PASSWORD = exports.LOGIN_SET_PASSWORD = "LOGIN_SET_PASSWORD";
-	var loginSetPassword = exports.loginSetPassword = function loginSetPassword(password) {
-	  return {
-	    type: LOGIN_SET_PASSWORD,
-	    password: password
-	  };
-	};
-
-	var LOGIN_PASSWORD_SET_EMPTY = exports.LOGIN_PASSWORD_SET_EMPTY = "LOGIN_PASSWORD_SET_EMPTY";
-	var loginEmptyPassword = exports.loginEmptyPassword = function loginEmptyPassword() {
-	  return {
-	    type: LOGIN_PASSWORD_SET_EMPTY
-	  };
-	};
-
-	var LOGIN_PASSWORD_SET_INVALID = exports.LOGIN_PASSWORD_SET_INVALID = "LOGIN_PASSWORD_SET_INVALID";
-	var loginInvalidPassword = exports.loginInvalidPassword = function loginInvalidPassword() {
-	  return {
-	    type: LOGIN_PASSWORD_SET_INVALID
-	  };
-	};
-
-/***/ },
-/* 220 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var SIGNUP_ACTIVE = exports.SIGNUP_ACTIVE = "SIGNUP_ACTIVE";
-	var signupActive = exports.signupActive = function signupActive() {
-	  return {
-	    type: SIGNUP_ACTIVE
-	  };
-	};
-
-	var SIGNUP_NOT_ACTIVE = exports.SIGNUP_NOT_ACTIVE = "SIGNUP_NOT_ACTIVE";
-	var signupNotActive = exports.signupNotActive = function signupNotActive() {
-	  return {
-	    type: SIGNUP_NOT_ACTIVE
-	  };
-	};
-
-	var SET_REFRESH_TOKEN = exports.SET_REFRESH_TOKEN = "SET_REFRESH_TOKEN";
-	var signupSetRefreshToken = exports.signupSetRefreshToken = function signupSetRefreshToken(refresh_token) {
-	  return {
-	    type: SET_REFRESH_TOKEN,
-	    refresh_token: refresh_token
-	  };
-	};
-
-	var REFRESH_TOKEN_SET_REQUIRED = exports.REFRESH_TOKEN_SET_REQUIRED = "SET_REFRESH_TOKEN_REQUIRED";
-	var signupResfreshTokenRequired = exports.signupResfreshTokenRequired = function signupResfreshTokenRequired() {
-	  return {
-	    type: REFRESH_TOKEN_SET_REQUIRED
-	  };
-	};
-
-	var REFRESH_TOKEN_SET_UNSUCCESS = exports.REFRESH_TOKEN_SET_UNSUCCESS = "REFRESH_TOKEN_SET_UNSUCCESS";
-	var signupResfreshTokenUnsuccess = exports.signupResfreshTokenUnsuccess = function signupResfreshTokenUnsuccess() {
-	  return {
-	    type: REFRESH_TOKEN_SET_UNSUCCESS
-	  };
-	};
-
-	var SIGNUP_SET_USERNAME = exports.SIGNUP_SET_USERNAME = "SIGNUP_SET_USERNAME";
-	var signupSetUsername = exports.signupSetUsername = function signupSetUsername(username) {
-	  return {
-	    type: SIGNUP_SET_USERNAME,
-	    username: username
-	  };
-	};
-
-	var SIGNUP_USERNAME_SET_EMPTY = exports.SIGNUP_USERNAME_SET_EMPTY = "SIGNUP_USERNAME_SET_EMPTY";
-	var signupEmptyUsername = exports.signupEmptyUsername = function signupEmptyUsername() {
-	  return {
-	    type: SIGNUP_USERNAME_SET_EMPTY
-	  };
-	};
-
-	var SIGNUP_USERNAME_SET_INVALID = exports.SIGNUP_USERNAME_SET_INVALID = "SIGNUP_USERNAME_SET_INVALID";
-	var signupInvalidUsername = exports.signupInvalidUsername = function signupInvalidUsername() {
-	  return {
-	    type: SIGNUP_USERNAME_SET_INVALID
-	  };
-	};
-
-	var SIGNUP_USERNAME_SET_USED = exports.SIGNUP_USERNAME_SET_USED = "SIGNUP_USERNAME_SET_USED";
-	var signupUsedUsername = exports.signupUsedUsername = function signupUsedUsername() {
-	  return {
-	    type: SIGNUP_USERNAME_SET_USED
-	  };
-	};
-
-	var SIGNUP_SET_EMAIL = exports.SIGNUP_SET_EMAIL = "SIGNUP_SET_EMAIL";
-	var signupSetEmail = exports.signupSetEmail = function signupSetEmail(email) {
-	  return {
-	    type: SIGNUP_SET_EMAIL,
-	    email: email
-	  };
-	};
-
-	var SIGNUP_EMAIL_SET_EMPTY = exports.SIGNUP_EMAIL_SET_EMPTY = "SIGNUP_EMAIL_SET_EMPTY";
-	var signupEmptyEmail = exports.signupEmptyEmail = function signupEmptyEmail() {
-	  return {
-	    type: SIGNUP_EMAIL_SET_EMPTY
-	  };
-	};
-
-	var SIGNUP_EMAIL_SET_INVALID = exports.SIGNUP_EMAIL_SET_INVALID = "SIGNUP_EMAIL_SET_INVALID";
-	var signupInvalidEmail = exports.signupInvalidEmail = function signupInvalidEmail() {
-	  return {
-	    type: SIGNUP_EMAIL_SET_INVALID
-	  };
-	};
-
-	var SIGNUP_EMAIL_SET_USED = exports.SIGNUP_EMAIL_SET_USED = "SIGNUP_EMAIL_SET_USED";
-	var signupUsedEmail = exports.signupUsedEmail = function signupUsedEmail() {
-	  return {
-	    type: SIGNUP_EMAIL_SET_USED
-	  };
-	};
-
-	var SIGNUP_SET_PASSWORD = exports.SIGNUP_SET_PASSWORD = "SIGNUP_SET_PASSWORD";
-	var signupSetPassword = exports.signupSetPassword = function signupSetPassword(password) {
-	  return {
-	    type: SIGNUP_SET_PASSWORD,
-	    password: password
-	  };
-	};
-
-	var SIGNUP_PASSWORD_SET_EMPTY = exports.SIGNUP_PASSWORD_SET_EMPTY = "SIGNUP_PASSWORD_SET_EMPTY";
-	var signupEmptyPassword = exports.signupEmptyPassword = function signupEmptyPassword() {
-	  return {
-	    type: SIGNUP_PASSWORD_SET_EMPTY
-	  };
-	};
-
-	var SIGNUP_PASSWORD_SET_INVALID = exports.SIGNUP_PASSWORD_SET_INVALID = "SIGNUP_PASSWORD_SET_INVALID";
-	var signupInvalidPassword = exports.signupInvalidPassword = function signupInvalidPassword() {
-	  return {
-	    type: SIGNUP_PASSWORD_SET_INVALID
-	  };
-	};
-
-/***/ },
-/* 221 */,
-/* 222 */,
-/* 223 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.login = login;
-	exports.signup = signup;
-	exports.submit = submit;
-
-	var _login = __webpack_require__(219);
-
-	var _signup = __webpack_require__(220);
-
-	var _connection = __webpack_require__(181);
-
-	var _validation = __webpack_require__(193);
-
-	function login() {
-	  return function (dispatch, getState) {
-	    var _getState = getState();
-
-	    var _getState$authorizati = _getState.authorization;
-	    var isLogin = _getState$authorizati.login.isActive;
-	    var isSignup = _getState$authorizati.signup.isActive;
-
-	    if (!isLogin) dispatch((0, _login.loginActive)());
-	    if (isSignup) dispatch((0, _signup.signupNotActive)());
-	  };
-	}
-
-	function signup() {
-	  return function (dispatch, getState) {
-	    var _getState2 = getState();
-
-	    var _getState2$authorizat = _getState2.authorization;
-	    var isLogin = _getState2$authorizat.login.isActive;
-	    var isSignup = _getState2$authorizat.signup.isActive;
-
-	    if (!isSignup) dispatch((0, _signup.signupActive)());
-	    if (isLogin) dispatch((0, _login.loginNotActive)());
-	  };
-	}
-
-	function submit() {
-	  return function (dispatch, getState) {
-	    var state = getState();
-	    var _state$authorization = state.authorization;
-	    var isLogin = _state$authorization.login.isActive;
-	    var isSignup = _state$authorization.signup.isActive;
-
-	    if (isLogin) {
-	      (function () {
-	        var _state$authorization$ = state.authorization.login;
-	        var username = _state$authorization$.username;
-	        var password = _state$authorization$.password;
-
-	        (0, _validation.validation)((0, _validation.usernameValidator)(username), (0, _validation.passwordValidator)(password), function (errors) {
-	          if (errors) {
-	            errors.forEach(function (error) {
-	              return console.log((0, _validation.errorMessages)(error));
-	            });
-	            if (errors.includes(51)) {
-	              dispatch((0, _login.loginEmptyUsername)());
-	            }
-	            if (errors.includes(52)) {
-	              dispatch((0, _login.loginInvalidUsername)());
-	            }
-	            if (errors.includes(81)) {
-	              dispatch((0, _login.loginEmptyPassword)());
-	            }
-	            if (errors.includes(82)) {
-	              dispatch((0, _login.loginInvalidPassword)());
-	            }
-	          } else (0, _connection.send)("authorization.login.request", { username: username, password: password });
-	        });
-	      })();
-	    }
-	    if (isSignup) {
-	      (function () {
-	        var _state$authorization$2 = state.authorization.signup;
-	        var refresh_token = _state$authorization$2.refresh_token;
-	        var email = _state$authorization$2.email;
-	        var username = _state$authorization$2.username;
-	        var password = _state$authorization$2.password;
-
-	        (0, _validation.validation)((0, _validation.usernameValidator)(username), (0, _validation.emailValidator)(email), (0, _validation.passwordValidator)(password), (0, _validation.refreshTokenValidator)(refresh_token), function (errors) {
-	          if (errors) {
-	            errors.forEach(function (error) {
-	              return console.log((0, _validation.errorMessages)(error));
-	            });
-	            if (errors.includes(51)) {
-	              dispatch((0, _signup.signupEmptyUsername)());
-	            }
-	            if (errors.includes(52)) {
-	              dispatch((0, _signup.signupInvalidUsername)());
-	            }
-	            if (errors.includes(66)) {
-	              dispatch((0, _signup.signupEmptyEmail)());
-	            }
-	            if (errors.includes(67)) {
-	              dispatch((0, _signup.signupInvalidEmail)());
-	            }
-	            if (errors.includes(81)) {
-	              dispatch((0, _signup.signupEmptyPassword)());
-	            }
-	            if (errors.includes(82)) {
-	              dispatch((0, _signup.signupInvalidPassword)());
-	            }
-	            if (errors.includes(96)) {
-	              dispatch((0, _signup.signupResfreshTokenRequired)());
-	            }
-	          } else (0, _connection.send)("authorization.signin.request", { refresh_token: refresh_token, username: username, email: email, password: password });
-	        });
-	      })();
-	    }
-	  };
-	}
 
 /***/ }
 /******/ ]);

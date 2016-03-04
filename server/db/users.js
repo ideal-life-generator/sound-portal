@@ -4,23 +4,14 @@ import {
   usernameValidator,
   emailValidator,
   passwordValidator,
-  tokenVerificator,
+  tokenValidator,
   refreshTokenValidator
 } from "./../utils/validation"
 
-// CREATE TABLE users (
-//   "id" SERIAL UNIQUE,
-//   "username" CITEXT UNIQUE,
-//   "email" CITEXT UNIQUE,
-//   "password" TINYTEXT,
-//   "refresh_token" TINYTEXT UNIQUE,
-//   "token" TINYTEXT UNIQUE
-// );
-
-function tokenVerification (db, { email, token }, callback) {
+export function tokenVerification (db, { email, token }, callback) {
   validation(
     emailValidator(email),
-    tokenVerificator(token)
+    tokenValidator(token)
   , (errors) => {
     if (errors) callback(errors)
     else {
@@ -36,6 +27,7 @@ function tokenVerification (db, { email, token }, callback) {
         }
         else {
           const { rows: [ { exists } ] } = result
+
           callback(null, exists)
         }
       })
@@ -43,7 +35,7 @@ function tokenVerification (db, { email, token }, callback) {
   })
 }
 
-function usernameExist (db, username, callback) {
+export function usernameExist (db, username, callback) {
   validation(usernameValidator(username), (errors) => {
     if (errors) callback(errors)
     else {
@@ -59,6 +51,7 @@ function usernameExist (db, username, callback) {
         }
         else {
           const { rows: [ { exists } ] } = result
+
           callback(null, exists)
         }
       })
@@ -66,7 +59,7 @@ function usernameExist (db, username, callback) {
   })
 }
 
-function emailExist (db, email, callback) {
+export function emailExist (db, email, callback) {
   validation(emailValidator(email), (errors) => {
     if (errors) callback(errors)
     else {
@@ -82,6 +75,7 @@ function emailExist (db, email, callback) {
         }
         else {
           const { rows: [ { exists } ] } = result
+
           callback(null, exists)
         }
       })
@@ -89,7 +83,7 @@ function emailExist (db, email, callback) {
   })
 }
 
-function refreshTokenExist (db, refresh_token, callback) {
+export function refreshTokenExist (db, refresh_token, callback) {
   validation(refreshTokenValidator(refresh_token), (errors) => {
     if (errors) callback(errors)
     else {
@@ -105,6 +99,7 @@ function refreshTokenExist (db, refresh_token, callback) {
         }
         else {
           const { rows: [ { exists } ] } = result
+
           callback(null, exists)
         }
       })
@@ -112,7 +107,7 @@ function refreshTokenExist (db, refresh_token, callback) {
   })
 }
 
-function addUser (db, { username, email, password, refresh_token }, callback) {
+export function addUser (db, { username, email, password, refresh_token }, callback) {
   validation(
     usernameValidator(username),
     emailValidator(email),
@@ -145,6 +140,7 @@ function addUser (db, { username, email, password, refresh_token }, callback) {
         }
         else {
           const { rows: [ user ] } = result
+
           callback(null, user)
         }
       })
@@ -152,7 +148,7 @@ function addUser (db, { username, email, password, refresh_token }, callback) {
   })
 }
 
-function getUser (db, { username, password }, callback) {
+export function getUser (db, { username, password }, callback) {
   validation(
     usernameValidator(username),
     passwordValidator(password)
@@ -171,162 +167,10 @@ function getUser (db, { username, password }, callback) {
         if (error) { callback([ 0 ]) }
         else {
           const { rows: [ user ] } = result
+
           callback(null, user)
         }
       })
     }
   })
-}
-
-function get (db, email, callback) {
-  validation(emailValidator(email), (errors) => {
-    if (errors) callback(errors)
-    else {
-      db.query(`
-        SELECT
-          id,
-          email,
-          username
-        FROM users WHERE email=$1;
-      `, [ email ], (error, result) => {
-        if (error) { callback([ 0 ]) }
-        else {
-          const { rows: [ user ] } = result
-          callback(null, user)
-        }
-      })
-    }
-  })
-}
-
-function deleteToken (db, { email }, callback) {
-  validation(emailValidator(email), (errors) => {
-    if (errors) callback(errors)
-    else {
-      db.query(`
-        UPDATE users SET
-          refresh_token='',
-          token=''
-        WHERE email=$1;
-      `, [ email ], (error) => {
-        if (error) { callback([ 0 ]) }
-        else { callback() }
-      })
-    }
-  })
-}
-
-function existEmail (db, email, callback) {
-  validation(emailValidator(email), (errors) => {
-    if (errors) callback(errors)
-    else {
-      db.query(`
-        SELECT EXISTS(SELECT 1 FROM users WHERE email=$1);
-      `, [ email ], (error, result) => {
-        if (error) { callback([ 0 ]) }
-        else {
-          const { rows: [ { exists } ] } = result
-          callback(null, exists)
-        }
-      })
-    }
-  })
-}
-
-function insert (db, { email, refresh_token }, callback) {
-  validation(emailValidator(email), (errors) => {
-    if (errors) callback(errors)
-    else {
-      const token = randomBytes(16, "base64").toString("base64")
-      db.query(`
-        INSERT INTO users (
-          "email",
-          "refresh_token",
-          "token"
-        )
-        SELECT
-          $1,
-          $2,
-          $3
-        RETURNING id, email, token;
-      `, [ email, refresh_token, token ], (error, result) => {
-        if (error) { callback([ 0 ]) }
-        else {
-          const { rows: [ user ] } = result
-          callback(null, user)
-        }
-      })
-    }
-  })
-}
-
-function update (db, { email, refresh_token }, callback) {
-  validation(emailValidator(email), (errors) => {
-    if (errors) callback(errors)
-    else {
-      const token = randomBytes(16, "base64").toString("base64")
-      db.query(`
-        UPDATE users SET
-          refresh_token=$2,
-          token=$3
-        WHERE email=$1
-        RETURNING id, email, token, username;
-      `, [ email, refresh_token, token ], (error, result) => {
-        if (error) { callback([ 0 ]) }
-        else {
-          const { rows: [ user ] } = result
-          callback(null, user)
-        }
-      })
-    }
-  })
-}
-
-function existUsername (db, username, callback) {
-  validation(usernameValidator(username), (errors) => {
-    if (errors) callback(errors)
-    else {
-      db.query(`
-        SELECT EXISTS(
-          SELECT 1 FROM users
-          WHERE username=$1
-        );
-      `, [ username ], (error, result) => {
-        if (error) { callback([ 0 ]) }
-        else {
-          const { rows: [ { exists } ] } = result
-          callback(null, exists)
-        }
-      })
-    }
-  })
-}
-
-function updateUsername (db, { email, username }, callback) {
-  validation(emailValidator(email), usernameValidator(username), (errors) => {
-    if (errors) callback(errors)
-    else {
-      const token = randomBytes(16, "base64").toString("base64")
-      db.query(`
-        UPDATE users SET
-          username=$2
-        WHERE email=$1
-        RETURNING username;
-      `, [ email, username ], (error, result) => {
-        if (error) { callback([ 0 ]) }
-        else {
-          callback(null, username)
-        }
-      })
-    }
-  })
-}
-
-export {
-  tokenVerification,
-  usernameExist,
-  emailExist,
-  refreshTokenExist,
-  getUser,
-  addUser
 }

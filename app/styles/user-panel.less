@@ -14,13 +14,11 @@
     transform-origin: 50% 53%;
     transform: rotateZ(0deg);
     transition: all 0.5s ease-in-out;
-    &.is-authorization {
-      &.is-login {
-        transform: rotateZ(90deg);
-      }
-      &.is-signup {
-        transform: rotateZ(-90deg);
-      }
+    &.is-login {
+      transform: rotateZ(90deg);
+    }
+    &.is-signup {
+      transform: rotateZ(-90deg);
     }
   }
   .authorization {
@@ -80,7 +78,7 @@
         border-color: green;
       }
       &.is-unsuccess {
-        border-color: red;
+        border-color: maroon;
       }
     }
     .field {

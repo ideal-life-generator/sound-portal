@@ -1,10 +1,8 @@
-import { createStore, combineReducers, applyMiddleware } from "redux"
+import { createStore, applyMiddleware } from "redux"
 import thunkMiddleware from "redux-thunk"
-import authorization from "reducers/authorization"
+import reducers from "reducers"
 
 export default createStore(
-  combineReducers({
-    authorization
-  })
-  , applyMiddleware(thunkMiddleware)
+  reducers,
+  applyMiddleware(thunkMiddleware)
 )
