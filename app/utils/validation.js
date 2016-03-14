@@ -1,11 +1,3 @@
-export function validation (...results) {
-  const callback = results.pop()
-  const returns = results.filter(result => result)
-
-  if (returns.length) callback(returns)
-  else callback(null)
-}
-
 const MESSAGES = {
   0: "Unknown error",
   50: "Username: Unknown error",
@@ -26,6 +18,17 @@ const MESSAGES = {
   111: "Token: Empty field",
   112: "Token: This refresh token is already used"
 }
+const USERNAME_VALIDATOR = /^[a-zA-Z0-9 ._-]{3,36}$/
+const EMAIL_VALIDATOR = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+const PASSWORD_VALIDATOR = /^[a-zA-Z0-9 .!@#$%^&*_-]{6,36}$/
+
+export function validation (...results) {
+  const callback = results.pop()
+  const returns = results.filter(result => result)
+
+  if (returns.length) callback(returns)
+  else callback(null)
+}
 
 export function errorMessages (code) {
   if (typeof code === "number") {
@@ -35,7 +38,6 @@ export function errorMessages (code) {
   }
 }
 
-const USERNAME_VALIDATOR = /^[a-zA-Z0-9 ._-]{3,36}$/
 export function usernameValidator (username) {
   if (username) {
     if (USERNAME_VALIDATOR.test(username)) return
@@ -44,7 +46,6 @@ export function usernameValidator (username) {
   else return 51
 }
 
-const EMAIL_VALIDATOR = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 export function emailValidator (email) {
   if (email) {
     if (EMAIL_VALIDATOR.test(email)) return
@@ -53,7 +54,6 @@ export function emailValidator (email) {
   else return 66
 }
 
-const PASSWORD_VALIDATOR = /^[a-zA-Z0-9 .!@#$%^&*_-]{6,36}$/
 export function passwordValidator (password) {
   if (password) {
     if (PASSWORD_VALIDATOR.test(password)) return
@@ -67,7 +67,7 @@ export function refreshTokenValidator (refresh_token) {
   else return 96
 }
 
-export function tokenVerificator (token) {
+export function tokenValodator (token) {
   if (token) return
   else return 111
 }

@@ -2,10 +2,10 @@ import React from "react"
 import { render } from "react-dom"
 import { Provider } from "react-redux"
 import store from "store"
-import common from "styles/common.less"
-import fontello from "styles/fontello.css"
-import font from "fonts/fontello.woff"
 import Main from "containers/Main.jsx"
+import "styles/common.less"
+import "styles/fontello.css"
+import "fonts/fontello.woff"
 
 render(
   <Provider store={store}>

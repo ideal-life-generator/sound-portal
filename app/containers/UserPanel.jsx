@@ -1,11 +1,11 @@
-import React from "react"
+import React, { Component } from "react"
 import { connect } from "react-redux"
 import CSSTransitionGroup from "react-addons-css-transition-group"
-import MainButton from "components/MainButton"
-import Authorization from "containers/Authorization.jsx"
-import userPanel from "styles/user-panel.less"
+import MainButton from "components/MainButton.jsx"
+import Signup from "containers/Signup.jsx"
+import "styles/user-panel.less"
 
-function UserPanel ({ isAuthorization }) {
+export function UserPanel ({ inSignup }) {
   return (
     <CSSTransitionGroup
       component="aside"
@@ -17,17 +17,16 @@ function UserPanel ({ isAuthorization }) {
       transitionEnterTimeout={500}
       transitionLeaveTimeout={500}
     >
+      {inSignup && <Signup />}
       <MainButton />
-      {isAuthorization && <Authorization />}
     </CSSTransitionGroup>
   )
 }
 
 function mapStateToProps ({
-  login: { isActive: loginIsActive },
-  signup: { isActive: signupIsActive }
+  user: { isSignup }
 }) {
-  return { isAuthorization: loginIsActive || signupIsActive }
+  return { isSignup }
 }
 
 export default connect(mapStateToProps)(UserPanel)

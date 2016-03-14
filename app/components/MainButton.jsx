@@ -2,64 +2,39 @@ import React, { Component } from "react"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import classNames from "classnames"
-import {
-  loginActive,
-  loginNotActive,
-  loginUsed
-} from "actions/login"
-import {
-  signupActive,
-  signupNotActive,
-  signupUsed
-} from "actions/signup"
+import { logout } from "actions/user"
 
-class MainButton extends Component {
+export class MainButton extends Component {
   constructor (props) {
     super(props)
-
-    this.onButton = this.onButton.bind(this)
   }
 
-  onButton (event) {
-    event.preventDefault()
-
+  onLogout ({ preventDefault }) {
     const {
-      isLogin,
-      loginActive,
-      loginNotActive,
-      loginUsed,
-      loginNotUsed,
-      isSignup,
-      isSignupUsed,
-      signupActive,
-      signupNotActive,
-      signupUsed
+      isLogged,
+      logout
     } = this.props
 
-    if (!isLogin && !isSignup && !isSignupUsed) {
-      loginActive()
-      loginUsed()
-    } else if (!isLogin && !isSignup && isSignupUsed) {
-      signupActive()
-      signupUsed()
+    if (isLogged) {
+      logout()
     }
-    else if (isLogin) loginNotActive()
-    else if (isSignup) signupNotActive()
+
+    preventDefault()
   }
 
   render () {
     const {
-      isLogin,
-      isSignup
+      isLogged,
+      inSignup
     } = this.props
 
     return (
       <button
         className={classNames("main-button icon-power", {
-          "is-login": isLogin,
-          "is-signup": isSignup
+          logged: isLogged,
+          signup: inSignup
         })}
-        onClick={this.onButton}
+        onClick={this.onLogout}
       >
       </button>
     )
@@ -67,31 +42,19 @@ class MainButton extends Component {
 }
 
 function mapStateToProps ({
-  login: {
-    isActive: isLogin,
-    isUsed: isLoginUsed
-  },
-  signup: {
-    isActive: isSignup,
-    isUsed: isSignupUsed
+  user: {
+    isLogged,
+    inSignup
   }
 }) {
   return {
-    isLogin,
-    isLoginUsed,
-    isSignup,
-    isSignupUsed
+    isLogged,
+    inSignup
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
-    loginActive,
-    loginNotActive,
-    loginUsed,
-    signupActive,
-    signupNotActive,
-    signupUsed
   }, dispatch)
 }
 

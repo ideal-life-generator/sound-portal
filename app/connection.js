@@ -1,4 +1,4 @@
-import session from "ws-session"
+import session from "utils/ws-session"
 
 export const {
   connected,

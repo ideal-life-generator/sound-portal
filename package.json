@@ -2,8 +2,9 @@
   "name": "sound-portal",
   "version": "0.0.0",
   "scripts": {
-    "nodemon": "nodemon server --watch server.js --watch server --exec babel-node",
-    "webpack": "webpack --watch --progress"
+    "nodemon": "nodemon server",
+    "webpack": "webpack --watch",
+    "mocha": "mocha"
   },
   "devDependencies": {
     "babel-core": "^6.4.5",
@@ -17,7 +18,11 @@
     "json-loader": "^0.5.4",
     "less": "^2.6.0",
     "less-loader": "^2.2.2",
+    "mocha": "^2.4.5",
+    "mocha-loader": "^0.7.1",
     "nodemon": "^1.8.1",
+    "react-addons-test-utils": "^0.14.7",
+    "redux-mock-store": "^1.0.2",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.13"
   },
