@@ -81,7 +81,6 @@ httpServer.listen(HTTP_SERVER_PORT, HTTP_SERVER_PATH, () => {
 })
 
 // process.once("SIGUSR2", () => {
-//   console.log("Will be triggered when nodemon server is restar.")
 //   process.kill(process.pid, "SIGUSR2")
 // })
 
