@@ -80,9 +80,9 @@ httpServer.listen(HTTP_SERVER_PORT, HTTP_SERVER_PATH, () => {
   console.info(`http server is listen on ${HTTP_SERVER_PATH}:${HTTP_SERVER_PORT}`)
 })
 
-process.once("SIGUSR2", () => {
-  process.kill(process.pid, "SIGUSR2")
-})
+// process.once("SIGUSR2", () => {
+//   process.kill(process.pid, "SIGUSR2")
+// })
 
 process.on("SIGINT", () => {
   httpServer.close(() => {
