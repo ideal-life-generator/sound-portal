@@ -4,7 +4,7 @@
   "scripts": {
     "nodemon": "nodemon server",
     "webpack": "webpack --watch",
-    "mocha": "mocha"
+    "test-server": "mocha"
   },
   "devDependencies": {
     "babel-core": "^6.4.5",
@@ -42,6 +42,7 @@
     "redux-logger": "^2.5.0",
     "redux-thunk": "^1.0.3",
     "shortid": "^2.2.4",
+    "uuid": "^2.0.1",
     "ws": "^1.0.1"
   }
 }

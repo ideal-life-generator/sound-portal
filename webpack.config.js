@@ -93,6 +93,7 @@ module.exports = [
     resolve: {
       root: path.resolve(__dirname, "app/test"),
       alias:{
+        store: path.resolve( __dirname, "app/store"),
         connection: path.resolve( __dirname, "app/connection"),
         constants: path.resolve( __dirname, "app/constants"),
         actions: path.resolve( __dirname, "app/actions"),

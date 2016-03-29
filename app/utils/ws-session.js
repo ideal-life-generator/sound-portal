@@ -1,29 +1,30 @@
+import { v1 } from "uuid"
 import { parse } from "cookie"
-import { generate } from "shortid"
 
 export default function session (url) {
   const connects = new Set()
   const subscribes = new Map()
-  const socketInstance = new WebSocket(url)
+  const socket = new WebSocket(url)
   const cookieObj = parse(document.cookie)
-  let secure
-  let { socketSessionId } = cookieObj
+  let { "socket-session-id": sessionId } = cookieObj
 
-  if (!socketSessionId) {
-    socketSessionId = generate()
-    document.cookie = `socketSessionId=${socketSessionId};`
+  if (!sessionId) {
+    sessionId = v1()
+
+    document.cookie = `socket-session-id=${sessionId};`
   }
 
-  socketInstance.addEventListener("open", () => {
-    connects.forEach(callback => callback())
+  socket.addEventListener("open", () => {
+    connects.forEach((callback) => {
+      callback()
+    })
+
+    connects.clear()
   })
 
-  socketInstance.addEventListener("message", (event) => {
+  socket.addEventListener("message", (event) => {
     const { data: messageJSON } = event
-    const {
-      identifier,
-      data
-    } = JSON.parse(messageJSON)
+    const { identifier, data } = JSON.parse(messageJSON)
     const callback = subscribes.get(identifier)
 
     if (callback) callback.apply(null, data)
@@ -40,11 +41,10 @@ export default function session (url) {
   function send (identifier, ...data) {
     const messageJSON = JSON.stringify({
       identifier,
-      data,
-      secure
+      data
     })
 
-    socketInstance.send(messageJSON)
+    socket.send(messageJSON)
   }
 
   function subscribe (identifier, callback) {
@@ -60,14 +60,11 @@ export default function session (url) {
 
     function handler () {
       callback.apply(null, arguments)
+
       unsubscribe()
     }
 
     return unsubscribe
-  }
-
-  function setSecure (pairs) {
-    secure = pairs
   }
 
   return {
@@ -75,8 +72,7 @@ export default function session (url) {
     send,
     subscribe,
     subscribeOnce,
-    socketSessionId,
-    socketInstance,
-    setSecure
+    sessionId,
+    socket
   }
 }

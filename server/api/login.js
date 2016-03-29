@@ -1,4 +1,4 @@
-import { get } from "../db/users"
+import { get } from "../collections/users"
 
 export default function ({ currentSession, subscribe }) {
   subscribe("login.request", ({ username, password }) => {

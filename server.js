@@ -6,7 +6,8 @@ import filesStreamInit from "./server/utils/file-stream"
 import { parse } from "url"
 import login from "./server/api/login"
 import signup from "./server/api/signup"
-import { tokenVerification } from "./server/db/users"
+import user from "./server/api/user"
+import { tokenVerification } from "./server/collections/users"
 import {
   APP_FOLDER,
   HTTP_SERVER_PATH,
@@ -38,16 +39,16 @@ const wsServer = new Server({
 })
 const connections = sessions({
   wsServer,
-  secureIdentifiers: [
-    "user.request",
-    "user.delete.request"
-  ],
-  strategy ({ email, token }, success, cancel) {
-    tokenVerification(db, { email, token }, (errors, exists) => {
-      if (exists) success()
-      else cancel(errors)
-    })
+  protectedRequests: [ "user" ],
+  protectedResponses: [ "user" ],
+  strategy: {
+    request ({ sessionId, id, token }, success) {
+      tokenVerification({ id, token, sessionId }, (exists) => {
+        if (exists) success()
+      })
+    }
   }
+  
 })
 const {
   connected,
@@ -64,18 +65,35 @@ connected(({
   currentSession,
   exceptCurrent,
   exceptCurrentSession,
-  socketId,
-  socketSessionId,
+  id,
+  sessionId,
   socket
 }) => {
   login({ currentSession, subscribe })
-  signup({ currentSession, subscribe })
+
+  signup({ currentSession, subscribe, sessionId })
+
+  user({ subscribe, current, sessionId })
 })
 
 httpServer.listen(HTTP_SERVER_PORT, HTTP_SERVER_PATH, () => {
-  console.info(`http server is listen on ${HTTP_SERVER_PATH}:${HTTP_SERVER_PORT}.`)
+  console.info(`http server is listen on ${HTTP_SERVER_PATH}:${HTTP_SERVER_PORT}`)
+})
+
+process.once("SIGUSR2", () => {
+  process.kill(process.pid, "SIGUSR2")
+})
+
+process.on("SIGINT", () => {
+  httpServer.close(() => {
+    process.exit(0)
+  })
+})
+
+process.on("SIGTERM", () => {
+  process.exit(0)
 })
 
 process.on("uncaughtException", (error) => {
-  console.log(error)
+  console.error(error.stack)
 })

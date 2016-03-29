@@ -1,12 +1,15 @@
 import {
   USER_LOGGED,
   USER_LOGOUT,
-  USER_SIGNUP
+  USER_REQUIRE_USERNAME,
+  USER_SET
 } from "constants/user"
 
 export const initialState = {
   isLogged: false,
-  inSignup: false
+  isRequireUsername: false,
+  id: null,
+  username: null
 }
 
 export default function user (state = initialState, action) {
@@ -15,17 +18,25 @@ export default function user (state = initialState, action) {
       return {
         ...state,
         isLogged: true,
-        inSignup: false
+        isRequireUsername: false
       }
     case USER_LOGOUT:
       return {
         ...state,
-        isLogged: false
+        isLogged: false,
+        id: null,
+        username: null
       }
-    case USER_SIGNUP:
+    case USER_REQUIRE_USERNAME:
       return {
         ...state,
-        inSignup: true
+        isRequireUsername: true,
+        id: action.id
+      }
+    case USER_SET:
+      return {
+        ...state,
+        ...action.user
       }
     default:
       return state

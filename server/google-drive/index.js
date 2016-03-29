@@ -2,7 +2,7 @@ import { readFileSync } from "fs"
 import { join } from "path"
 import { request } from "https"
 
-export function getRefresh (code, callback) {
+export function getRefreshToken (code, callback) {
   const req = request({
     method: "POST",
     hostname: "www.googleapis.com",
@@ -71,7 +71,7 @@ export function files (token) {
   req.end()
 }
 
-export function profile (token, callback) {
+export function getProfile (token, callback) {
   const req = request({
     method: "GET",
     hostname: "www.googleapis.com",

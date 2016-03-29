@@ -1,31 +1,41 @@
 import { parse } from "cookie"
-import { generate } from "shortid"
 
-export default function sessions ({ wsServer, secureIdentifiers, strategy }) {
+export default function sessions ({
+  wsServer,
+  protectedRequests,
+  protectedResponses,
+  strategy
+}) {
   const sockets = new Map()
   const sessions = new Map()
   const identifiers = new Map()
 
   function connected (callback) {
+    function generateId () {
+      return generateId.id++
+    }
+
+    generateId.id = 0
+
     wsServer.on("connection", (socket) => {
       const { upgradeReq: { headers: { cookie } } } = socket
-
+      
       if (cookie) {
-        const { socketSessionId } = parse(cookie)
+        const { "socket-session-id": sessionId } = parse(cookie)
 
-        if (socketSessionId) {
-          const socketId = generate()
-          const current = single.bind(null, socketId)
-          const currentSession = session.bind(null, socketSessionId)
-          const exceptCurrent = exceptSingle.bind(null, socketId)
-          const exceptCurrentSession = exceptSession.bind(null, socketSessionId)
+        if (sessionId) {
+          const id = generateId()
+          const current = single.bind(null, id)
+          const currentSession = session.bind(null, sessionId)
+          const exceptCurrent = exceptSingle.bind(null, id)
+          const exceptCurrentSession = exceptSession.bind(null, sessionId)
 
-          sockets.set(socketId, socket)
+          sockets.set(id, socket)
 
-          if (!sessions.has(socketSessionId)) sessions.set(socketSessionId, new Set())
+          if (!sessions.has(sessionId)) sessions.set(sessionId, new Set())
 
           {
-            const session = sessions.get(socketSessionId)
+            const session = sessions.get(sessionId)
 
             session.add(socket)
 
@@ -36,7 +46,7 @@ export default function sessions ({ wsServer, secureIdentifiers, strategy }) {
               if (identifiers.has(identifier)) {
                 const callback = identifiers.get(identifier)
 
-                if (secureIdentifiers.includes(identifier)) {
+                if (protectedRequests.includes(identifier)) {
                   const { secure } = message
 
                   strategy(secure, () => {
@@ -49,10 +59,10 @@ export default function sessions ({ wsServer, secureIdentifiers, strategy }) {
             })
 
             socket.on("close", () => {
-              sockets.delete(socketId)
+              sockets.delete(id)
               session.delete(socket)
 
-              if (!session.size) sessions.delete(socketSessionId)
+              if (!session.size) sessions.delete(sessionId)
 
               socket.terminate()
             })
@@ -63,53 +73,53 @@ export default function sessions ({ wsServer, secureIdentifiers, strategy }) {
             currentSession,
             exceptCurrent,
             exceptCurrentSession,
-            socketId,
-            socketSessionId,
+            id,
+            sessionId,
             socket
           })
         }
       }
-      else {
-        const socketId = generate()
-        const current = single.bind(null, socketId)
-        const exceptCurrent = exceptSingle.bind(null, socketId)
+      // else {
+      //   const id = generate()
+      //   const current = single.bind(null, id)
+      //   const exceptCurrent = exceptSingle.bind(null, id)
 
-        sockets.set(socketId, socket)
+      //   sockets.set(id, socket)
 
-        socket.on("message", (messageJSON) => {
-          const message = JSON.parse(messageJSON)
-          const { identifier, data } = message
+      //   socket.on("message", (messageJSON) => {
+      //     const message = JSON.parse(messageJSON)
+      //     const { identifier, data } = message
 
-          if (identifiers.has(identifier)) {
-            const callback = identifiers.get(identifier)
-            if (callback) callback.apply(null, data)
-          }    
-        })
+      //     if (identifiers.has(identifier)) {
+      //       const callback = identifiers.get(identifier)
+      //       if (callback) callback.apply(null, data)
+      //     }    
+      //   })
 
-        socket.on("close", () => {
-          sockets.delete(socketId)
+      //   socket.on("close", () => {
+      //     sockets.delete(id)
 
-          socket.terminate()
-        })
+      //     socket.terminate()
+      //   })
 
-        callback({
-          current,
-          exceptCurrent,
-          socketId,
-          socket
-        })
-      }
+      //   callback({
+      //     current,
+      //     exceptCurrent,
+      //     id,
+      //     socket
+      //   })
+      // }
     })
   }
 
-  function single (socketId, identifier, ...data) {
-    const socket = sockets.get(socketId)
+  function single (id, identifier, ...data) {
+    const socket = sockets.get(id)
 
     socket.send(JSON.stringify({ identifier, data }))
   }
 
-  function session (socketSessionId, identifier, ...data) {
-    const session = sessions.get(socketSessionId)
+  function session (sessionId, identifier, ...data) {
+    const session = sessions.get(sessionId)
     const messageJSON = JSON.stringify({ identifier, data })
 
     session.forEach((socket) => {
@@ -117,21 +127,21 @@ export default function sessions ({ wsServer, secureIdentifiers, strategy }) {
     })
   }
 
-  function exceptSingle (socketId, identifier, ...data) {
+  function exceptSingle (id, identifier, ...data) {
     const messageJSON = JSON.stringify({ identifier, data })
 
-    sockets.forEach((socket, id) => {
-      if (id !== socketId) {
+    sockets.forEach((socket, collectedId) => {
+      if (id !== collectedId) {
         socket.send(messageJSON)
       }
     })
   }
 
-  function exceptSession (socketSessionId, identifier, ...data) {
+  function exceptSession (sessionId, identifier, ...data) {
     const messageJSON = JSON.stringify({ identifier, data })
 
     sessions.forEach((session, id) => {
-      if (id !== socketSessionId) {
+      if (id !== sessionId) {
         session.forEach((socket) => {
           socket.send(messageJSON)
         })

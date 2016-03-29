@@ -1,17 +1,31 @@
-import { add } from "../db/users"
-import { getRefreshToken } from "../google-drive"
+import {
+  insert,
+  checkEmail
+} from "../collections/users"
+import {
+  validation,
+  idValidator,
+  usernameValidator,
+  emailValidator,
+  tokenValidator,
+  refreshTokenValidator
+} from "./../utils/validation"
+import {
+  USERS_USED_EMAIL,
+  USERS_USED_USERNAME
+} from "../utils/codes"
+import {
+  getRefreshToken,
+  getToken,
+  getProfile
+} from "../google-drive"
 
-export default function ({ currentSession, subscribe }) {
-  subscribe("signup.refresh-token.request", (code) => {
+export default function ({ currentSession, subscribe, socketSessionId }) {
+  subscribe("signup.request", (code) => {
     getRefreshToken(code, ({ refresh_token }) => {
-      currentSession("signup.refresh-token.response", null, refresh_token)
-    })
-  })
-
-  subscribe("signin.request", ({ username, email, password, refresh_token }) => {
-    add({ username, email, password, refresh_token }, (errors, user) => {
-      if (errors) currentSession("signin.response", errors)
-      else currentSession("signin.response", null, user)
+      insert({ refresh_token }, (user) => {
+        currentSession("signin.response", null, user)
+      })
     })
   })
 }

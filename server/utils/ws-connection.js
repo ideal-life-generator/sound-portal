@@ -1,5 +1,5 @@
 /**
- * Build for server relationship
+ * Build for server sockets relationships
  */
 
 export default function (socket) {

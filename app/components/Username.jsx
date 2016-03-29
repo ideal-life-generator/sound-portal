@@ -43,8 +43,7 @@ export class Username extends Component {
 
 function mapStateToProps ({
 }) {
-  return {
-  }
+  return { }
 }
 
 function mapDispatchToProps (dispatch) {

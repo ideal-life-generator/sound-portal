@@ -3,21 +3,24 @@ import reducer from "reducers/user"
 import {
   USER_LOGGED,
   USER_LOGOUT,
-  USER_SIGNUP
+  USER_REQUIRE_USERNAME,
+  USER_SET
 } from "constants/user"
-
-const state = {
-  isLogged: false,
-  inSignup: false
-}
 
 export default function () {
   describe("User", () => {
+    const state = {
+      isLogged: false,
+      isRequireUsername: false,
+      id: null,
+      username: null
+    }
+
     it("Initial state", () => {
       deepEqual(reducer(undefined, { }), state)
     })
 
-    it("Is logged", () => {
+    it(`${USER_LOGGED}`, () => {
       const action = {
         type: USER_LOGGED
       }
@@ -33,7 +36,7 @@ export default function () {
       deepEqual(reducer(currentState, action), expectedState)
     })
 
-    it("Is logged out", () => {
+    it(`${USER_LOGOUT}`, () => {
       const action = {
         type: USER_LOGOUT
       }
@@ -49,17 +52,43 @@ export default function () {
       deepEqual(reducer(currentState, action), expectedState)
     })
 
-    it("In signup", () => {
+    it(`${USER_REQUIRE_USERNAME}`, () => {
+      const testUserId = 0
       const action = {
-        type: USER_SIGNUP
+        type: USER_REQUIRE_USERNAME,
+        id: testUserId
       }
       const currentState = {
         ...state,
-        inSignup: false
+        isRequireUsername: false,
+        id: null
       }
       const expectedState = {
         ...state,
-        inSignup: true
+        isRequireUsername: true,
+        id: testUserId
+      }
+
+      deepEqual(reducer(currentState, action), expectedState)
+    })
+
+    it(`${USER_SET}`, () => {
+      const action = {
+        type: USER_SET,
+        user: {
+          id: 0,
+          username: "test username"
+        }
+      }
+      const currentState = {
+        ...state,
+        id: null,
+        username: null
+      }
+      const expectedState = {
+        ...state,
+        id: 0,
+        username: "test username"
       }
 
       deepEqual(reducer(currentState, action), expectedState)

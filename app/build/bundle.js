@@ -62,11 +62,11 @@
 
 	var _Main2 = _interopRequireDefault(_Main);
 
-	__webpack_require__(203);
+	__webpack_require__(210);
 
-	__webpack_require__(205);
+	__webpack_require__(212);
 
-	__webpack_require__(207);
+	__webpack_require__(214);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21087,7 +21087,9 @@
 
 	var initialState = exports.initialState = {
 	  isLogged: false,
-	  inSignup: false
+	  isRequireUsername: false,
+	  id: null,
+	  username: null
 	};
 
 	function user() {
@@ -21098,16 +21100,21 @@
 	    case _user.USER_LOGGED:
 	      return _extends({}, state, {
 	        isLogged: true,
-	        inSignup: false
+	        isRequireUsername: false
 	      });
 	    case _user.USER_LOGOUT:
 	      return _extends({}, state, {
-	        isLogged: false
+	        isLogged: false,
+	        id: null,
+	        username: null
 	      });
-	    case _user.USER_SIGNUP:
+	    case _user.USER_REQUIRE_USERNAME:
 	      return _extends({}, state, {
-	        inSignup: true
+	        isRequireUsername: true,
+	        id: action.id
 	      });
+	    case _user.USER_SET:
+	      return _extends({}, state, action.user);
 	    default:
 	      return state;
 	  }
@@ -21124,7 +21131,8 @@
 	});
 	var USER_LOGGED = exports.USER_LOGGED = "USER_LOGGED";
 	var USER_LOGOUT = exports.USER_LOGOUT = "USER_LOGOUT";
-	var USER_SIGNUP = exports.USER_SIGNUP = "USER_SIGNUP";
+	var USER_REQUIRE_USERNAME = exports.USER_REQUIRE_USERNAME = "USER_REQUIRE_USERNAME";
+	var USER_SET = exports.USER_SET = "USER_SET";
 
 /***/ },
 /* 182 */
@@ -21217,7 +21225,7 @@
 
 	var _UserPanel2 = _interopRequireDefault(_UserPanel);
 
-	__webpack_require__(201);
+	__webpack_require__(208);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21238,11 +21246,15 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.UserPanel = UserPanel;
+	exports.UserPanel = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _redux = __webpack_require__(165);
 
 	var _reactRedux = __webpack_require__(159);
 
@@ -21254,41 +21266,119 @@
 
 	var _MainButton2 = _interopRequireDefault(_MainButton);
 
-	var _Signup = __webpack_require__(196);
+	var _Signup = __webpack_require__(198);
 
 	var _Signup2 = _interopRequireDefault(_Signup);
 
-	__webpack_require__(197);
+	var _store = __webpack_require__(177);
+
+	var _store2 = _interopRequireDefault(_store);
+
+	var _user = __webpack_require__(196);
+
+	var _multiStorage = __webpack_require__(197);
+
+	var _connection = __webpack_require__(199);
+
+	__webpack_require__(204);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function UserPanel(_ref) {
-	  var inSignup = _ref.inSignup;
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	  return _react2.default.createElement(
-	    _reactAddonsCssTransitionGroup2.default,
-	    {
-	      component: "aside",
-	      className: "user-panel",
-	      transitionName: {
-	        enter: "enter",
-	        leave: "leave"
-	      },
-	      transitionEnterTimeout: 500,
-	      transitionLeaveTimeout: 500
-	    },
-	    inSignup && _react2.default.createElement(_Signup2.default, null),
-	    _react2.default.createElement(_MainButton2.default, null)
-	  );
-	}
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	// connected(() => {
+	//   updateSessionId()
+	// })
+
+	var UserPanel = exports.UserPanel = function (_Component) {
+	  _inherits(UserPanel, _Component);
+
+	  function UserPanel() {
+	    _classCallCheck(this, UserPanel);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(UserPanel).apply(this, arguments));
+	  }
+
+	  _createClass(UserPanel, [{
+	    key: "componentDidMount",
+	    value: function componentDidMount() {
+	      var _props = this.props;
+	      var requireUsername = _props.requireUsername;
+	      var set = _props.set;
+
+	      var _getItems = (0, _multiStorage.getItems)("id", "token");
+
+	      var id = _getItems.id;
+	      var token = _getItems.token;
+
+
+	      (0, _connection.connected)(function () {
+	        (0, _connection.send)("authorization", { id: id, token: token });
+	      });
+
+	      (0, _connection.subscribe)("user", function (_ref) {
+	        var id = _ref.id;
+	        var username = _ref.username;
+
+	        if (username) {
+	          set({ id: id, username: username });
+	        } else {
+	          requireUsername(id);
+	        }
+	      });
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      var _props2 = this.props;
+	      var isRequireUsername = _props2.isRequireUsername;
+	      var id = _props2.id;
+
+
+	      return _react2.default.createElement(
+	        _reactAddonsCssTransitionGroup2.default,
+	        {
+	          component: "aside",
+	          className: "user-panel",
+	          transitionName: {
+	            enter: "enter",
+	            leave: "leave"
+	          },
+	          transitionEnterTimeout: 500,
+	          transitionLeaveTimeout: 500
+	        },
+	        isRequireUsername && _react2.default.createElement(_Signup2.default, null),
+	        _react2.default.createElement(_MainButton2.default, null)
+	      );
+	    }
+	  }]);
+
+	  return UserPanel;
+	}(_react.Component);
 
 	function mapStateToProps(_ref2) {
-	  var isSignup = _ref2.user.isSignup;
+	  var _ref2$user = _ref2.user;
+	  var isRequireUsername = _ref2$user.isRequireUsername;
+	  var id = _ref2$user.id;
 
-	  return { isSignup: isSignup };
+	  return {
+	    isRequireUsername: isRequireUsername,
+	    id: id
+	  };
 	}
 
-	exports.default = (0, _reactRedux.connect)(mapStateToProps)(UserPanel);
+	function mapDispatchToProps(dispatch) {
+	  return (0, _redux.bindActionCreators)({
+	    requireUsername: _user.requireUsername,
+	    set: _user.set
+	  }, dispatch);
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(UserPanel);
 
 /***/ },
 /* 186 */
@@ -22109,7 +22199,11 @@
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _user = __webpack_require__(195);
+	var _popup = __webpack_require__(195);
+
+	var _popup2 = _interopRequireDefault(_popup);
+
+	var _user = __webpack_require__(196);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22125,38 +22219,46 @@
 	  function MainButton(props) {
 	    _classCallCheck(this, MainButton);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(MainButton).call(this, props));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MainButton).call(this, props));
+
+	    _this.onClick = _this.onClick.bind(_this);
+	    return _this;
 	  }
 
 	  _createClass(MainButton, [{
-	    key: "onLogout",
-	    value: function onLogout(_ref) {
-	      var preventDefault = _ref.preventDefault;
+	    key: "onClick",
+	    value: function onClick(event) {
 	      var _props = this.props;
 	      var isLogged = _props.isLogged;
+	      var isRequireUsername = _props.isRequireUsername;
 	      var logout = _props.logout;
 
 
-	      if (isLogged) {
+	      if (!isLogged && !isRequireUsername) {
+	        (0, _popup2.default)("https://accounts.google.com/o/oauth2/auth?" + "client_id=205946784859-n4ckbriqes7j9etrh7dvm9608qr958qs.apps.googleusercontent.com&" + "scope=email&" + "access_type=offline&" + "response_type=code&" + "prompt=consent&" + "redirect_uri=http://localhost:5000/google-access", {
+	          width: 500,
+	          height: 450
+	        });
+	      } else if (!isLogged && isRequireUsername) {} else if (isLogged) {
 	        logout();
 	      }
 
-	      preventDefault();
+	      event.preventDefault();
 	    }
 	  }, {
 	    key: "render",
 	    value: function render() {
 	      var _props2 = this.props;
 	      var isLogged = _props2.isLogged;
-	      var inSignup = _props2.inSignup;
+	      var isRequireUsername = _props2.isRequireUsername;
 
 
 	      return _react2.default.createElement("button", {
 	        className: (0, _classnames2.default)("main-button icon-power", {
 	          logged: isLogged,
-	          signup: inSignup
+	          signup: isRequireUsername
 	        }),
-	        onClick: this.onLogout
+	        onClick: this.onClick
 	      });
 	    }
 	  }]);
@@ -22164,14 +22266,14 @@
 	  return MainButton;
 	}(_react.Component);
 
-	function mapStateToProps(_ref2) {
-	  var _ref2$user = _ref2.user;
-	  var isLogged = _ref2$user.isLogged;
-	  var inSignup = _ref2$user.inSignup;
+	function mapStateToProps(_ref) {
+	  var _ref$user = _ref.user;
+	  var isLogged = _ref$user.isLogged;
+	  var isRequireUsername = _ref$user.isRequireUsername;
 
 	  return {
 	    isLogged: isLogged,
-	    inSignup: inSignup
+	    isRequireUsername: isRequireUsername
 	  };
 	}
 
@@ -22237,6 +22339,25 @@
 
 /***/ },
 /* 195 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = popup;
+	function popup(url, _ref) {
+	  var width = _ref.width;
+	  var height = _ref.height;
+
+	  var left = window.screenLeft + window.innerWidth / 2 - width / 2;
+	  var top = window.screenTop + window.innerHeight / 2 - height / 2;
+	  return window.open(url, null, "\n    toolbar=no,\n    location=no,\n    directories=no,\n    status=no,\n    menubar=no,\n    scrollbars=no,\n    resizable=no,\n    copyhistory=no,\n    width=" + width + ",\n    height=" + height + ",\n    left=" + left + ",\n    top=" + top + "\n  ");
+	}
+
+/***/ },
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22246,28 +22367,101 @@
 	});
 	exports.logged = logged;
 	exports.logout = logout;
+	exports.requireUsername = requireUsername;
+	exports.set = set;
 	exports.signup = signup;
 
 	var _user = __webpack_require__(181);
+
+	var _multiStorage = __webpack_require__(197);
 
 	function logged() {
 	  return {
 	    type: _user.USER_LOGGED
 	  };
 	}
+
 	function logout() {
 	  return {
 	    type: _user.USER_LOGOUT
 	  };
 	}
-	function signup() {
+
+	function requireUsername(id) {
 	  return {
-	    type: _user.USER_SIGNUP
+	    type: _user.USER_REQUIRE_USERNAME,
+	    id: id
+	  };
+	}
+
+	function set(user) {
+	  return {
+	    type: _user.USER_SET,
+	    user: user
+	  };
+	}
+
+	function signup(_ref) {
+	  var id = _ref.id;
+	  var token = _ref.token;
+
+	  (0, _multiStorage.setItems)({ id: id, token: token });
+
+	  return function (dispatch, getState) {
+	    dispatch(requireUsername(id));
 	  };
 	}
 
 /***/ },
-/* 196 */
+/* 197 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.setItems = setItems;
+	exports.getItems = getItems;
+	exports.removeItems = removeItems;
+	function setItems(itemsToSet) {
+	  var keys = Object.keys(itemsToSet);
+
+	  keys.forEach(function (key) {
+	    var value = itemsToSet[key];
+
+	    localStorage.setItem(key, value);
+	  });
+	}
+
+	function getItems() {
+	  var result = {};
+
+	  for (var _len = arguments.length, requiredKeys = Array(_len), _key = 0; _key < _len; _key++) {
+	    requiredKeys[_key] = arguments[_key];
+	  }
+
+	  requiredKeys.forEach(function (key) {
+	    var value = localStorage.getItem(key);
+
+	    result[key] = value;
+	  });
+
+	  return result;
+	}
+
+	function removeItems() {
+	  for (var _len2 = arguments.length, itemsToRemove = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+	    itemsToRemove[_key2] = arguments[_key2];
+	  }
+
+	  itemsToRemove.forEach(function (key) {
+	    localStorage.removeItem(key);
+	  });
+	}
+
+/***/ },
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22283,17 +22477,36 @@
 
 	var _reactRedux = __webpack_require__(159);
 
+	var _store = __webpack_require__(177);
+
+	var _store2 = _interopRequireDefault(_store);
+
+	var _connection = __webpack_require__(199);
+
+	var _user = __webpack_require__(196);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _objectDestructuringEmpty(obj) { if (obj == null) throw new TypeError("Cannot destructure undefined"); }
+
+	(0, _connection.subscribe)("signin.response", function (errors, user) {
+	  if (errors) console.log(errors);else _store2.default.dispatch((0, _user.signup)(user));
+	});
 
 	function Signup(_ref) {
 	  _objectDestructuringEmpty(_ref);
 
 	  return _react2.default.createElement(
 	    "form",
-	    null,
-	    "Signup"
+	    {
+	      name: "signup",
+	      onSubmit: function onSubmit(event) {
+	        event.preventDefault();
+	      } },
+	    _react2.default.createElement("input", {
+	      className: "username",
+	      type: "text",
+	      placeholder: "Username" })
 	  );
 	}
 
@@ -22306,16 +22519,540 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(Signup);
 
 /***/ },
-/* 197 */
+/* 199 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.socket = exports.sessionId = exports.subscribeOnce = exports.subscribe = exports.send = exports.connected = undefined;
+
+	var _wsSession = __webpack_require__(200);
+
+	var _wsSession2 = _interopRequireDefault(_wsSession);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var _session = (0, _wsSession2.default)("ws://localhost:5001");
+
+	var connected = _session.connected;
+	var send = _session.send;
+	var subscribe = _session.subscribe;
+	var subscribeOnce = _session.subscribeOnce;
+	var sessionId = _session.sessionId;
+	var socket = _session.socket;
+	exports.connected = connected;
+	exports.send = send;
+	exports.subscribe = subscribe;
+	exports.subscribeOnce = subscribeOnce;
+	exports.sessionId = sessionId;
+	exports.socket = socket;
+
+/***/ },
+/* 200 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = session;
+
+	var _uuid = __webpack_require__(201);
+
+	var _cookie = __webpack_require__(203);
+
+	function session(url) {
+	  var connects = new Set();
+	  var subscribes = new Map();
+	  var socket = new WebSocket(url);
+	  var cookieObj = (0, _cookie.parse)(document.cookie);
+	  var sessionId = cookieObj["socket-session-id"];
+
+
+	  if (!sessionId) {
+	    sessionId = (0, _uuid.v1)();
+
+	    document.cookie = "socket-session-id=" + sessionId + ";";
+	  }
+
+	  socket.addEventListener("open", function () {
+	    connects.forEach(function (callback) {
+	      callback();
+	    });
+
+	    connects.clear();
+	  });
+
+	  socket.addEventListener("message", function (event) {
+	    var messageJSON = event.data;
+
+	    var _JSON$parse = JSON.parse(messageJSON);
+
+	    var identifier = _JSON$parse.identifier;
+	    var data = _JSON$parse.data;
+
+	    var callback = subscribes.get(identifier);
+
+	    if (callback) callback.apply(null, data);
+	  });
+
+	  function connected(callback) {
+	    connects.add(callback);
+
+	    return function unsubscribe() {
+	      connects.delete(callback);
+	    };
+	  }
+
+	  function send(identifier) {
+	    for (var _len = arguments.length, data = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	      data[_key - 1] = arguments[_key];
+	    }
+
+	    var messageJSON = JSON.stringify({
+	      identifier: identifier,
+	      data: data
+	    });
+
+	    socket.send(messageJSON);
+	  }
+
+	  function subscribe(identifier, callback) {
+	    subscribes.set(identifier, callback);
+
+	    return function unsubscribe() {
+	      subscribes.delete(identifier);
+	    };
+	  }
+
+	  function subscribeOnce(identifier, callback) {
+	    var unsubscribe = subscribe(identifier, handler);
+
+	    function handler() {
+	      callback.apply(null, arguments);
+
+	      unsubscribe();
+	    }
+
+	    return unsubscribe;
+	  }
+
+	  return {
+	    connected: connected,
+	    send: send,
+	    subscribe: subscribe,
+	    subscribeOnce: subscribeOnce,
+	    sessionId: sessionId,
+	    socket: socket
+	  };
+	}
+
+/***/ },
+/* 201 */
+/***/ function(module, exports, __webpack_require__) {
+
+	//     uuid.js
+	//
+	//     Copyright (c) 2010-2012 Robert Kieffer
+	//     MIT License - http://opensource.org/licenses/mit-license.php
+
+	// Unique ID creation requires a high quality random # generator.  We feature
+	// detect to determine the best RNG source, normalizing to a function that
+	// returns 128-bits of randomness, since that's what's usually required
+	var _rng = __webpack_require__(202);
+
+	// Maps for number <-> hex string conversion
+	var _byteToHex = [];
+	var _hexToByte = {};
+	for (var i = 0; i < 256; i++) {
+	  _byteToHex[i] = (i + 0x100).toString(16).substr(1);
+	  _hexToByte[_byteToHex[i]] = i;
+	}
+
+	// **`parse()` - Parse a UUID into it's component bytes**
+	function parse(s, buf, offset) {
+	  var i = (buf && offset) || 0, ii = 0;
+
+	  buf = buf || [];
+	  s.toLowerCase().replace(/[0-9a-f]{2}/g, function(oct) {
+	    if (ii < 16) { // Don't overflow!
+	      buf[i + ii++] = _hexToByte[oct];
+	    }
+	  });
+
+	  // Zero out remaining bytes if string was short
+	  while (ii < 16) {
+	    buf[i + ii++] = 0;
+	  }
+
+	  return buf;
+	}
+
+	// **`unparse()` - Convert UUID byte array (ala parse()) into a string**
+	function unparse(buf, offset) {
+	  var i = offset || 0, bth = _byteToHex;
+	  return  bth[buf[i++]] + bth[buf[i++]] +
+	          bth[buf[i++]] + bth[buf[i++]] + '-' +
+	          bth[buf[i++]] + bth[buf[i++]] + '-' +
+	          bth[buf[i++]] + bth[buf[i++]] + '-' +
+	          bth[buf[i++]] + bth[buf[i++]] + '-' +
+	          bth[buf[i++]] + bth[buf[i++]] +
+	          bth[buf[i++]] + bth[buf[i++]] +
+	          bth[buf[i++]] + bth[buf[i++]];
+	}
+
+	// **`v1()` - Generate time-based UUID**
+	//
+	// Inspired by https://github.com/LiosK/UUID.js
+	// and http://docs.python.org/library/uuid.html
+
+	// random #'s we need to init node and clockseq
+	var _seedBytes = _rng();
+
+	// Per 4.5, create and 48-bit node id, (47 random bits + multicast bit = 1)
+	var _nodeId = [
+	  _seedBytes[0] | 0x01,
+	  _seedBytes[1], _seedBytes[2], _seedBytes[3], _seedBytes[4], _seedBytes[5]
+	];
+
+	// Per 4.2.2, randomize (14 bit) clockseq
+	var _clockseq = (_seedBytes[6] << 8 | _seedBytes[7]) & 0x3fff;
+
+	// Previous uuid creation time
+	var _lastMSecs = 0, _lastNSecs = 0;
+
+	// See https://github.com/broofa/node-uuid for API details
+	function v1(options, buf, offset) {
+	  var i = buf && offset || 0;
+	  var b = buf || [];
+
+	  options = options || {};
+
+	  var clockseq = options.clockseq !== undefined ? options.clockseq : _clockseq;
+
+	  // UUID timestamps are 100 nano-second units since the Gregorian epoch,
+	  // (1582-10-15 00:00).  JSNumbers aren't precise enough for this, so
+	  // time is handled internally as 'msecs' (integer milliseconds) and 'nsecs'
+	  // (100-nanoseconds offset from msecs) since unix epoch, 1970-01-01 00:00.
+	  var msecs = options.msecs !== undefined ? options.msecs : new Date().getTime();
+
+	  // Per 4.2.1.2, use count of uuid's generated during the current clock
+	  // cycle to simulate higher resolution clock
+	  var nsecs = options.nsecs !== undefined ? options.nsecs : _lastNSecs + 1;
+
+	  // Time since last uuid creation (in msecs)
+	  var dt = (msecs - _lastMSecs) + (nsecs - _lastNSecs)/10000;
+
+	  // Per 4.2.1.2, Bump clockseq on clock regression
+	  if (dt < 0 && options.clockseq === undefined) {
+	    clockseq = clockseq + 1 & 0x3fff;
+	  }
+
+	  // Reset nsecs if clock regresses (new clockseq) or we've moved onto a new
+	  // time interval
+	  if ((dt < 0 || msecs > _lastMSecs) && options.nsecs === undefined) {
+	    nsecs = 0;
+	  }
+
+	  // Per 4.2.1.2 Throw error if too many uuids are requested
+	  if (nsecs >= 10000) {
+	    throw new Error('uuid.v1(): Can\'t create more than 10M uuids/sec');
+	  }
+
+	  _lastMSecs = msecs;
+	  _lastNSecs = nsecs;
+	  _clockseq = clockseq;
+
+	  // Per 4.1.4 - Convert from unix epoch to Gregorian epoch
+	  msecs += 12219292800000;
+
+	  // `time_low`
+	  var tl = ((msecs & 0xfffffff) * 10000 + nsecs) % 0x100000000;
+	  b[i++] = tl >>> 24 & 0xff;
+	  b[i++] = tl >>> 16 & 0xff;
+	  b[i++] = tl >>> 8 & 0xff;
+	  b[i++] = tl & 0xff;
+
+	  // `time_mid`
+	  var tmh = (msecs / 0x100000000 * 10000) & 0xfffffff;
+	  b[i++] = tmh >>> 8 & 0xff;
+	  b[i++] = tmh & 0xff;
+
+	  // `time_high_and_version`
+	  b[i++] = tmh >>> 24 & 0xf | 0x10; // include version
+	  b[i++] = tmh >>> 16 & 0xff;
+
+	  // `clock_seq_hi_and_reserved` (Per 4.2.2 - include variant)
+	  b[i++] = clockseq >>> 8 | 0x80;
+
+	  // `clock_seq_low`
+	  b[i++] = clockseq & 0xff;
+
+	  // `node`
+	  var node = options.node || _nodeId;
+	  for (var n = 0; n < 6; n++) {
+	    b[i + n] = node[n];
+	  }
+
+	  return buf ? buf : unparse(b);
+	}
+
+	// **`v4()` - Generate random UUID**
+
+	// See https://github.com/broofa/node-uuid for API details
+	function v4(options, buf, offset) {
+	  // Deprecated - 'format' argument, as supported in v1.2
+	  var i = buf && offset || 0;
+
+	  if (typeof(options) == 'string') {
+	    buf = options == 'binary' ? new Array(16) : null;
+	    options = null;
+	  }
+	  options = options || {};
+
+	  var rnds = options.random || (options.rng || _rng)();
+
+	  // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+	  rnds[6] = (rnds[6] & 0x0f) | 0x40;
+	  rnds[8] = (rnds[8] & 0x3f) | 0x80;
+
+	  // Copy bytes to buffer, if provided
+	  if (buf) {
+	    for (var ii = 0; ii < 16; ii++) {
+	      buf[i + ii] = rnds[ii];
+	    }
+	  }
+
+	  return buf || unparse(rnds);
+	}
+
+	// Export public API
+	var uuid = v4;
+	uuid.v1 = v1;
+	uuid.v4 = v4;
+	uuid.parse = parse;
+	uuid.unparse = unparse;
+
+	module.exports = uuid;
+
+
+/***/ },
+/* 202 */
+/***/ function(module, exports) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {
+	var rng;
+
+	if (global.crypto && crypto.getRandomValues) {
+	  // WHATWG crypto-based RNG - http://wiki.whatwg.org/wiki/Crypto
+	  // Moderately fast, high quality
+	  var _rnds8 = new Uint8Array(16);
+	  rng = function whatwgRNG() {
+	    crypto.getRandomValues(_rnds8);
+	    return _rnds8;
+	  };
+	}
+
+	if (!rng) {
+	  // Math.random()-based (RNG)
+	  //
+	  // If all else fails, use Math.random().  It's fast, but is of unspecified
+	  // quality.
+	  var  _rnds = new Array(16);
+	  rng = function() {
+	    for (var i = 0, r; i < 16; i++) {
+	      if ((i & 0x03) === 0) r = Math.random() * 0x100000000;
+	      _rnds[i] = r >>> ((i & 0x03) << 3) & 0xff;
+	    }
+
+	    return _rnds;
+	  };
+	}
+
+	module.exports = rng;
+
+
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 203 */
+/***/ function(module, exports) {
+
+	/*!
+	 * cookie
+	 * Copyright(c) 2012-2014 Roman Shtylman
+	 * Copyright(c) 2015 Douglas Christopher Wilson
+	 * MIT Licensed
+	 */
+
+	/**
+	 * Module exports.
+	 * @public
+	 */
+
+	exports.parse = parse;
+	exports.serialize = serialize;
+
+	/**
+	 * Module variables.
+	 * @private
+	 */
+
+	var decode = decodeURIComponent;
+	var encode = encodeURIComponent;
+	var pairSplitRegExp = /; */;
+
+	/**
+	 * RegExp to match field-content in RFC 7230 sec 3.2
+	 *
+	 * field-content = field-vchar [ 1*( SP / HTAB ) field-vchar ]
+	 * field-vchar   = VCHAR / obs-text
+	 * obs-text      = %x80-FF
+	 */
+
+	var fieldContentRegExp = /^[\u0009\u0020-\u007e\u0080-\u00ff]+$/;
+
+	/**
+	 * Parse a cookie header.
+	 *
+	 * Parse the given cookie header string into an object
+	 * The object has the various cookies as keys(names) => values
+	 *
+	 * @param {string} str
+	 * @param {object} [options]
+	 * @return {object}
+	 * @public
+	 */
+
+	function parse(str, options) {
+	  if (typeof str !== 'string') {
+	    throw new TypeError('argument str must be a string');
+	  }
+
+	  var obj = {}
+	  var opt = options || {};
+	  var pairs = str.split(pairSplitRegExp);
+	  var dec = opt.decode || decode;
+
+	  pairs.forEach(function(pair) {
+	    var eq_idx = pair.indexOf('=')
+
+	    // skip things that don't look like key=value
+	    if (eq_idx < 0) {
+	      return;
+	    }
+
+	    var key = pair.substr(0, eq_idx).trim()
+	    var val = pair.substr(++eq_idx, pair.length).trim();
+
+	    // quoted values
+	    if ('"' == val[0]) {
+	      val = val.slice(1, -1);
+	    }
+
+	    // only assign once
+	    if (undefined == obj[key]) {
+	      obj[key] = tryDecode(val, dec);
+	    }
+	  });
+
+	  return obj;
+	}
+
+	/**
+	 * Serialize data into a cookie header.
+	 *
+	 * Serialize the a name value pair into a cookie string suitable for
+	 * http headers. An optional options object specified cookie parameters.
+	 *
+	 * serialize('foo', 'bar', { httpOnly: true })
+	 *   => "foo=bar; httpOnly"
+	 *
+	 * @param {string} name
+	 * @param {string} val
+	 * @param {object} [options]
+	 * @return {string}
+	 * @public
+	 */
+
+	function serialize(name, val, options) {
+	  var opt = options || {};
+	  var enc = opt.encode || encode;
+
+	  if (!fieldContentRegExp.test(name)) {
+	    throw new TypeError('argument name is invalid');
+	  }
+
+	  var value = enc(val);
+
+	  if (value && !fieldContentRegExp.test(value)) {
+	    throw new TypeError('argument val is invalid');
+	  }
+
+	  var pairs = [name + '=' + value];
+
+	  if (null != opt.maxAge) {
+	    var maxAge = opt.maxAge - 0;
+	    if (isNaN(maxAge)) throw new Error('maxAge should be a Number');
+	    pairs.push('Max-Age=' + Math.floor(maxAge));
+	  }
+
+	  if (opt.domain) {
+	    if (!fieldContentRegExp.test(opt.domain)) {
+	      throw new TypeError('option domain is invalid');
+	    }
+
+	    pairs.push('Domain=' + opt.domain);
+	  }
+
+	  if (opt.path) {
+	    if (!fieldContentRegExp.test(opt.path)) {
+	      throw new TypeError('option path is invalid');
+	    }
+
+	    pairs.push('Path=' + opt.path);
+	  }
+
+	  if (opt.expires) pairs.push('Expires=' + opt.expires.toUTCString());
+	  if (opt.httpOnly) pairs.push('HttpOnly');
+	  if (opt.secure) pairs.push('Secure');
+	  if (opt.firstPartyOnly) pairs.push('First-Party-Only');
+
+	  return pairs.join('; ');
+	}
+
+	/**
+	 * Try decoding a string using a decoding function.
+	 *
+	 * @param {string} str
+	 * @param {function} decode
+	 * @private
+	 */
+
+	function tryDecode(str, decode) {
+	  try {
+	    return decode(str);
+	  } catch (e) {
+	    return str;
+	  }
+	}
+
+
+/***/ },
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(198);
+	var content = __webpack_require__(205);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(200)(content, {});
+	var update = __webpack_require__(207)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -22332,21 +23069,21 @@
 	}
 
 /***/ },
-/* 198 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(199)();
+	exports = module.exports = __webpack_require__(206)();
 	// imports
 
 
 	// module
-	exports.push([module.id, ".user-panel {\n  position: absolute;\n  top: 15px;\n  right: 15px;\n  transform-style: preserve-3d;\n  perspective: 500px;\n}\n.user-panel .main-button {\n  position: absolute;\n  top: 0px;\n  right: 0px;\n  width: 35px;\n  height: 35px;\n  font-size: 28px;\n  text-shadow: 0px 0px 0px maroon;\n  border-radius: 50%;\n  transform-origin: 50% 53%;\n  transform: rotateZ(0deg);\n  transition: all 0.5s ease-in-out;\n}\n.user-panel .main-button.is-login {\n  transform: rotateZ(90deg);\n}\n.user-panel .main-button.is-signup {\n  transform: rotateZ(-90deg);\n}\n.user-panel .authorization {\n  outline: 1px solid black;\n  position: absolute;\n  top: 0px;\n  right: 50px;\n  width: 250px;\n  padding: 10px 10px 55px 10px;\n  transition: all 0.5s ease-in-out;\n}\n.user-panel .authorization.enter {\n  opacity: 0;\n  transform-origin: 0%;\n  transform: translateX(100px) translateZ(-150px) rotateY(35deg);\n}\n.user-panel .authorization.enter.enter-active {\n  opacity: 1;\n  transform-origin: 50%;\n  transform: translateX(0px) translateZ(0px) rotateY(0deg);\n}\n.user-panel .authorization.leave {\n  opacity: 1;\n  transform-origin: 100%;\n  transform: translateX(0px) translateZ(0px) rotateY(0deg);\n}\n.user-panel .authorization.leave.leave-active {\n  opacity: 0;\n  transform-origin: 50%;\n  transform: translateX(100px) translateZ(-150px) rotateY(35deg);\n}\n.user-panel .authorization .google-drive {\n  border: 1px solid black;\n  display: block;\n  width: 100%;\n  height: 50px;\n  opacity: 1;\n  transition: all 0.5s ease-in-out;\n}\n.user-panel .authorization .google-drive.enter {\n  height: 0px;\n  opacity: 0;\n}\n.user-panel .authorization .google-drive.enter.enter-active {\n  height: 50px;\n  opacity: 1;\n}\n.user-panel .authorization .google-drive.leave {\n  height: 50px;\n  opacity: 1;\n}\n.user-panel .authorization .google-drive.leave.leave-active {\n  height: 0px;\n  opacity: 0;\n}\n.user-panel .authorization .google-drive.is-required {\n  border-color: #FBB117;\n}\n.user-panel .authorization .google-drive.is-success {\n  border-color: green;\n}\n.user-panel .authorization .google-drive.is-unsuccess {\n  border-color: maroon;\n}\n.user-panel .authorization .field {\n  border: 1px solid black;\n  display: block;\n  width: 100%;\n  height: 30px;\n  margin-top: 10px;\n  transition: all 0.5s ease-in-out;\n}\n.user-panel .authorization .field.enter {\n  height: 0px;\n  margin-top: 0px;\n  opacity: 0;\n}\n.user-panel .authorization .field.enter.enter-active {\n  height: 30px;\n  margin-top: 10px;\n  opacity: 1;\n}\n.user-panel .authorization .field.leave {\n  height: 30px;\n  margin-top: 10px;\n  opacity: 1;\n}\n.user-panel .authorization .field.leave.leave-active {\n  height: 0px;\n  margin-top: 0px;\n  opacity: 0;\n}\n.user-panel .authorization .field.is-empty {\n  border-color: #FBB117;\n}\n.user-panel .authorization .field.is-invalid {\n  border-color: red;\n}\n.user-panel .authorization .field.is-used {\n  border-color: maroon;\n}\n.user-panel .authorization .field:first-child {\n  margin-top: 0px;\n}\n.user-panel .authorization .authorization-button {\n  color: white;\n  position: absolute;\n  padding: 5px;\n  transition: all 0.5s ease-in-out;\n}\n.user-panel .authorization .authorization-button.primary {\n  bottom: 10px;\n  height: 35px;\n  left: 10px;\n  background-color: red;\n  width: 135px;\n  font-size: 15px;\n}\n.user-panel .authorization .authorization-button.secondary {\n  bottom: 12px;\n  height: 31px;\n  left: 155px;\n  background-color: green;\n  width: 105px;\n  font-size: 13px;\n}\n", ""]);
+	exports.push([module.id, ".user-panel {\n  position: absolute;\n  top: 15px;\n  right: 15px;\n  display: flex;\n  justify-content: space-between;\n  flex-direction: row;\n  align-items: stretch;\n  transform-style: preserve-3d;\n  perspective: 500px;\n}\n.user-panel .main-button {\n  width: 35px;\n  height: 35px;\n  font-size: 28px;\n  text-shadow: 0px 0px 0px maroon;\n  border-radius: 50%;\n  transform-origin: 50% 53%;\n  transform: rotateZ(0deg);\n  transition: all 0.5s ease-in-out;\n}\n.user-panel .main-button.login {\n  transform: rotateZ(90deg);\n}\n.user-panel .main-button.signup {\n  transform: rotateZ(-90deg);\n}\n.user-panel form[name=\"signup\"] {\n  display: flex;\n  align-items: stretch;\n  padding-right: 5px;\n}\n.user-panel form[name=\"signup\"] .username {\n  font-size: 14px;\n  border: 1px solid maroon;\n}\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 199 */
+/* 206 */
 /***/ function(module, exports) {
 
 	/*
@@ -22402,7 +23139,7 @@
 
 
 /***/ },
-/* 200 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -22656,16 +23393,16 @@
 
 
 /***/ },
-/* 201 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(202);
+	var content = __webpack_require__(209);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(200)(content, {});
+	var update = __webpack_require__(207)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -22682,10 +23419,10 @@
 	}
 
 /***/ },
-/* 202 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(199)();
+	exports = module.exports = __webpack_require__(206)();
 	// imports
 
 
@@ -22696,16 +23433,16 @@
 
 
 /***/ },
-/* 203 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(204);
+	var content = __webpack_require__(211);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(200)(content, {});
+	var update = __webpack_require__(207)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -22722,10 +23459,10 @@
 	}
 
 /***/ },
-/* 204 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(199)();
+	exports = module.exports = __webpack_require__(206)();
 	// imports
 
 
@@ -22736,16 +23473,16 @@
 
 
 /***/ },
-/* 205 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(206);
+	var content = __webpack_require__(213);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(200)(content, {});
+	var update = __webpack_require__(207)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -22762,21 +23499,21 @@
 	}
 
 /***/ },
-/* 206 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(199)();
+	exports = module.exports = __webpack_require__(206)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "@font-face {\n  font-family: \"fontello\";\n  src: url(" + __webpack_require__(207) + ") format(\"woff\");\n  font-weight: normal;\n  font-style: normal;\n}\n \n[class^=\"icon-\"]:before, [class*=\" icon-\"]:before {\n  font-family: \"fontello\";\n  font-style: normal;\n  font-weight: normal;\n  text-align: center;\n}\n \n.icon-power:before { content: \"\\E801\"; }", ""]);
+	exports.push([module.id, "@font-face {\n  font-family: \"fontello\";\n  src: url(" + __webpack_require__(214) + ") format(\"woff\");\n  font-weight: normal;\n  font-style: normal;\n}\n \n[class^=\"icon-\"]:before, [class*=\" icon-\"]:before {\n  font-family: \"fontello\";\n  font-style: normal;\n  font-weight: normal;\n  text-align: center;\n}\n \n.icon-power:before { content: \"\\E801\"; }", ""]);
 
 	// exports
 
 
 /***/ },
-/* 207 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "85c2cba4e9e1cd7ebc2cf479518c536b.woff";

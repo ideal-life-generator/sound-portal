@@ -2,39 +2,60 @@ import React, { Component } from "react"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import classNames from "classnames"
+import popup from "utils/popup"
 import { logout } from "actions/user"
 
 export class MainButton extends Component {
   constructor (props) {
     super(props)
+
+    this.onClick = this.onClick.bind(this)
   }
 
-  onLogout ({ preventDefault }) {
+  onClick (event) {
     const {
       isLogged,
+      isRequireUsername,
       logout
     } = this.props
 
-    if (isLogged) {
+    if (!isLogged && !isRequireUsername) {
+      popup(
+        "https://accounts.google.com/o/oauth2/auth?"
+          + "client_id=205946784859-n4ckbriqes7j9etrh7dvm9608qr958qs.apps.googleusercontent.com&"
+          + "scope=email&"
+          + "access_type=offline&"
+          + "response_type=code&"
+          + "prompt=consent&"
+          + `redirect_uri=http://localhost:5000/google-access`
+      , {
+        width: 500,
+        height: 450
+      })
+    }
+    else if (!isLogged && isRequireUsername) {
+
+    }
+    else if (isLogged) {
       logout()
     }
 
-    preventDefault()
+    event.preventDefault()
   }
 
   render () {
     const {
       isLogged,
-      inSignup
+      isRequireUsername
     } = this.props
 
     return (
       <button
         className={classNames("main-button icon-power", {
           logged: isLogged,
-          signup: inSignup
+          signup: isRequireUsername
         })}
-        onClick={this.onLogout}
+        onClick={this.onClick}
       >
       </button>
     )
@@ -44,12 +65,12 @@ export class MainButton extends Component {
 function mapStateToProps ({
   user: {
     isLogged,
-    inSignup
+    isRequireUsername
   }
 }) {
   return {
     isLogged,
-    inSignup
+    isRequireUsername
   }
 }
 
