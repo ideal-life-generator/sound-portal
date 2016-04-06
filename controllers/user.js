@@ -6,8 +6,7 @@ import {
   usernameExist,
   setUsername
 } from "../collections/users"
-import {
-  validation,
+import validation, {
   idValidator,
   emailValidator,
   usernameValidator,

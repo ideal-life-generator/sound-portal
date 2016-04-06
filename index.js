@@ -9,10 +9,9 @@ import {
   HTTP_SERVER_PATH,
   HTTP_SERVER_PORT
 } from "./constants.js"
+import { verification } from "./collections/users"
 import controllers from "./controllers"
-import { verification } from "./collections/user"
-import {
-  validation,
+import validation, {
   idValidator,
   tokenValidator
 } from "./globals/validation"
@@ -29,9 +28,14 @@ const connections = sessions({
     "username: update"
   ],
   strategy ({ id, token }, success) {
-    verification({ id, token }, (exists) => {
-      if (exists) success()
-      else console.log("authorization is invalid")
+    validation(idValidator(id), tokenValidator(token), (errors) => {
+      if (errors) console.log(`Invalid verification data: ${id}, ${token}. Errors: ${errors}.`)
+      else {
+        verification({ id, token }, (exists) => {
+          if (exists) success()
+          else console.log("authorization is invalid")
+        })
+      }
     })
   }
 })
@@ -73,7 +77,7 @@ connected(({
 })
 
 httpServer.listen(HTTP_SERVER_PORT, HTTP_SERVER_PATH, () => {
-  console.info(`server is listen on ${HTTP_SERVER_PATH}:${HTTP_SERVER_PORT}`)
+  console.info(`Server is listen on ${HTTP_SERVER_PATH}:${HTTP_SERVER_PORT}`)
 })
 
 process.on("uncaughtException", (error) => {

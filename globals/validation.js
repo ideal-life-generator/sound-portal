@@ -63,7 +63,7 @@ export function tokenValidator (token) {
 
 export function refreshTokenValidator (refresh_token) {
   if (refresh_token) {
-    if (refresh_token.length === 66) return null
+    if (typeof refresh_token === "string") return null
     else return USERS_INVALID_REFRESH_TOKEN
   }
   else return USERS_EMTPY_REFRESH_TOKEN

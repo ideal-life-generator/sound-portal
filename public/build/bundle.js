@@ -22443,13 +22443,16 @@
 	exports.setItems = setItems;
 	exports.getItems = getItems;
 	exports.removeItems = removeItems;
+	var parse = JSON.parse;
+	var stringify = JSON.stringify;
 	function setItems(itemsToSet) {
 	  var keys = Object.keys(itemsToSet);
 
 	  keys.forEach(function (key) {
 	    var value = itemsToSet[key];
+	    var valueJSON = stringify(value);
 
-	    localStorage.setItem(key, value);
+	    localStorage.setItem(key, valueJSON);
 	  });
 	}
 
@@ -22461,7 +22464,8 @@
 	  }
 
 	  requiredItems.forEach(function (key) {
-	    var value = localStorage.getItem(key);
+	    var valueJSON = localStorage.getItem(key);
+	    var value = parse(valueJSON);
 
 	    result[key] = value;
 	  });
@@ -23597,7 +23601,7 @@
 
 	function refreshTokenValidator(refresh_token) {
 	  if (refresh_token) {
-	    if (refresh_token.length === 66) return null;else return _codes.USERS_INVALID_REFRESH_TOKEN;
+	    if (typeof refresh_token === "string") return null;else return _codes.USERS_INVALID_REFRESH_TOKEN;
 	  } else return _codes.USERS_EMTPY_REFRESH_TOKEN;
 	}
 

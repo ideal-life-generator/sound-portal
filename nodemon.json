@@ -4,6 +4,7 @@
     "constants.js",
     "collections/*.js",
     "controllers/*.js",
+    "globals/*.js",
     "utils/*.js",
     "drive/*.js"
   ],
