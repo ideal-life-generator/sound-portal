@@ -1,0 +1,15 @@
+export const UNKNOWN_ERROR = 0
+export const USERS_UNKNOWN_ERROR = 50
+export const USERS_EMTPY_ID = 51
+export const USERS_INVALID_ID = 52
+export const USERS_EMTPY_EMAIL = 52
+export const USERS_INVALID_EMAIL = 53
+export const USERS_USED_EMAIL = 54
+export const USERS_EMTPY_USERNAME = 55
+export const USERS_INVALID_USERNAME = 56
+export const USERS_USED_USERNAME = 57
+export const USERS_EMTPY_TOKEN = 58
+export const USERS_INVALID_TOKEN = 59
+export const USERS_EMTPY_REFRESH_TOKEN = 60
+export const USERS_INVALID_REFRESH_TOKEN = 61
+export const USERS_USER_IS_NOT_DEFINED = 62

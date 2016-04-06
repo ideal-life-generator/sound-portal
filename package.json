@@ -2,8 +2,9 @@
   "name": "sound-portal",
   "version": "0.0.0",
   "scripts": {
-    "nodemon": "nodemon server",
-    "webpack": "webpack --watch",
+    "dev-front-end": "webpack --config webpack.config.js --watch",
+    "test-front-end": "webpack-dev-server --config webpack.config.test.js",
+    "dev-server": "nodemon",
     "test-server": "mocha"
   },
   "devDependencies": {
@@ -24,13 +25,15 @@
     "react-addons-test-utils": "^0.14.7",
     "redux-mock-store": "^1.0.2",
     "style-loader": "^0.13.0",
-    "webpack": "^1.12.13"
+    "webpack": "^1.12.13",
+    "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
     "classnames": "^2.2.3",
     "cookie": "^0.2.3",
     "google-auth-library": "^0.9.7",
     "googleapis": "^2.1.7",
+    "mongoose": "^4.4.10",
     "pg": "^4.4.4",
     "qs": "^6.1.0",
     "react": "^0.14.7",

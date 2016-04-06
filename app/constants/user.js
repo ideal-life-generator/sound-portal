@@ -1,4 +1,0 @@
-export const USER_LOGGED = "USER_LOGGED"
-export const USER_LOGOUT = "USER_LOGOUT"
-export const USER_REQUIRE_USERNAME = "USER_REQUIRE_USERNAME"
-export const USER_SET = "USER_SET"

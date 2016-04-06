@@ -5,58 +5,40 @@ import {
   deepStrictEqual,
   ifError
 } from "assert"
+import pg from "pg"
+import { DB_SERVER_PATH } from "../../constants"
 import {
+  emailExist,
   insert,
+  authorization,
+  get,
+  usernameExist,
   setUsername,
   checkUsername,
-  get,
-  tokenVerification
-} from "../../server/collections/users"
-import pg from "pg"
-import {
-  DB_SERVER_PATH
-} from "../../config"
+  updateSessionId,
+  verification
+} from "../../collections/users"
 
 describe("Collections", () => {
   describe("users", () => {
+    const testEmail = "test@email.com"
     const testUsername = "test username"
     const testRefreshToken = "1/Sd0T68Ppvwg2m7OEO6O8RtN7DTbI-VZd82PBLgfUdhMMEudVrK5jSpoR30zcRFq8"
+    const testToken = "dd792763-d216-45f5-a5fb-28a376dc313d"
+    const testSessionId = "85899320-f65f-11e5-86bb-49683c47ed6e"
 
-    function getNewUser (refreshToken, callback) {
+    function getUser (refreshToken, callback) {
       pg.connect(DB_SERVER_PATH, (error, db, done) => {
         if (error) reject(error)
         else {
           db.query(`
             SELECT
               id,
-              token
-            FROM users
-            WHERE refresh_token = $1;
-          `, [ refreshToken ], (error, result) => {
-            done()
-
-            if (error) throw error
-            else {
-              const { rows: [ user ] } = result
-
-              callback(user)
-            }
-          })
-        }
-      })
-    }
-
-    function getFullUser (refreshToken, callback) {
-      pg.connect(DB_SERVER_PATH, (error, db, done) => {
-        if (error) reject(error)
-        else {
-          db.query(`
-            SELECT
-              id,
+              email,
               username,
               token
             FROM users
-            WHERE refresh_token = $1;
+            WHERE email = $1;
           `, [ refreshToken ], (error, result) => {
             done()
 
@@ -94,13 +76,28 @@ describe("Collections", () => {
       })
     })
 
+    it("emailExist()", (done) => {
+      emailExist(testEmail, (exists) => {
+        ifError(exists)
+
+        done()
+      })
+    })
+
     it("insert()", (done) => {
       const testUser = {
+        email: testEmail,
         refresh_token: testRefreshToken
       }
 
       insert(testUser, (user) => {
-        getNewUser(testRefreshToken, (expectedUser) => {
+        getUser(testEmail, ({ id, email, token, session_id }) => {
+          const expectedUser = { id, token }
+
+          strictEqual(testEmail, email)
+
+          ok(testToken, token)
+
           deepEqual(user, expectedUser)
 
           done()
@@ -108,15 +105,12 @@ describe("Collections", () => {
       })
     })
 
-    it("setUsername()", (done) => {
-      getFullUser(testRefreshToken, ({ id }) => {
-        const testUser = {
-          id,
-          username: testUsername
-        }
-
-        setUsername(testUser, (username) => {
-          strictEqual(username, testUsername)
+    it("authorization()", (done) => {
+      getUser(testEmail, ({ id, username, token }) => {
+        const expectedUser = { id, username, token }
+        
+        authorization(testEmail, (user) => {
+          deepEqual(user, expectedUser)
 
           done()
         })
@@ -124,12 +118,10 @@ describe("Collections", () => {
     })
 
     it("get()", (done) => {
-      getFullUser(testRefreshToken, (expectedUser) => {
-        const {
-          id: expectedUserId
-        } = expectedUser
+      getUser(testEmail, ({ id, username }) => {
+        const expectedUser = { id, username }
 
-        get(expectedUserId, (user) => {
+        get(id, (user) => {
           deepEqual(user, expectedUser)
 
           done()
@@ -137,14 +129,29 @@ describe("Collections", () => {
       })
     })
 
-    it("tokenVerification()", (done) => {
-      getFullUser(testRefreshToken, ({ id, token }) => {
-        const testUser = {
-          id,
-          token
-        }
+    it("usernameExist()", (done) => {
+      usernameExist(testUsername, (exists) => {
+        ifError(exists)
 
-        tokenVerification(testUser, (exists) => {
+        done()
+      })
+    })
+
+    it("setUsername()", (done) => {
+      getUser(testEmail, ({ id }) => {
+        setUsername({ id, username: testUsername }, (username) => {
+          strictEqual(username, testUsername)
+
+          done()
+        })
+      })
+    })
+
+    it("verification()", (done) => {
+      getUser(testEmail, ({ id, token }) => {
+        const testUser = { id, token }
+
+        verification(testUser, (exists) => {
           ok(exists)
 
           done()

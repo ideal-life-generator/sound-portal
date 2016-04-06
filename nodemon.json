@@ -1,7 +1,11 @@
 {
   "watch": [
-    "server.js",
-    "server"
+    "index.js",
+    "constants.js",
+    "collections/*.js",
+    "controllers/*.js",
+    "utils/*.js",
+    "drive/*.js"
   ],
   "exec": [ "babel-node" ]
 }

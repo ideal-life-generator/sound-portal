@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <script type="text/javascript">
+    var socket = new WebSocket("ws://localhost:5000")
+
+    socket.addEventListener("open", function (event) {
+      socket.send(JSON.stringify({
+        identifier: "signup: google code",
+        data: [ window.location.search.slice(6) ]
+      }));
+
+      window.close()
+    }); 
+  </script>
+</head>
+<body>
+  Google access setup...
+</body>
+</html>

@@ -3,12 +3,9 @@ const webpack = require("webpack");
 
 module.exports = {
   target: "web",
-  context: path.join(__dirname, "public"),
-  entry: "./index.jsx",
+  entry: "mocha!./test-front-end/index.js",
   output: {
-    path: path.join(__dirname, "public/build"),
-    publicPath: "build/",
-    filename: "bundle.js"
+    filename: "test.js"
   },
   module: {
     loaders: [
@@ -35,27 +32,28 @@ module.exports = {
         query: {
           presets: [ "es2015", "stage-2", "react" ]
         }
-      },
-      {
-        test: /\.woff$/,
-        loader: "file"
-      },
-      {
-        test: /\.json$/,
-        loader: "json"
-      },
-      {
-        test: /\.jpeg$/,
-        loader: "file"
       }
     ]
   },
   resolve: {
-    root: path.resolve(__dirname, "public"),
-    alias:{
+    root: path.resolve(__dirname, "test-front-end"),
+    alias: {
+      store: path.resolve( __dirname, "public/store"),
+      connection: path.resolve( __dirname, "public/connection"),
+      constants: path.resolve( __dirname, "public/constants"),
+      actions: path.resolve( __dirname, "public/actions"),
+      reducers: path.resolve( __dirname, "public/reducers"),
+      components: path.resolve( __dirname, "public/components"),
+      containers: path.resolve( __dirname, "public/containers"),
+      utils: path.resolve( __dirname, "public/utils"),
+      styles: path.resolve( __dirname, "public/styles"),
       globals: path.resolve( __dirname, "globals")
     },
-    extensions: [ "", ".js", ".jsx", ".less" ],
+    extensions: [ "", ".js" ],
     modulesDirectories: [ "node_modules" ]
+  },
+  devServer: {
+    port: 5005,
+    // inline: true
   }
 };
