@@ -21,6 +21,7 @@ import {
   setItems,
   getItems
 } from "utils/multi-storage"
+import messages from "globals/messages"
 import { USERS_USER_IS_NOT_DEFINED } from "globals/codes"
 import "styles/user-panel.less"
 
@@ -33,34 +34,37 @@ export class UserPanel extends Component {
       logout,
       authenticationInvalid
     } = this.props
-    const authenticateData = getItems("id", "token")
-    const { id, token } = authenticateData
+    const authenticationData = getItems("id", "token")
+    const { id, token } = authenticationData
 
     if (id && token) {
       loading()
 
-      updateVerificationData(authenticateData)
+      updateVerificationData(authenticationData)
 
       connected(() => {
-        send("user: request", id)
+        send("user", id)
       })
     }
 
-    subscribe("authenticate: get", (authenticateData) => {
-      setItems(authenticateData)
+    subscribe("authentication-data", ({ authenticationData }) => {
+      setItems(authenticationData)
       
-      updateVerificationData(authenticateData)
+      updateVerificationData(authenticationData)
     })
 
-    subscribe("user: response", (user) => {
-      const { id, username } = user
+    subscribe("user", ({ errors, user }) => {
+      if (errors) {
+        errors.forEach(code => console.log(messages(code)))
 
-      if (username) loaded({ id, username })
-      else loadedNotFull({ id })
-    })
+        authenticationInvalid()
+      }
+      else {
+        const { id, username } = user
 
-    subscribe("user: authentication error", () => {
-      authenticationInvalid()
+        if (username) loaded({ id, username })
+        else loadedNotFull({ id })
+      }
     })
   }
 

@@ -12,6 +12,7 @@ import {
 } from "actions/user"
 import Username from "components/Username.jsx"
 import validation, { usernameValidator } from "globals/validation"
+import messages from "globals/messages"
 import {
   USERS_EMTPY_USERNAME,
   USERS_INVALID_USERNAME
@@ -27,8 +28,9 @@ export class AdditionalData extends Component {
   componentDidMount () {
     const { loaded } = this.props
 
-    this.unsubscribe = subscribe("username: updated", (username) => {
-      loaded({ username })
+    this.unsubscribe = subscribe("username", ({ errors, username }) => {
+      if (errors) errors.forEach(code => console.log(messages(code)))
+      else loaded({ username })
     })
   }
 
@@ -49,7 +51,7 @@ export class AdditionalData extends Component {
         if (errors.includes(USERS_EMTPY_USERNAME)) additionalDataUsernameEmpty()
         else if (errors.includes(USERS_INVALID_USERNAME)) additionalDataUsernameInvalid()
       } else {
-        send("username: update", { id, username })
+        send("username", { id, username })
       }
     })
     

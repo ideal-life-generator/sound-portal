@@ -21426,6 +21426,10 @@
 
 	var _multiStorage = __webpack_require__(202);
 
+	var _messages = __webpack_require__(225);
+
+	var _messages2 = _interopRequireDefault(_messages);
+
 	var _codes = __webpack_require__(212);
 
 	__webpack_require__(215);
@@ -21457,37 +21461,46 @@
 	      var logout = _props.logout;
 	      var authenticationInvalid = _props.authenticationInvalid;
 
-	      var authenticateData = (0, _multiStorage.getItems)("id", "token");
-	      var id = authenticateData.id;
-	      var token = authenticateData.token;
+	      var authenticationData = (0, _multiStorage.getItems)("id", "token");
+	      var id = authenticationData.id;
+	      var token = authenticationData.token;
 
 
 	      if (id && token) {
 	        loading();
 
-	        (0, _connection.updateVerificationData)(authenticateData);
+	        (0, _connection.updateVerificationData)(authenticationData);
 
 	        (0, _connection.connected)(function () {
-	          (0, _connection.send)("user: request", id);
+	          (0, _connection.send)("user", id);
 	        });
 	      }
 
-	      (0, _connection.subscribe)("authenticate: get", function (authenticateData) {
-	        (0, _multiStorage.setItems)(authenticateData);
+	      (0, _connection.subscribe)("authentication-data", function (_ref) {
+	        var authenticationData = _ref.authenticationData;
 
-	        (0, _connection.updateVerificationData)(authenticateData);
+	        (0, _multiStorage.setItems)(authenticationData);
+
+	        (0, _connection.updateVerificationData)(authenticationData);
 	      });
 
-	      (0, _connection.subscribe)("user: response", function (user) {
-	        var id = user.id;
-	        var username = user.username;
+	      (0, _connection.subscribe)("user", function (_ref2) {
+	        var errors = _ref2.errors;
+	        var user = _ref2.user;
+
+	        if (errors) {
+	          errors.forEach(function (code) {
+	            return console.log((0, _messages2.default)(code));
+	          });
+
+	          authenticationInvalid();
+	        } else {
+	          var _id = user.id;
+	          var username = user.username;
 
 
-	        if (username) loaded({ id: id, username: username });else loadedNotFull({ id: id });
-	      });
-
-	      (0, _connection.subscribe)("user: authentication error", function () {
-	        authenticationInvalid();
+	          if (username) loaded({ id: _id, username: username });else loadedNotFull({ id: _id });
+	        }
 	      });
 	    }
 	  }, {
@@ -23607,6 +23620,10 @@
 
 	var _validation2 = _interopRequireDefault(_validation);
 
+	var _messages = __webpack_require__(225);
+
+	var _messages2 = _interopRequireDefault(_messages);
+
 	var _codes = __webpack_require__(212);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -23635,8 +23652,13 @@
 	      var loaded = this.props.loaded;
 
 
-	      this.unsubscribe = (0, _connection.subscribe)("username: updated", function (username) {
-	        loaded({ username: username });
+	      this.unsubscribe = (0, _connection.subscribe)("username", function (_ref) {
+	        var errors = _ref.errors;
+	        var username = _ref.username;
+
+	        if (errors) errors.forEach(function (code) {
+	          return console.log((0, _messages2.default)(code));
+	        });else loaded({ username: username });
 	      });
 	    }
 	  }, {
@@ -23658,7 +23680,7 @@
 	        if (errors) {
 	          if (errors.includes(_codes.USERS_EMTPY_USERNAME)) additionalDataUsernameEmpty();else if (errors.includes(_codes.USERS_INVALID_USERNAME)) additionalDataUsernameInvalid();
 	        } else {
-	          (0, _connection.send)("username: update", { id: id, username: username });
+	          (0, _connection.send)("username", { id: id, username: username });
 	        }
 	      });
 
@@ -23940,7 +23962,7 @@
 
 
 	// module
-	exports.push([module.id, ".user-panel {\n  position: absolute;\n  top: 15px;\n  right: 15px;\n  display: flex;\n  flex-direction: row;\n}\n.user-panel .main-button {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 30px;\n  height: 30px;\n  border-radius: 15px;\n  font-size: 30px;\n  cursor: pointer;\n  transition: color 150ms ease-in-out;\n}\n.user-panel .main-button.required-username {\n  color: #f0ad4e;\n}\n.user-panel .main-button.logged {\n  color: #d9534f;\n}\n.user-panel .main-button.authentication-error {\n  color: #d9534f;\n}\n.user-panel .user-container {\n  position: relative;\n  display: flex;\n  flex-direction: row;\n  align-items: stretch;\n}\n.user-panel .user-container .loading {\n  position: absolute;\n  transform: translateX(-100%);\n  transition: opacity 150ms ease-in-out;\n}\n.user-panel .user-container .loading.enter {\n  opacity: 0;\n}\n.user-panel .user-container .loading.enter.enter-active {\n  opacity: 1;\n}\n.user-panel .user-container .loading.leave {\n  opacity: 1;\n}\n.user-panel .user-container .loading.leave.leave-active {\n  opacity: 0;\n}\n.user-panel .user-container .additional-data {\n  position: absolute;\n  display: flex;\n  align-items: stretch;\n  height: 100%;\n  transform: translateX(calc(-100% - 5px));\n}\n.user-panel .user-container .additional-data > .username {\n  font-size: 14px;\n  border-width: 1px;\n  border-style: solid;\n  border-color: black;\n}\n.user-panel .user-container .additional-data > .username.empty {\n  border-color: #f0ad4e;\n}\n.user-panel .user-container .additional-data > .username.invalid {\n  border-color: #d9534f;\n}\n.user-panel .user-container .additional-data.enter {\n  opacity: 0;\n}\n.user-panel .user-container .additional-data.enter.enter-active {\n  opacity: 1;\n  transition: opacity 150ms ease-in-out;\n}\n.user-panel .user-container .additional-data.leave {\n  opacity: 1;\n}\n.user-panel .user-container .additional-data.leave.leave-active {\n  opacity: 0;\n  transition: opacity 150ms ease-in-out;\n}\n.user-panel .user-container > .username {\n  position: absolute;\n  display: flex;\n  align-items: center;\n  height: 100%;\n  white-space: nowrap;\n  transform: translateX(calc(-100% - 5px));\n  transition: opacity 150ms ease-in-out;\n}\n.user-panel .user-container > .username.enter {\n  opacity: 0;\n}\n.user-panel .user-container > .username.enter.enter-active {\n  opacity: 1;\n}\n.user-panel .user-container > .username.leave {\n  opacity: 1;\n}\n.user-panel .user-container > .username.leave.leave-active {\n  opacity: 0;\n}\n.user-panel .user-container .authentication-error-panel {\n  position: absolute;\n  display: flex;\n  align-items: center;\n  height: 100%;\n  white-space: nowrap;\n  color: #d9534f;\n  transform: translateX(calc(-100% - 5px));\n  transition: opacity 150ms ease-in-out;\n}\n.user-panel .user-container .authentication-error-panel.enter {\n  opacity: 0;\n}\n.user-panel .user-container .authentication-error-panel.enter.enter-active {\n  opacity: 1;\n}\n.user-panel .user-container .authentication-error-panel.leave {\n  opacity: 1;\n}\n.user-panel .user-container .authentication-error-panel.leave.leave-active {\n  opacity: 0;\n}\n", ""]);
+	exports.push([module.id, ".user-panel {\n  position: absolute;\n  top: 15px;\n  right: 15px;\n  display: flex;\n  flex-direction: row;\n}\n.user-panel .main-button {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 30px;\n  height: 30px;\n  border-radius: 15px;\n  font-size: 30px;\n  cursor: pointer;\n  transition: text-shadow 150ms ease-in-out, color 150ms ease-in-out;\n}\n.user-panel .main-button.required-username {\n  color: #f0ad4e;\n}\n.user-panel .main-button.logged {\n  color: #d9534f;\n}\n.user-panel .main-button.authentication-error {\n  color: #d9534f;\n}\n.user-panel .user-container {\n  position: relative;\n  display: flex;\n  flex-direction: row;\n  align-items: stretch;\n}\n.user-panel .user-container .loading {\n  position: absolute;\n  transform: translateX(-100%);\n  transition: opacity 150ms ease-in-out;\n}\n.user-panel .user-container .loading.enter {\n  opacity: 0;\n}\n.user-panel .user-container .loading.enter.enter-active {\n  opacity: 1;\n}\n.user-panel .user-container .loading.leave {\n  opacity: 1;\n}\n.user-panel .user-container .loading.leave.leave-active {\n  opacity: 0;\n}\n.user-panel .user-container .additional-data {\n  position: absolute;\n  display: flex;\n  align-items: stretch;\n  height: 100%;\n  transform: translateX(calc(-100% - 5px));\n}\n.user-panel .user-container .additional-data > .username {\n  font-size: 14px;\n  border-width: 1px;\n  border-style: solid;\n  border-color: black;\n}\n.user-panel .user-container .additional-data > .username.empty {\n  border-color: #f0ad4e;\n}\n.user-panel .user-container .additional-data > .username.invalid {\n  border-color: #d9534f;\n}\n.user-panel .user-container .additional-data.enter {\n  opacity: 0;\n}\n.user-panel .user-container .additional-data.enter.enter-active {\n  opacity: 1;\n  transition: opacity 150ms ease-in-out;\n}\n.user-panel .user-container .additional-data.leave {\n  opacity: 1;\n}\n.user-panel .user-container .additional-data.leave.leave-active {\n  opacity: 0;\n  transition: opacity 150ms ease-in-out;\n}\n.user-panel .user-container > .username {\n  position: absolute;\n  display: flex;\n  align-items: center;\n  height: 100%;\n  white-space: nowrap;\n  transform: translateX(calc(-100% - 5px));\n  transition: opacity 150ms ease-in-out;\n}\n.user-panel .user-container > .username.enter {\n  opacity: 0;\n}\n.user-panel .user-container > .username.enter.enter-active {\n  opacity: 1;\n}\n.user-panel .user-container > .username.leave {\n  opacity: 1;\n}\n.user-panel .user-container > .username.leave.leave-active {\n  opacity: 0;\n}\n.user-panel .user-container .authentication-error-panel {\n  position: absolute;\n  display: flex;\n  align-items: center;\n  height: 100%;\n  white-space: nowrap;\n  color: #d9534f;\n  transform: translateX(calc(-100% - 5px));\n  transition: opacity 150ms ease-in-out;\n}\n.user-panel .user-container .authentication-error-panel.enter {\n  opacity: 0;\n}\n.user-panel .user-container .authentication-error-panel.enter.enter-active {\n  opacity: 1;\n}\n.user-panel .user-container .authentication-error-panel.leave {\n  opacity: 1;\n}\n.user-panel .user-container .authentication-error-panel.leave.leave-active {\n  opacity: 0;\n}\n", ""]);
 
 	// exports
 
@@ -24076,6 +24098,35 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "85c2cba4e9e1cd7ebc2cf479518c536b.woff";
+
+/***/ },
+/* 225 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _MESSAGES;
+
+	exports.default = messages;
+
+	var _codes = __webpack_require__(212);
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	var MESSAGES = (_MESSAGES = {}, _defineProperty(_MESSAGES, _codes.UNKNOWN_ERROR, "Unknown error"), _defineProperty(_MESSAGES, _codes.USERS_UNKNOWN_ERROR, "Users: Unknown error"), _defineProperty(_MESSAGES, _codes.USERS_EMTPY_ID, "Id: Empty field"), _defineProperty(_MESSAGES, _codes.USERS_INVALID_ID, "Id: Incorrectly filled field"), _defineProperty(_MESSAGES, _codes.USERS_EMTPY_EMAIL, "Email: Empty field"), _defineProperty(_MESSAGES, _codes.USERS_INVALID_EMAIL, "Email: Incorrectly filled field"), _defineProperty(_MESSAGES, _codes.USERS_USED_EMAIL, "Email: This email is already used"), _defineProperty(_MESSAGES, _codes.USERS_EMTPY_USERNAME, "Username: Empty field"), _defineProperty(_MESSAGES, _codes.USERS_INVALID_USERNAME, "Username: Incorrectly filled field"), _defineProperty(_MESSAGES, _codes.USERS_USED_USERNAME, "Username: This name is already used"), _defineProperty(_MESSAGES, _codes.USERS_EMTPY_TOKEN, "Token: Empty field"), _defineProperty(_MESSAGES, _codes.USERS_INVALID_TOKEN, "Token: Invalid data"), _defineProperty(_MESSAGES, _codes.USERS_EMTPY_REFRESH_TOKEN, "Refresh token: Empty field"), _defineProperty(_MESSAGES, _codes.USERS_INVALID_REFRESH_TOKEN, "Refresh token: Incorrectly filled field"), _defineProperty(_MESSAGES, _codes.USERS_USER_IS_NOT_DEFINED, "User: User is not defined in database"), _MESSAGES);
+
+	function messages(code) {
+	  if (typeof code === "number") {
+	    var message = MESSAGES[code];
+
+
+	    return message;
+	  }
+	}
 
 /***/ }
 /******/ ]);
