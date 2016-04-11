@@ -53,6 +53,8 @@ export default function sessions ({
 
                   strategy(verificationData, () => {
                     callback.apply(null, data)
+                  }, (identifier) => {
+                    currentSession(identifier)
                   })
                 } else callback.apply(null, data)
               }

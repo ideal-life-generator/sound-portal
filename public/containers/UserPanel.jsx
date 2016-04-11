@@ -3,23 +3,23 @@ import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import CSSTransitionGroup from "react-addons-css-transition-group"
 import MainButton from "components/MainButton.jsx"
-import Signup from "containers/Signup.jsx"
+import AdditionalData from "containers/AdditionalData.jsx"
 import {
-  requireUsername,
-  logged,
-  logout
+  loadedNotFull,
+  loading,
+  loaded,
+  logout,
+  authenticationInvalid
 } from "actions/user"
 import {
   connected,
   send,
   subscribe,
-  updateVerificationData,
-  destroyVerificationData
+  updateVerificationData
 } from "connection"
 import {
   setItems,
-  getItems,
-  removeItems
+  getItems
 } from "utils/multi-storage"
 import { USERS_USER_IS_NOT_DEFINED } from "globals/codes"
 import "styles/user-panel.less"
@@ -27,14 +27,18 @@ import "styles/user-panel.less"
 export class UserPanel extends Component {
   componentDidMount () {
     const {
-      requireUsername,
-      logged,
-      logout
+      loadedNotFull,
+      loading,
+      loaded,
+      logout,
+      authenticationInvalid
     } = this.props
     const authenticateData = getItems("id", "token")
     const { id, token } = authenticateData
 
     if (id && token) {
+      loading()
+
       updateVerificationData(authenticateData)
 
       connected(() => {
@@ -51,25 +55,21 @@ export class UserPanel extends Component {
     subscribe("user: response", (user) => {
       const { id, username } = user
 
-      if (username) logged({ id, username })
-      else requireUsername(id)
+      if (username) loaded({ id, username })
+      else loadedNotFull({ id })
     })
 
-    subscribe("user: errors", (errors) => {
-      if (errors && errors.includes(USERS_USER_IS_NOT_DEFINED)) {
-        logout()
-
-        removeItems("id", "token")
-
-        destroyVerificationData()
-      }
+    subscribe("user: authentication error", () => {
+      authenticationInvalid()
     })
   }
 
   render () {
     const {
-      isRequireUsername,
-      username
+      isLoading,
+      username,
+      isRequireAdditionalData,
+      authenticationError
     } = this.props
 
     return (
@@ -81,33 +81,54 @@ export class UserPanel extends Component {
           leave: "leave"
         }}
         transitionEnterTimeout={500}
-        transitionLeaveTimeout={500}
-      >
-        {isRequireUsername && <Signup />}
-        <div>{username}</div>
-        <MainButton />
+        transitionLeaveTimeout={500}>
+        <CSSTransitionGroup
+          component="div"
+          className="user-container"
+          transitionName={{
+            enter: "enter",
+            leave: "leave"
+          }}
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={500}>
+          {authenticationError && <div className="authentication-error-panel">Authentication error</div>}
+          {isLoading && <div className="loading">Loading</div>}
+          {isRequireAdditionalData && <AdditionalData />}
+          {username && <div className="username">
+            {username}
+          </div>}
+          <MainButton />
+        </CSSTransitionGroup>
       </CSSTransitionGroup>
     )
   }
 }
 
-function mapStateToProps ({
-  user: {
-    isRequireUsername,
-    username
-  }
-}) {
+function mapStateToProps (state) {
+  const {
+    user: {
+      isLoading,
+      username,
+      isRequireAdditionalData,
+      authenticationError
+    }
+  } = state
+  
   return {
-    isRequireUsername,
-    username
+    isLoading,
+    username,
+    isRequireAdditionalData,
+    authenticationError
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
-    requireUsername,
-    logged,
-    logout
+    loadedNotFull,
+    loading,
+    loaded,
+    logout,
+    authenticationInvalid
   }, dispatch)
 }
 

@@ -3,7 +3,7 @@ const webpack = require("webpack");
 
 module.exports = {
   target: "web",
-  entry: "mocha!./test-front-end/index.js",
+  entry: "mocha!./public/test/index.js",
   output: {
     filename: "test.js"
   },
@@ -36,7 +36,7 @@ module.exports = {
     ]
   },
   resolve: {
-    root: path.resolve(__dirname, "test-front-end"),
+    root: path.resolve(__dirname, "test"),
     alias: {
       store: path.resolve( __dirname, "public/store"),
       connection: path.resolve( __dirname, "public/connection"),

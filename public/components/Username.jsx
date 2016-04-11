@@ -2,8 +2,7 @@ import React, { Component } from "react"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import classNames from "classnames"
-import { updateUsername } from "actions/signup"
-import "styles/username.less"
+import { setAdditionalDataUsername } from "actions/user"
 
 export class Username extends Component {
   constructor (props) {
@@ -13,27 +12,27 @@ export class Username extends Component {
   }
 
   updateUsername ({ target: { value } }) {
-    const { updateUsername } = this.props
+    const { set } = this.props
 
-    updateUsername(value)
+    set(value)
   }
 
   render () {
     const {
-      username,
-      usernameIsEmpty,
-      usernameIsInvalid
+      isEmpty,
+      isInvalid,
+      value
     } = this.props
 
     return (
       <input
         className={classNames("username", {
-          "empty": usernameIsEmpty,
-          "invalid": usernameIsInvalid
+          "empty": isEmpty,
+          "invalid": isInvalid
         })}
         type="text"
         onChange={this.updateUsername}
-        value={username}
+        value={value}
         placeholder="Username"
         autoFocus />
     )
@@ -41,21 +40,28 @@ export class Username extends Component {
 }
 
 function mapStateToProps ({
-  signup: {
-    username,
-    usernameIsEmpty,
-    usernameIsInvalid
+  user: {
+    id,
+    additionalData: {
+      username: {
+        isEmpty,
+        isInvalid,
+        value
+      }
+    }
   }
 }) {
   return {
-    username,
-    usernameIsEmpty,
-    usernameIsInvalid
+    isEmpty,
+    isInvalid,
+    value
   }
 }
 
 function mapDispatchToProps (dispatch) {
-  return bindActionCreators({ updateUsername }, dispatch)
+  return bindActionCreators({
+    set: setAdditionalDataUsername,
+  }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Username)

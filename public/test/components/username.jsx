@@ -16,9 +16,8 @@ function render (props) {
 export default describe.bind(null, "username", () => {
   it("default", () => {
     const props = {
-      usernameIsEmpty: false,
-      usernameIsInvalid: false,
-      usernameIsRequired: false
+      isEmpty: false,
+      isInvalid: false
     }
     const output = render(props)
     const {
@@ -33,7 +32,7 @@ export default describe.bind(null, "username", () => {
   it("filled", () => {
     const username = "test username"
     const props = {
-      username
+      value: username
     }
     const output = render(props)
     const {
@@ -47,9 +46,8 @@ export default describe.bind(null, "username", () => {
 
   it("empty", () => {
     const props = {
-      usernameIsEmpty: true,
-      usernameIsInvalid: false,
-      usernameIsRequired: false
+      isEmpty: true,
+      isInvalid: false
     }
     const output = render(props)
     const {
@@ -63,9 +61,8 @@ export default describe.bind(null, "username", () => {
 
   it("invalid", () => {
     const props = {
-      usernameIsEmpty: false,
-      usernameIsInvalid: true,
-      usernameIsRequired: false
+      isEmpty: false,
+      isInvalid: true
     }
     const output = render(props)
     const {

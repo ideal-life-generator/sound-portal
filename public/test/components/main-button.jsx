@@ -38,15 +38,15 @@ export default describe.bind(null, "main button", () => {
     assert.strictEqual(className, "main-button icon-power logged")
   })
 
-  it("signup", () => {
+  it("require additional data", () => {
     const props = {
-      isRequireUsername: true
+      isRequireAdditionalData: true
     }
     const output = render(props)
     const {
       props: { className }
     } = output
 
-    assert.strictEqual(className, "main-button icon-power required-username")
+    assert.strictEqual(className, "main-button icon-power required-additional-data")
   })
 })

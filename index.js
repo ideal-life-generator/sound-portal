@@ -27,13 +27,13 @@ const connections = sessions({
     "user: request",
     "username: update"
   ],
-  strategy ({ id, token }, success) {
+  strategy ({ id, token }, success, failure) {
     validation(idValidator(id), tokenValidator(token), (errors) => {
       if (errors) console.log(`Invalid verification data: ${id}, ${token}. Errors: ${errors}.`)
       else {
         verification({ id, token }, (exists) => {
           if (exists) success()
-          else console.log("authorization is invalid")
+          else failure("user: authentication error")
         })
       }
     })
