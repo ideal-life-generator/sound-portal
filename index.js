@@ -77,7 +77,7 @@ connected(({
 })
 
 httpServer.listen(HTTP_SERVER_PORT, HTTP_SERVER_PATH, () => {
-  console.info(`Server is listen on ${HTTP_SERVER_PATH}:${HTTP_SERVER_PORT}`)
+  console.info(`listen on ${HTTP_SERVER_PATH}:${HTTP_SERVER_PORT}`)
 })
 
 process.on("uncaughtException", (error) => {

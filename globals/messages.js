@@ -34,7 +34,7 @@ const MESSAGES = {
   [ USERS_USER_IS_NOT_DEFINED ]: "User: User is not defined in database"
 }
 
-export function messages (code) {
+export default function messages (code) {
   if (typeof code === "number") {
     const {
       [ code ]: message

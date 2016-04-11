@@ -23,29 +23,33 @@ import {
 } from "../drive"
 
 export default function ({ currentSession, subscribe }) {
-  subscribe("signup: google code", (code) => {
+  subscribe("signup", (code) => {
     getRefreshToken(code, ({ refresh_token }) => {
       getToken(refresh_token, (token) => {
         getProfile(token, ({ email }) => {
           validation(refreshTokenValidator(refresh_token), emailValidator(email), (errors) => {
-            if (errors) currentSession("signup: errors", errors)
+            if (errors) currentSession("signup", errors)
             else {
               emailExist(email, (exists) => {
                 if (exists) {
-                  authorization(email, (user) => {
-                    const { id, username, token } = user
+                  authorization(email, (fullUser) => {
+                    const { id, username, token } = fullUser
+                    const user = { id, username }
+                    const authenticationData = { id, token }
 
-                    currentSession("authenticate: get", { id, token })
+                    currentSession("user", { user })
 
-                    currentSession("user: response", { id, username })
+                    currentSession("authentication-data", { authenticationData })
                   })
                 } else {
-                  insert({ email, refresh_token }, (user) => {
-                    const { id, token } = user
+                  insert({ email, refresh_token }, (fullUser) => {
+                    const { id, token } = fullUser
+                    const user = { id }
+                    const authenticationData = { id, token }
 
-                    currentSession("authenticate: get", { id, token })
+                    currentSession("user", { user })
 
-                    currentSession("user: response", { id })
+                    currentSession("authentication-data", { authenticationData })
                   })
                 }
               })
@@ -56,27 +60,37 @@ export default function ({ currentSession, subscribe }) {
     })
   })
 
-  subscribe("user: request", (id) => {
+  subscribe("user", (id) => {
     validation(idValidator(id), (errors) => {
-      if (errors) currentSession("user: errors", errors)
+      if (errors) currentSession("user", { errors })
       else {
         get(id, (user) => {
-          if (user) currentSession("user: response", user)
-          else currentSession("user: errors", [ USERS_USER_IS_NOT_DEFINED ])
+          if (user) currentSession("user", { user })
+          else {
+            const errors = [ USERS_USER_IS_NOT_DEFINED ]
+
+            currentSession("user", { errors })
+          }
         })
       }
     })
   })
 
-  subscribe("username: update", ({ id, username }) => {
+  subscribe("username", (usernameData) => {
+    const { id, username } = usernameData
+
     validation(idValidator(id), usernameValidator(username), (errors) => {
-      if (errors) currentSession("username: errors", errors)
+      if (errors) currentSession("username", { errors })
       else {
         usernameExist(username, (exists) => {
-          if (exists) currentSession("username: errors", [ USERS_USED_USERNAME ])
+          if (exists) {
+            const errors = [ USERS_USED_USERNAME ]
+
+            currentSession("username", { errors })
+          }
           else {
-            setUsername({ id, username }, (username) => {
-              currentSession("username: updated", username)
+            setUsername(usernameData, (username) => {
+              currentSession("username", { username })
             })
           }
         })
