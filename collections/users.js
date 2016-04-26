@@ -1,5 +1,5 @@
 import pg from "pg"
-import { DB_SERVER_PATH } from "../constants"
+import { DB_SERVER_PATH } from "../config"
 
 // CREATE TABLE users (
 //   "id" SERIAL UNIQUE,

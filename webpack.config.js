@@ -3,11 +3,11 @@ const webpack = require("webpack");
 
 module.exports = {
   target: "web",
-  context: path.join(__dirname, "public"),
+  context: path.join(__dirname, "app"),
   entry: "./index.jsx",
   output: {
-    path: path.join(__dirname, "public/build"),
-    publicPath: "build/",
+    path: path.join(__dirname, "app/static"),
+    publicPath: "/",
     filename: "bundle.js"
   },
   module: {
@@ -37,21 +37,21 @@ module.exports = {
         }
       },
       {
+        test: /\.jpeg$/,
+        loader: "file"
+      },
+      {
         test: /\.woff$/,
         loader: "file"
       },
       {
         test: /\.json$/,
         loader: "json"
-      },
-      {
-        test: /\.jpeg$/,
-        loader: "file"
       }
     ]
   },
   resolve: {
-    root: path.resolve(__dirname, "public"),
+    root: path.resolve(__dirname, "app"),
     alias:{
       globals: path.resolve( __dirname, "globals")
     },

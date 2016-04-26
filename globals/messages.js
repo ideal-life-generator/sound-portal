@@ -14,7 +14,7 @@ import {
   USERS_EMTPY_REFRESH_TOKEN,
   USERS_INVALID_REFRESH_TOKEN,
   USERS_USER_IS_NOT_DEFINED
-} from "./codes.js"
+} from "./codes"
 
 const MESSAGES = {
   [ UNKNOWN_ERROR ]: "Unknown error",

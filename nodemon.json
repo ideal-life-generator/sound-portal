@@ -1,7 +1,7 @@
 {
   "watch": [
     "index.js",
-    "constants.js",
+    "config.js",
     "collections/*.js",
     "controllers/*.js",
     "globals/*.js",

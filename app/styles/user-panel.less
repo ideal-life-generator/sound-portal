@@ -1,0 +1,126 @@
+@animation-time: 150ms;
+@animation-function: ease-in-out;
+
+.user-panel {
+  position: absolute;
+  top: 15px; right: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  .main-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    font-size: 30px;
+    cursor: pointer;
+    transition: text-shadow @animation-time @animation-function, color @animation-time @animation-function;
+    &.loading {
+      color: #f0ad4e;
+    }
+    &.required-username {
+      color: #f0ad4e;
+    }
+    &.logged {
+      color: #d9534f;
+    }
+    &.authentication-error {
+      color: #d9534f;
+    }
+  }
+  .loading {
+    position: absolute;
+    transform: translateX(-100%);
+    transition: opacity @animation-time @animation-function;
+    &.enter {
+      opacity: 0;
+      &.enter-active {
+        opacity: 1;
+      }
+    }
+    &.leave {
+      opacity: 1;
+      &.leave-active {
+        opacity: 0;
+      }
+    }
+  }
+  .additional-data {
+    position: absolute;
+    display: flex;
+    align-items: stretch;
+    height: 100%;
+    transform: translateX(calc(~"-100% - 5px"));
+    >.username {
+      font-size: 14px;
+      border-width: 1px;
+      border-style: solid;
+      border-color: black;
+      &.empty {
+        border-color: #f0ad4e;
+      }
+      &.invalid {
+        border-color: #d9534f;
+      }
+    }
+    &.enter {
+      opacity: 0;
+      &.enter-active {
+        opacity: 1;
+        transition: opacity @animation-time @animation-function;
+      }
+    }
+    &.leave {
+      opacity: 1;
+      &.leave-active {
+        opacity: 0;
+        transition: opacity @animation-time @animation-function;
+      }
+    }
+  }
+  >.username {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    white-space: nowrap;
+    transform: translateX(calc(~"-100% - 5px"));
+    transition: opacity @animation-time @animation-function;
+    &.enter {
+      opacity: 0;
+      &.enter-active {
+        opacity: 1;
+      }
+    }
+    &.leave {
+      opacity: 1;
+      &.leave-active {
+        opacity: 0;
+      }
+    }
+  }
+  .authentication-error-panel {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    white-space: nowrap;
+    color: #d9534f;
+    transform: translateX(calc(~"-100% - 5px"));
+    transition: opacity @animation-time @animation-function;
+    &.enter {
+      opacity: 0;
+      &.enter-active {
+        opacity: 1;
+      }
+    }
+    &.leave {
+      opacity: 1;
+      &.leave-active {
+        opacity: 0;
+      }
+    }
+  }
+}
